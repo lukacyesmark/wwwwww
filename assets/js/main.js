@@ -251,10 +251,21 @@
       }
       form.classList.add('is-sending');
       try {
-        const fd = new FormData(form);
-        const cf7 = form.dataset.cf7; // WordPress: odeslání přes Contact Form 7
+        let fd = new FormData(form);
+        const cf7 = form.dataset.cf7; // WordPress: odeslání přes Contact Form 7 (výchozí pole formuláře)
         if (cf7 && fd.get('website')) { form.classList.add('is-done'); show('is-ok', 'Díky!'); return; }
         if (cf7) {
+          const interest = fd.getAll('interest[]').join(', ');
+          const src = fd;
+          fd = new FormData();
+          fd.append('your-name', src.get('name'));
+          fd.append('your-email', src.get('email'));
+          fd.append('your-subject', `Poptávka z wwwwww.cz${interest ? ' — ' + interest : ''}`);
+          fd.append('your-message', [
+            src.get('message'), '', '----------------------------------------',
+            `Telefon:  ${src.get('phone') || '—'}`, `Zájem o:  ${interest || '—'}`,
+            `Stránka:  ${src.get('page')}`, `Zdroj:    ${src.get('attribution')}`
+          ].join('\n'));
           fd.append('_wpcf7', cf7);
           fd.append('_wpcf7_unit_tag', `wpcf7-f${cf7}-o1`);
           fd.append('_wpcf7_locale', 'cs_CZ');
@@ -266,7 +277,7 @@
         if (!r.ok || !(cf7 ? j.status === 'mail_sent' : j.ok)) throw new Error(j.status || j.error || 'send');
         form.classList.add('is-done');
         show('is-ok', '<strong>Díky, poptávka dorazila.</strong><br>Ozveme se obvykle do jednoho pracovního dne. Spěcháte? Volejte <a href="tel:+420731842606">731 842 606</a>.');
-        track('generate_lead', { form: form.elements.page.value });
+        track('generate_lead', { form: (form.elements.page || form.elements['source-page'] || {}).value });
       } catch (err) {
         show('is-err', 'Odeslání se nepovedlo. Napište prosím přímo na <a href="mailto:lukac@yesmark.eu">lukac@yesmark.eu</a> nebo volejte <a href="tel:+420731842606">731 842 606</a>.');
       } finally {
