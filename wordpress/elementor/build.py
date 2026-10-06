@@ -25,6 +25,12 @@ UTM = 'utm_source=wwwwww.cz&utm_medium=referral&utm_campaign={c}&utm_content={x}
 def yes(path='', c='wwwwww_brand', x='web'):
     return f'https://yesmark.eu/{path}?' + UTM.format(c=c, x=x)
 
+from cities import CITIES
+
+def city_links(cls='ww-towns ww-citylinks', current=None):
+    items = ''.join(f'<a href="/tvorba-webu-{c["slug"]}/">{c["name"]}</a>' for c in CITIES if c['slug'] != current)
+    return t(f'<p>{items}</p>', cls)
+
 _seen = set()
 def uid():
     while True:
@@ -67,9 +73,7 @@ def tags(*items):
     return t('<p>' + ''.join(f'<span>{i}</span>' for i in items) + '</p>', 'ww-tags')
 
 # ---------- sdílené části ----------
-LOGO = ('<svg viewBox="-3 -2 132 25" aria-hidden="true">'
-        '<path class="z" d="M0 2 L5 20 L10 9 L15 20 L20 2 L25 20 L30 9 L35 20 L40 2 L45 20 L50 9 L55 20 L60 2"/>'
-        '<path class="z z2" d="M60 2 L65 20 L70 9 L75 20 L80 2 L85 20 L90 9 L95 20 L100 2 L105 20 L110 9 L115 20 L120 2"/></svg>')
+LOGO = '<svg viewBox="0 0 169.0 20" aria-hidden="true"><defs><linearGradient id="wwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e1b20"/><stop offset="1" stop-color="#e31e24"/></linearGradient><clipPath id="wwc"><rect x="-2" y="0" width="173.0" height="20"/></clipPath></defs><g clip-path="url(#wwc)" fill="none" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="10"><path d="M0.25 -4.00 L6.38 24.00 L12.75 -4.00 L19.12 24.00 L25.25 -4.00 M28.95 -4.00 L35.08 24.00 L41.45 -4.00 L47.83 24.00 L53.95 -4.00 M57.65 -4.00 L63.77 24.00 L70.15 -4.00 L76.53 24.00 L82.65 -4.00" stroke="#b3b3b3"/><path d="M86.35 -4.00 L92.47 24.00 L98.85 -4.00 L105.22 24.00 L111.35 -4.00 M115.05 -4.00 L121.17 24.00 L127.55 -4.00 L133.93 24.00 L140.05 -4.00 M143.75 -4.00 L149.88 24.00 L156.25 -4.00 L162.62 24.00 L168.75 -4.00" stroke="url(#wwg)"/></g></svg>'
 
 def header():
     nav = ''.join(f'<a href="{u}">{n}</a>' for n, u in [('Služby', '/#sluzby'), ('Proces', '/#proces'), ('Reference', '/#reference'),
@@ -136,6 +140,7 @@ def footer():
                   f'<a href="{yes(x="footer")}" target="_blank" rel="noopener">Yesmark.eu ↗</a></p>')),
             con('', h('Kontakt', 'div', 'ww-ft'),
                 t(f'<p><a href="tel:{TEL}">+420 {TEL_H}</a><br><a href="mailto:{MAIL}">{MAIL}</a><br>Yesmark<br>{ADDR}</p>'))),
+        con('ww-footcities', h('Tvorba webových stránek v regionu', 'div', 'ww-ft'), city_links('ww-footlinks')),
         con('ww-foot-bottom',
             t('<p>© <span data-ww-year>2026</span> wwwwww.cz · tvorba webových stránek Jeseník · koncept Yesmark</p>'),
             t('<p><a href="#">Nahoru ↑</a></p>'))), tag='footer')
@@ -165,6 +170,45 @@ BUSINESS = {
     'employee': {'@type': 'Person', 'name': 'Roman Lukač', 'jobTitle': 'Webdesign a vývoj'},
     'knowsAbout': ['Tvorba webových stránek', 'Tvorba e-shopů', 'Webdesign', 'SEO optimalizace', 'WordPress', 'Elementor'],
 }
+
+def services_section(title='Weby, které pracují za vás.', eid='sluzby'):
+    def card(n, title, text, tg, main=False, d=''):
+        c = con('ww-card ww-rv' + (' ww-card--main' if main else ''), h(n, 'div', 'ww-num'), h(title, 'h3', 'ww-h3'), t(f'<p>{text}</p>'), tags(*tg))
+        return c
+    return sec('ww-dark', wrap('',
+        head('Služby', title, 'Postaráme se o vše od návrhu po spuštění – design, programování, obsah, SEO i analytiku. Vy řešíte byznys, web vám nosí poptávky.'),
+        con('ww-bento',
+            card('01 — hlavní služba', 'Tvorba webových stránek na míru', 'Od jednoduché firemní prezentace po rozsáhlý web. Moderní design, srozumitelný obsah a jasná cesta k poptávce – web, který vám dělá dobré jméno i obchod.',
+                 ['UX &amp; UI design', 'Kódování na míru', 'WordPress + Elementor', 'October CMS', 'Responzivní design'], True),
+            card('02', 'E-shopy', 'Přehledný obchod připravený na růst. Objednávky, platby i doprava bez starostí.', ['WooCommerce', 'PrestaShop']),
+            card('03', 'Redesign webu', 'Starý web, který nic nepřináší? Převlékneme ho do moderního kabátu a postavíme znovu – tentokrát na prodej.', ['Nový design', 'Nový obsah']),
+            card('04', 'SEO optimalizace', 'Struktura, obsah a technické SEO od prvního dne, aby vás zákazníci našli dřív než konkurenci.', ['On-page SEO', 'Google Firemní profil']),
+            card('05', 'Správa a propagace', 'Aktualizace, zabezpečení, úpravy obsahu i PPC kampaně. Zůstáváme s vámi i po spuštění.', ['Údržba', 'PPC kampaně']),
+            card('06', 'Grafika a branding', 'Logo, vizuální styl a grafika pro web i tisk – všechno pod jednou střechou Yesmark.', ['Logo', 'Vizuální styl']))), eid=eid)
+
+
+def refs_section():
+    def ref(tag, name, text, label, url, key):
+        return con('ww-ref ww-rv',
+            con('ww-ref-top', img(SHOT[key], f'Reference: web {name}', 'ww-ref-shot', 'large'), html('<span class="ww-ref-hint">Najeďte myší a projeďte web ↓</span>', 'ww-ref-hintw')),
+            con('ww-ref-body', h(tag, 'div', 'ww-ref-tag'), h(name, 'h3', 'ww-h3'), t(text), btn(label, url, 'ww-btn--plain ww-btn--ext', ext=True)))
+    return sec('ww-light', wrap('',
+        head('Reference', 'Weby, na které jsme hrdí.', 'Výběr realizací. Celé portfolio webů, e-shopů a kampaní najdete na Yesmark.eu.'),
+        con('ww-refs',
+            ref('Web · CNC obrábění', 'Konradt',
+                '<p>Pro společnost KONRADT jsme vytvořili nové webové stránky zaměřené na profesionální prezentaci služeb v oblasti CNC obrábění, montáže a zpracování kovů. Při realizaci jsme kladli důraz na moderní technický vzhled, přehledné představení výrobních možností společnosti a srozumitelnou prezentaci jednotlivých služeb.</p>'
+                '<p>Součástí realizace byla také optimalizace struktury a obsahu webu s ohledem na vyhledávače a lepší dohledatelnost služeb v oblasti CNC frézování, CNC soustružení, montážních prací a dodávek odlitků.</p>',
+                'konradt.cz', 'https://www.konradt.cz/', 'konradt'),
+            ref('Web · Reality Jeseníky', 'Monika Veličková',
+                '<p>Pro realitní makléřku Moniku Veličkovou jsme vytvořili nové webové stránky zaměřené na prezentaci nemovitostí a realitních služeb v Jeseníkách. Při realizaci jsme kladli důraz na moderní a osobitý design, přehlednou prezentaci nabízených nemovitostí a především na budování osobní značky, která staví na znalosti regionu, individuálním přístupu a zkušenostech s realitami i investicemi.</p>',
+                'monikavelickova.cz', 'https://monikavelickova.cz/', 'monika-velickova'),
+            ref('Web · Technika a služby', 'Břinčil',
+                '<p>Při realizaci webu pro firmu Břinčil jsme kladli důraz na moderní a přehledný design, snadnou orientaci návštěvníků a kvalitní prezentaci společnosti i její techniky. Nový web zároveň slouží jako podpůrná prezentace hlavní společnosti Břinčil &amp; Míka s.r.o., pro kterou jsme v minulosti rovněž realizovali kompletní online prezentaci.</p>',
+                'brincil.cz', 'https://brincil.cz/', 'brincil')),
+        con('ww-row ww-refs-more ww-rv',
+            t('<p>Další weby, e-shopy a kampaně najdete v portfoliu Yesmark.</p>', 'ww-muted'),
+            btn('Všechny reference', yes('reference/', 'wwwwww_reference', 'homepage_all'), 'ww-btn--dark ww-btn--ext', ext=True))), eid='reference')
+
 
 # ---------- HLAVNÍ STRÁNKA ----------
 def home():
@@ -196,20 +240,6 @@ def home():
         btn('Poznejte Yesmark', yes(x='homepage_strip'), 'ww-btn--dark ww-btn--ext', ext=True)))
     yesmark['settings']['css_classes'] += ' ww-yes-sec'
 
-    def card(n, title, text, tg, main=False, d=''):
-        c = con('ww-card ww-rv' + (' ww-card--main' if main else ''), h(n, 'div', 'ww-num'), h(title, 'h3', 'ww-h3'), t(f'<p>{text}</p>'), tags(*tg))
-        return c
-    services = sec('ww-dark', wrap('',
-        head('Služby', 'Weby, které pracují za vás.', 'Postaráme se o vše od návrhu po spuštění – design, programování, obsah, SEO i analytiku. Vy řešíte byznys, web vám nosí poptávky.'),
-        con('ww-bento',
-            card('01 — hlavní služba', 'Tvorba webových stránek na míru', 'Od jednoduché firemní prezentace po rozsáhlý web. Moderní design, srozumitelný obsah a jasná cesta k poptávce – web, který vám dělá dobré jméno i obchod.',
-                 ['UX &amp; UI design', 'Kódování na míru', 'WordPress + Elementor', 'October CMS', 'Responzivní design'], True),
-            card('02', 'E-shopy', 'Přehledný obchod připravený na růst. Objednávky, platby i doprava bez starostí.', ['WooCommerce', 'PrestaShop']),
-            card('03', 'Redesign webu', 'Starý web, který nic nepřináší? Převlékneme ho do moderního kabátu a postavíme znovu – tentokrát na prodej.', ['Nový design', 'Nový obsah']),
-            card('04', 'SEO optimalizace', 'Struktura, obsah a technické SEO od prvního dne, aby vás zákazníci našli dřív než konkurenci.', ['On-page SEO', 'Google Firemní profil']),
-            card('05', 'Správa a propagace', 'Aktualizace, zabezpečení, úpravy obsahu i PPC kampaně. Zůstáváme s vámi i po spuštění.', ['Údržba', 'PPC kampaně']),
-            card('06', 'Grafika a branding', 'Logo, vizuální styl a grafika pro web i tisk – všechno pod jednou střechou Yesmark.', ['Logo', 'Vizuální styl']))), eid='sluzby')
-
     def why(n, title, text):
         return con('ww-rv', h(n, 'div', 'ww-ico'), h(title, 'h3', 'ww-h3'), t(f'<p>{text}</p>'))
     whysec = sec('ww-white', wrap('',
@@ -235,27 +265,6 @@ def home():
             step('03 / Spuštění', 'Pustíme web do světa', 'Testy na mobilech i počítačích, SEO nastavení, analytika a Google Firemní profil. Pak teprve jde web ven.'),
             step('04 / Správa a propagace', 'Rosteme spolu dál', 'Zabezpečení, aktualizace, úpravy obsahu, SEO a placená propagace. Zůstáváme s vámi i po spuštění.'))), eid='proces')
 
-    def ref(tag, name, text, label, url, key):
-        return con('ww-ref ww-rv',
-            con('ww-ref-top', img(SHOT[key], f'Reference: web {name}', 'ww-ref-shot', 'large'), html('<span class="ww-ref-hint">Najeďte myší a projeďte web ↓</span>', 'ww-ref-hintw')),
-            con('ww-ref-body', h(tag, 'div', 'ww-ref-tag'), h(name, 'h3', 'ww-h3'), t(text), btn(label, url, 'ww-btn--plain ww-btn--ext', ext=True)))
-    refs = sec('ww-light', wrap('',
-        head('Reference', 'Weby, na které jsme hrdí.', 'Výběr realizací. Celé portfolio webů, e-shopů a kampaní najdete na Yesmark.eu.'),
-        con('ww-refs',
-            ref('Web · CNC obrábění', 'Konradt',
-                '<p>Pro společnost KONRADT jsme vytvořili nové webové stránky zaměřené na profesionální prezentaci služeb v oblasti CNC obrábění, montáže a zpracování kovů. Při realizaci jsme kladli důraz na moderní technický vzhled, přehledné představení výrobních možností společnosti a srozumitelnou prezentaci jednotlivých služeb.</p>'
-                '<p>Součástí realizace byla také optimalizace struktury a obsahu webu s ohledem na vyhledávače a lepší dohledatelnost služeb v oblasti CNC frézování, CNC soustružení, montážních prací a dodávek odlitků.</p>',
-                'konradt.cz', 'https://www.konradt.cz/', 'konradt'),
-            ref('Web · Reality Jeseníky', 'Monika Veličková',
-                '<p>Pro realitní makléřku Moniku Veličkovou jsme vytvořili nové webové stránky zaměřené na prezentaci nemovitostí a realitních služeb v Jeseníkách. Při realizaci jsme kladli důraz na moderní a osobitý design, přehlednou prezentaci nabízených nemovitostí a především na budování osobní značky, která staví na znalosti regionu, individuálním přístupu a zkušenostech s realitami i investicemi.</p>',
-                'monikavelickova.cz', 'https://monikavelickova.cz/', 'monika-velickova'),
-            ref('Web · Technika a služby', 'Břinčil',
-                '<p>Při realizaci webu pro firmu Břinčil jsme kladli důraz na moderní a přehledný design, snadnou orientaci návštěvníků a kvalitní prezentaci společnosti i její techniky. Nový web zároveň slouží jako podpůrná prezentace hlavní společnosti Břinčil &amp; Míka s.r.o., pro kterou jsme v minulosti rovněž realizovali kompletní online prezentaci.</p>',
-                'brincil.cz', 'https://brincil.cz/', 'brincil')),
-        con('ww-row ww-refs-more ww-rv',
-            t('<p>Další weby, e-shopy a kampaně najdete v portfoliu Yesmark.</p>', 'ww-muted'),
-            btn('Všechny reference', yes('reference/', 'wwwwww_reference', 'homepage_all'), 'ww-btn--dark ww-btn--ext', ext=True))), eid='reference')
-
     rings = ''.join(f'<circle class="r" cx="270" cy="270" r="{r}"/>' for r in (46, 92, 184))
     pins = [('Lipová-lázně', 234, 273, -8, 17, 'end'), ('Česká Ves', 284, 242, 8, -4, 'start'), ('Mikulovice', 346, 199, 8, -3, 'start'),
             ('Zlaté Hory', 395, 234, 8, -3, 'start'), ('Javorník', 138, 105, -8, -7, 'end'), ('Vidnava', 258, 124, 8, -6, 'start'),
@@ -279,7 +288,8 @@ def home():
               '<p>Instalatér z Jeseníku, truhlář ze Zlatých Hor nebo strojírna z Javorníku – každý potřebuje web, který se ukáže, když ho místní zákazník hledá na Googlu.</p>'
               '<h3>Osobně v Jeseníku, online kdekoli v Česku</h3>'
               f'<p>Sídlíme v Jeseníku ({ADDR}). Místní klienty rádi potkáme u nás v kanceláři, s ostatními vše vyřešíme přes videohovor, telefon a sdílený návrh – stejně rychle a osobně.</p>'),
-            t('<p>' + ''.join(f'<span>{x}</span>' for x in ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava', 'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny', 'Hanušovice', 'Olomouc', 'celá ČR']) + '</p>', 'ww-towns')),
+            t('<p>' + ''.join(f'<span>{x}</span>' for x in ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava', 'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny', 'Hanušovice', 'celá ČR']) + '</p>', 'ww-towns'),
+            h('Tvoříme weby také pro', 'div', 'ww-eyebrow'), city_links()),
         html(mapsvg, 'ww-rv')), eid='jesenicko')
 
     faq = [
@@ -309,7 +319,7 @@ def home():
         con('ww-row', btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--white ww-btn--plain'), btn('Napsat poptávku', '/kontakt/#poptavka', 'ww-btn--dark'))))
 
     ld = {'@context': 'https://schema.org', '@graph': [BUSINESS, {'@type': 'WebSite', '@id': 'https://wwwwww.cz/#web', 'url': 'https://wwwwww.cz/', 'name': 'wwwwww.cz', 'inLanguage': 'cs-CZ', 'publisher': {'@id': 'https://wwwwww.cz/#business'}}]}
-    return [header(), hero, html_section(marquee), yesmark, services, whysec, process, refs, local, pricing, contact, cta, footer(),
+    return [header(), hero, html_section(marquee), yesmark, services_section(), whysec, process, refs_section(), local, pricing, contact, cta, footer(),
             system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
 
 def html_section(code):
@@ -352,8 +362,70 @@ def kontakt():
     return [header(), hero, contact, nextsteps, nap, footer(),
             system(ld, f'<a class="wbtn wbtn--red" href="mailto:{MAIL}">Napsat e-mail</a>')]
 
+
+# ---------- MĚSTSKÉ LANDING PAGES ----------
+def city_page(c):
+    n, loc, gen = c['name'], c['loc'], c['gen']
+    hero = sec('ww-dark ww-phero ww-cityhero', wrap('ww-stack',
+        t(f'<p><a href="/">wwwwww.cz</a> / tvorba webů {n}</p>', 'ww-crumbs'),
+        h(f'Tvorba webových stránek <span class="ww-red">{n}</span>', 'h1', 'ww-h1 ww-rv'),
+        t(f'<p>{c["intro"]}</p>', 'ww-lead ww-mw ww-rv'),
+        con('ww-row ww-rv', btn('Chci nezávaznou nabídku', '#poptavka'), btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--ghost ww-btn--plain')),
+        t('<p><span>✓ Weby od 9 900 Kč</span><span>✓ Nabídka zdarma</span><span>✓ Koncept agentury Yesmark</span></p>', 'ww-trust ww-rv')), eid='uvod')
+    steps = ''.join(f'<li><b>{a}</b> {b}</li>' for a, b in [
+        ('Úvodní hovor', '– telefonem, online nebo osobně.'), ('Návrh a nabídka', '– jasná cena a termín zdarma.'),
+        ('Realizace', '– průběžně vidíte, jak web roste.'), ('Spuštění a SEO', '– aby vás našli lidé ' + gen + '.')])
+    local = sec('ww-white', wrap('ww-local',
+        con('ww-local-copy ww-rv',
+            h(f'Weby pro firmy {gen}', 'div', 'ww-eyebrow'),
+            h(f'Web, který vám přivede zákazníky {loc}', 'h2', 'ww-h2s'),
+            t(''.join(f'<p>{x}</p>' for x in c['text']) +
+              f'<h3>Lokální SEO pro {n}</h3><p>Každý web stavíme tak, aby se ukázal lidem, kteří hledají vaše služby {loc} a okolí – správná struktura, obsah, rychlá orientace na mobilu a propojení s Google Firemním profilem.</p>')),
+        con('ww-citycard ww-rv',
+            h(f'Pro koho tvoříme {loc}', 'h3', 'ww-h3'),
+            tags(*c['who']),
+            h('Jak spolupráce probíhá', 'div', 'ww-eyebrow'),
+            t(f'<ol class="ww-steps-list">{steps}</ol>'),
+            btn('Domluvit konzultaci', '#poptavka'))))
+    faq = [
+        (f'Kolik stojí tvorba webových stránek {loc}?', 'Tvorba webových stránek začíná na 9 900 Kč. Konečná cena záleží na rozsahu, funkcích a grafickém zpracování. Po krátké konzultaci dostanete nezávaznou nabídku zdarma.'),
+        ('Musím za vámi jezdit do Jeseníku?', 'Nemusíte. Konzultace, návrhy i předání webu zvládneme online – telefonem, videohovorem a e-mailem. Když je to potřeba, rádi se potkáme i osobně.'),
+        (f'Pomůžete, aby nás našli zákazníci {gen}?', f'Ano. Web postavíme s ohledem na lokální SEO pro {n} – obsah zaměřený na vaše služby a lokalitu, Google Firemní profil a technické SEO od prvního dne.'),
+        c['faq'],
+        ('Budu si moci web upravovat sám?', 'Ano. Stavíme na WordPressu a Elementoru – texty, fotky i nové stránky si upravíte sami a ukážeme vám, jak na to.'),
+    ]
+    pricing = sec('ww-dark', wrap('ww-price',
+        con('ww-price-card ww-rv',
+            h(f'Ceník · {n}', 'div', 'ww-eyebrow'),
+            h('<small>Tvorba webových stránek</small>od 9 900 Kč', 'div', 'ww-price-num'),
+            t('<p>Konečná částka se odvíjí od rozsahu, funkcí a grafického zpracování. Každý projekt naceňujeme individuálně a férově.</p>', 'ww-muted'),
+            con('ww-row', btn('Chci cenovou nabídku', '#poptavka'))),
+        con('ww-rv', h(f'Časté otázky – tvorba webů {n}', 'h2', 'ww-h2s'),
+            w('toggle', 'ww-faq', faq_schema='yes', tabs=[{'_id': uid(), 'tab_title': q, 'tab_content': f'<p>{a}</p>'} for q, a in faq]))), eid='cenik')
+    contact = sec('ww-light', wrap('',
+        head('Poptávka', f'Nový web pro vaši firmu {gen}?', 'Napište pár vět nebo rovnou zavolejte. Ozvu se obvykle do jednoho pracovního dne s dalším postupem.'),
+        contact_section('mesto-' + c['slug'])), eid='poptavka')
+    others = sec('ww-white ww-others', wrap('ww-stack ww-rv',
+        h('Tvoříme weby také pro', 'div', 'ww-eyebrow'),
+        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webu-{o["slug"]}/">{o["name"]}</a>' for o in CITIES if o['slug'] != c['slug']) + '</p>', 'ww-towns ww-citylinks')))
+    url = f'https://wwwwww.cz/tvorba-webu-{c["slug"]}/'
+    ld = {'@context': 'https://schema.org', '@graph': [
+        BUSINESS,
+        {'@type': 'Service', '@id': url + '#service', 'name': f'Tvorba webových stránek {n}', 'serviceType': 'Tvorba webových stránek',
+         'url': url, 'provider': {'@id': 'https://wwwwww.cz/#business'},
+         'areaServed': {'@type': 'City', 'name': n, 'containedInPlace': {'@type': 'AdministrativeArea', 'name': c['kraj']}},
+         'offers': {'@type': 'Offer', 'priceCurrency': 'CZK', 'price': '9900', 'description': 'Tvorba webových stránek od 9 900 Kč'}},
+        {'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'Tvorba webových stránek Jeseník', 'item': 'https://wwwwww.cz/'},
+            {'@type': 'ListItem', 'position': 2, 'name': f'Tvorba webů {n}', 'item': url}]}]}
+    return [header(), hero, local, services_section(f'Weby pro {n} a okolí.'), refs_section(), pricing, contact, others, footer(),
+            system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
+
 if __name__ == '__main__':
     for name, fn in [('home', home), ('kontakt', kontakt)]:
         data = fn()
         (OUT / f'{name}.json').write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
         print(name, len(json.dumps(data)) // 1024, 'kB')
+    for c in CITIES:
+        (OUT / f'mesto-{c["slug"]}.json').write_text(json.dumps(city_page(c), ensure_ascii=False), encoding='utf-8')
+    print('města:', len(CITIES))

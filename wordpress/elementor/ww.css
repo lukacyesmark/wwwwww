@@ -413,3 +413,25 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .ww-ref-body .ww-h3 .elementor-heading-title{font-size:clamp(24px,2.2vw,30px)!important}
 @media (max-width:640px){.wcursor{display:none}.ww-ref-hint{display:none}}
 @media (prefers-reduced-motion:reduce){.hv__shot img,.e-con.ww-card--main{animation:none!important}.ww-split .ww-w > span{transform:none!important}}
+/* logo ve stylu Yesmark */
+.wlogo svg{width:150px}
+.ww-foot .wlogo svg{width:170px}
+/* odkazy na města */
+.ww-citylinks p{display:flex;flex-wrap:wrap;gap:8px}
+.ww .ww-citylinks a{font-size:14px;font-weight:500;border:1px solid var(--ww-line-l);background:#fff;border-radius:999px;padding:8px 14px;color:var(--ww-d1);line-height:1;text-decoration:none}
+.ww .ww-citylinks a:hover{border-color:var(--ww-red);color:var(--ww-red)}
+.e-con.ww-footcities{margin-top:48px!important;gap:12px}
+.ww .ww-footlinks p{font-size:14px;line-height:2;color:var(--ww-t3)}
+.ww .ww-footlinks a{color:var(--ww-t2)!important;text-decoration:none!important;margin-right:18px;white-space:nowrap}
+.ww .ww-footlinks a:hover{color:var(--ww-red)!important}
+/* městská stránka */
+.e-con.ww-citycard{background:var(--ww-ink);color:var(--ww-t1);border-radius:var(--ww-r);padding:clamp(26px,3vw,40px)!important;gap:18px;position:relative;overflow:hidden}
+.e-con.ww-citycard::after{content:"";position:absolute;width:320px;height:320px;right:-140px;top:-140px;border-radius:50%;background:radial-gradient(circle,rgba(227,18,11,.35),transparent 65%);pointer-events:none}
+.ww-citycard .ww-tags span{color:#e4e4e7;border-color:#33333b;background:transparent}
+.ww-steps-list{list-style:none;margin:0;padding:0;counter-reset:s;display:grid;gap:12px;font-size:15px;color:var(--ww-t2)}
+.ww-steps-list li{counter-increment:s;position:relative;padding-left:36px;line-height:1.6}
+.ww-steps-list li::before{content:"0" counter(s);position:absolute;left:0;top:.2em;font-size:12px;font-weight:600;color:var(--ww-red);letter-spacing:.08em}
+.ww-steps-list b{color:#fff;font-weight:600}
+.e-con.ww-others.ww-sec{padding:70px 0!important}
+.e-con.ww-cityhero .ww-row{margin-top:6px}
+.e-con.ww-local:has(.ww-citycard){align-items:start}
