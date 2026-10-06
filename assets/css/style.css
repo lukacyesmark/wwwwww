@@ -323,9 +323,8 @@ button,input,textarea,select{font:inherit;color:inherit}
 .crumbs a:hover{color:var(--accent)}
 
 /* reveal */
-.rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
-.rv.is-in{opacity:1;transform:none}
-.no-js .rv{opacity:1;transform:none}
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
+.js .rv.is-in{opacity:1;transform:none}
 
 /* ---------- responsive ---------- */
 @media (max-width:1080px){
@@ -378,6 +377,6 @@ button,input,textarea,select{font:inherit;color:inherit}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .rv{opacity:1;transform:none}
+  .js .rv{opacity:1;transform:none}
 }
 @media print{.header,.mbar,.hero__canvas,.marquee{display:none}body{background:#fff;color:#000}}

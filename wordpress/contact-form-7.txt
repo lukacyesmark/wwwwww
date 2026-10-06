@@ -1,0 +1,24 @@
+=== Contact Form 7 — šablona formuláře (záložka „Formulář“) ===
+[text* name] [email* email] [tel phone] [textarea* message]
+[checkbox interest "Nový web" "Redesign" "E-shop" "SEO" "Správa webu"]
+[hidden page] [hidden attribution]
+
+=== Záložka „E-mail“ ===
+Komu:       lukac@yesmark.eu
+Od:         wwwwww.cz <wordpress@wwwwww.cz>
+Předmět:    Poptávka z wwwwww.cz — [name]
+Další hlavičky:
+Reply-To: [name] <[email]>
+
+Tělo zprávy:
+Jméno:   [name]
+E-mail:  [email]
+Telefon: [phone]
+Zájem o: [interest]
+Stránka: [page]
+
+Zpráva:
+[message]
+
+--
+Zdroj: [attribution]

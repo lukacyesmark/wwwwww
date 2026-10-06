@@ -251,9 +251,19 @@
       }
       form.classList.add('is-sending');
       try {
-        const r = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        const fd = new FormData(form);
+        const cf7 = form.dataset.cf7; // WordPress: odeslání přes Contact Form 7
+        if (cf7 && fd.get('website')) { form.classList.add('is-done'); show('is-ok', 'Díky!'); return; }
+        if (cf7) {
+          fd.append('_wpcf7', cf7);
+          fd.append('_wpcf7_unit_tag', `wpcf7-f${cf7}-o1`);
+          fd.append('_wpcf7_locale', 'cs_CZ');
+          fd.append('_wpcf7_container_post', '0');
+        }
+        const url = cf7 ? `/wp-json/contact-form-7/v1/contact-forms/${cf7}/feedback` : form.action;
+        const r = await fetch(url, { method: 'POST', body: fd, headers: { Accept: 'application/json' } });
         const j = await r.json().catch(() => ({}));
-        if (!r.ok || !j.ok) throw new Error(j.error || 'send');
+        if (!r.ok || !(cf7 ? j.status === 'mail_sent' : j.ok)) throw new Error(j.status || j.error || 'send');
         form.classList.add('is-done');
         show('is-ok', '<strong>Díky, poptávka dorazila.</strong><br>Ozveme se obvykle do jednoho pracovního dne. Spěcháte? Volejte <a href="tel:+420731842606">731 842 606</a>.');
         track('generate_lead', { form: form.elements.page.value });
