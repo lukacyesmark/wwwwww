@@ -28,8 +28,13 @@ def yes(path='', c='wwwwww_brand', x='web'):
 from cities import CITIES
 
 def city_links(cls='ww-towns ww-citylinks', current=None):
-    items = ''.join(f'<a href="/tvorba-webu-{c["slug"]}/">{c["name"]}</a>' for c in CITIES if c['slug'] != current)
+    items = ''.join(f'<a href="/tvorba-webovych-stranek-{c["slug"]}/">{c["name"]}</a>' for c in CITIES if c['slug'] != current)
     return t(f'<p>{items}</p>', cls)
+
+PRIVACY_PUBLISHED = False
+PRIV_URL = '/zasady-ochrany-osobnich-udaju/'
+PRIV_LINK = f' <a href="{PRIV_URL}">Zásady ochrany osobních údajů</a>' if PRIVACY_PUBLISHED else ''
+PRIV_FOOT = f'<a href="{PRIV_URL}">Ochrana osobních údajů</a> · ' if PRIVACY_PUBLISHED else ''
 
 _seen = set()
 def uid():
@@ -78,9 +83,7 @@ LOGO = '<svg viewBox="0 0 169.0 20" aria-hidden="true"><defs><linearGradient id=
 def header():
     nav = ''.join(f'<a href="{u}">{n}</a>' for n, u in [('Služby', '/#sluzby'), ('Proces', '/#proces'), ('Reference', '/#reference'),
                                                          ('Jesenicko', '/#jesenicko'), ('Ceník', '/#cenik'), ('Kontakt', '/kontakt/')])
-    code = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-            '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">'
-            '<header class="wh"><div class="wh__in">'
+    code = ('<header class="wh"><div class="wh__in">'
             f'<a class="wlogo" href="/" aria-label="wwwwww.cz – tvorba webových stránek Jeseník">{LOGO}</a>'
             f'<a class="wlogo__by" href="{yes(x="header_logo")}" target="_blank" rel="noopener"><small>koncept</small><img src="{YM["url"]}" alt="Yesmark" width="92" height="14"></a>'
             f'<nav class="wnav" aria-label="Hlavní navigace">{nav}</nav>'
@@ -123,7 +126,7 @@ def contact_section(page):
         h('Nezávazná poptávka', 'h3', 'ww-h3'),
         t('<p>Nabídka je zdarma a k ničemu vás nezavazuje.</p>', 'ww-muted'),
         form,
-        t('<p>Odesláním souhlasíte se zpracováním údajů za účelem vyřízení poptávky. Nic dalšího s nimi neděláme.</p>', 'ww-legal'))
+        t('<p>Údaje použijeme jen k vyřízení vaší poptávky a nikomu je neprodáváme.' + PRIV_LINK + '</p>', 'ww-legal'))
     return con('ww-contact', person, formcard)
 
 def footer():
@@ -143,7 +146,7 @@ def footer():
         con('ww-footcities', h('Tvorba webových stránek v regionu', 'div', 'ww-ft'), city_links('ww-footlinks')),
         con('ww-foot-bottom',
             t('<p>© <span data-ww-year>2026</span> wwwwww.cz · tvorba webových stránek Jeseník · koncept Yesmark</p>'),
-            t('<p><a href="#">Nahoru ↑</a></p>'))), tag='footer')
+            t('<p>' + PRIV_FOOT + '<a href="#elementor-action%3Aaction%3DcookiezBanner%3AopenPreferences">Nastavení cookies</a> · <a href="#">Nahoru ↑</a></p>'))), tag='footer')
 
 def system(ld, mbar_right):
     js = (HERE / 'ww.js').read_text(encoding='utf-8')
@@ -210,29 +213,31 @@ def refs_section():
             btn('Všechny reference', yes('reference/', 'wwwwww_reference', 'homepage_all'), 'ww-btn--dark ww-btn--ext', ext=True))), eid='reference')
 
 
+def hero_visual(kw):
+    def win(label, key, name):
+        return (f'<div class="hv__win"><div class="hv__bar"><i></i><i></i><i></i><b>{label}</b></div>'
+                f'<div class="hv__shot"><img src="{SHOT[key]["url"]}" alt="{kw} – ukázka webu {name}" decoding="async"></div></div>')
+    return ('<div class="hv"><div class="hv__stack">'
+        + win('brincil.cz', 'brincil', 'Břinčil') + win('monikavelickova.cz', 'monika-velickova', 'Monika Veličková') + win('konradt.cz', 'konradt', 'KONRADT') +
+        '<div class="hv__chip" aria-hidden="true">Navrženo a postaveno v Jeseníku</div>'
+        '<div class="hv__toast" aria-hidden="true"><em>✓</em><div><strong>Nová poptávka z webu</strong><small>právě teď</small></div></div>'
+        '</div></div>')
+
 # ---------- HLAVNÍ STRÁNKA ----------
 def home():
-    def win(label, key):
-        return (f'<div class="hv__win"><div class="hv__bar"><i></i><i></i><i></i><b>{label}</b></div>'
-                f'<div class="hv__shot"><img src="{SHOT[key]["url"]}" alt="" decoding="async"></div></div>')
-    hero_visual = ('<div class="hv" aria-hidden="true"><div class="hv__stack">'
-        + win('brincil.cz', 'brincil') + win('monikavelickova.cz', 'monika-velickova') + win('konradt.cz', 'konradt') +
-        '<div class="hv__chip">Navrženo a postaveno v Jeseníku</div>'
-        '<div class="hv__toast"><em>✓</em><div><strong>Nová poptávka z webu</strong><small>právě teď</small></div></div>'
-        '</div></div>')
     towns = ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava', 'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny', 'Hanušovice', 'Ramzová']
     marquee = '<div class="mq" aria-hidden="true"><div class="mq__t">' + ''.join(f'<span>{x}</span>' for x in towns * 2) + '</div></div>'
 
     hero = sec('ww-dark ww-hero', wrap('ww-hero-grid',
         con('ww-hero-copy',
-            h('Webové studio z Jeseníku · koncept Yesmark', 'div', 'ww-eyebrow ww-rv'),
+            h('Tvorba webových stránek Jeseník · koncept Yesmark', 'div', 'ww-eyebrow ww-rv'),
             h('Tvorba webových stránek v Jeseníku, které <span class="ww-red">prodávají.</span>', 'h1', 'ww-h1 ww-rv'),
             t('<p>Navrhneme a postavíme <strong>web nebo e-shop na míru</strong>, který zaujme, dobře se najde na Googlu a z návštěvníků dělá zákazníky. Z Jeseníku pro celé Česko.</p>', 'ww-lead ww-mw ww-rv'),
             con('ww-row ww-rv',
                 btn('Chci nezávaznou nabídku', '/kontakt/#poptavka'),
                 btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--ghost ww-btn--plain')),
             t('<p><span>✓ Weby od 9 900 Kč</span><span>✓ Nabídka zdarma</span><span>✓ Osobně i online po celé ČR</span></p>', 'ww-trust ww-rv')),
-        html(hero_visual, 'ww-rv')), eid='uvod')
+        html(hero_visual('Tvorba webových stránek Jeseník'), 'ww-rv')), eid='uvod')
 
     yesmark = sec('ww-light', wrap('ww-yes ww-rv',
         img(YM, 'Yesmark – marketingová agentura Jeseník', 'ww-yeslogo'),
@@ -347,12 +352,13 @@ def kontakt():
     nap = sec('ww-light', wrap('ww-nap',
         con('ww-napcard ww-rv',
             h('Kde nás najdete', 'div', 'ww-eyebrow'),
-            h('Yesmark · wwwwww.cz', 'h2', 'ww-h2s'),
+            h('Kontakt a adresa', 'h2', 'ww-h2s'),
             t(f'<p><strong>{ADDR}</strong></p><p>Telefon: <a href="tel:{TEL}">+420 {TEL_H}</a><br>E-mail: <a href="mailto:{MAIL}">{MAIL}</a></p>'
               '<p>Tvoříme webové stránky pro firmy z Jeseníku a okolí i pro klienty z celé České republiky.</p>', 'ww-muted'),
             con('ww-row', btn('Prohlédnout reference', yes('reference/', 'wwwwww_reference', 'kontakt'), 'ww-btn--dark ww-btn--ext', ext=True))),
-        w('google_maps', 'ww-mapw ww-rv', address='Boženy Němcové 922/2, Jeseník', zoom={'unit': 'px', 'size': 15, 'sizes': []},
-          height={'unit': 'px', 'size': 460, 'sizes': []})))
+        con('ww-napmap ww-rv',
+            html('<div class="wmapbox"><span class="wmapbox__pin"></span><strong>Boženy Němcové 922/2</strong><span>790 01 Jeseník</span></div>'),
+            btn('Navigovat v Google Mapách', 'https://www.google.com/maps/search/?api=1&query=Bo%C5%BEeny+N%C4%9Bmcov%C3%A9+922%2F2+Jesen%C3%ADk', 'ww-btn--dark ww-btn--ext', ext=True))))
     ld = {'@context': 'https://schema.org', '@graph': [
         BUSINESS,
         {'@type': 'ContactPage', 'url': 'https://wwwwww.cz/kontakt/', 'name': 'Kontakt – tvorba webových stránek Jeseník', 'about': {'@id': 'https://wwwwww.cz/#business'}},
@@ -366,12 +372,13 @@ def kontakt():
 # ---------- MĚSTSKÉ LANDING PAGES ----------
 def city_page(c):
     n, loc, gen = c['name'], c['loc'], c['gen']
-    hero = sec('ww-dark ww-phero ww-cityhero', wrap('ww-stack',
+    hero = sec('ww-dark ww-phero ww-cityhero', wrap('ww-hero-grid', con('ww-hero-copy',
         t(f'<p><a href="/">wwwwww.cz</a> / tvorba webů {n}</p>', 'ww-crumbs'),
         h(f'Tvorba webových stránek <span class="ww-red">{n}</span>', 'h1', 'ww-h1 ww-rv'),
         t(f'<p>{c["intro"]}</p>', 'ww-lead ww-mw ww-rv'),
         con('ww-row ww-rv', btn('Chci nezávaznou nabídku', '#poptavka'), btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--ghost ww-btn--plain')),
-        t('<p><span>✓ Weby od 9 900 Kč</span><span>✓ Nabídka zdarma</span><span>✓ Koncept agentury Yesmark</span></p>', 'ww-trust ww-rv')), eid='uvod')
+        t('<p><span>✓ Weby od 9 900 Kč</span><span>✓ Nabídka zdarma</span><span>✓ Koncept agentury Yesmark</span></p>', 'ww-trust ww-rv')),
+        html(hero_visual(f'Tvorba webových stránek {n}'), 'ww-rv')), eid='uvod')
     steps = ''.join(f'<li><b>{a}</b> {b}</li>' for a, b in [
         ('Úvodní hovor', '– telefonem, online nebo osobně.'), ('Návrh a nabídka', '– jasná cena a termín zdarma.'),
         ('Realizace', '– průběžně vidíte, jak web roste.'), ('Spuštění a SEO', '– aby vás našli lidé ' + gen + '.')])
@@ -407,8 +414,8 @@ def city_page(c):
         contact_section('mesto-' + c['slug'])), eid='poptavka')
     others = sec('ww-white ww-others', wrap('ww-stack ww-rv',
         h('Tvoříme weby také pro', 'div', 'ww-eyebrow'),
-        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webu-{o["slug"]}/">{o["name"]}</a>' for o in CITIES if o['slug'] != c['slug']) + '</p>', 'ww-towns ww-citylinks')))
-    url = f'https://wwwwww.cz/tvorba-webu-{c["slug"]}/'
+        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{o["slug"]}/">{o["name"]}</a>' for o in CITIES if o['slug'] != c['slug']) + '</p>', 'ww-towns ww-citylinks')))
+    url = f'https://wwwwww.cz/tvorba-webovych-stranek-{c["slug"]}/'
     ld = {'@context': 'https://schema.org', '@graph': [
         BUSINESS,
         {'@type': 'Service', '@id': url + '#service', 'name': f'Tvorba webových stránek {n}', 'serviceType': 'Tvorba webových stránek',
@@ -418,8 +425,41 @@ def city_page(c):
         {'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Tvorba webových stránek Jeseník', 'item': 'https://wwwwww.cz/'},
             {'@type': 'ListItem', 'position': 2, 'name': f'Tvorba webů {n}', 'item': url}]}]}
-    return [header(), hero, local, services_section(f'Weby pro {n} a okolí.'), refs_section(), pricing, contact, others, footer(),
+    return [header(), hero, local, services_section(f'Tvorba webových stránek {n}: co umíme.'), refs_section(), pricing, contact, others, footer(),
             system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
+
+
+# ---------- ZÁSADY OCHRANY OSOBNÍCH ÚDAJŮ ----------
+OP = {'firma': '[OBCHODNÍ FIRMA / JMÉNO PROVOZOVATELE]', 'ico': '[IČO]', 'sidlo': ADDR, 'rejstrik': '[zápis v obchodním rejstříku / živnostenský rejstřík]'}
+
+def privacy_page():
+    body = f"""
+<h2>1. Kdo zpracovává vaše údaje</h2>
+<p>Správcem osobních údajů je <strong>{OP['firma']}</strong>, IČO {OP['ico']}, se sídlem {OP['sidlo']}, {OP['rejstrik']} (dále jen „správce“). Web wwwwww.cz je webový koncept agentury Yesmark.</p>
+<p>Kontakt pro otázky k osobním údajům: <a href="mailto:{MAIL}">{MAIL}</a>, tel. <a href="tel:{TEL}">+420 {TEL_H}</a>.</p>
+<h2>2. Jaké údaje zpracováváme a proč</h2>
+<h3>Poptávkový formulář a e-mail</h3>
+<p>Když nám pošlete poptávku, zpracováváme jméno, e-mail, telefon (nepovinný), zvolené služby, text zprávy a technické údaje o odeslání (datum, čas, stránka, IP adresa). Údaje používáme jen k vyřízení vaší poptávky a k jednání o případné spolupráci.</p>
+<p>Právním základem je jednání o smlouvě na vaši žádost (čl. 6 odst. 1 písm. b) GDPR) a oprávněný zájem správce odpovědět na dotaz (čl. 6 odst. 1 písm. f) GDPR). Údaje uchováváme po dobu jednání a nejdéle 2 roky od posledního kontaktu, pokud nevznikne smluvní vztah. Pokud spolupráce vznikne, uchováváme je po dobu trvání smlouvy a lhůt stanovených zákonem.</p>
+<h3>Analytické cookies</h3>
+<p>S vaším souhlasem používáme Google Analytics (Google Ireland Limited) k měření návštěvnosti webu. Bez souhlasu se analytické cookies neukládají (Google Consent Mode). Souhlas můžete kdykoli změnit v nastavení cookies v patičce webu. Právním základem je souhlas (čl. 6 odst. 1 písm. a) GDPR).</p>
+<h3>Nezbytné cookies</h3>
+<p>Web používá technicky nezbytné cookies, například pro uložení vaší volby v cookie liště. Ty nevyžadují souhlas.</p>
+<h2>3. Komu údaje předáváme</h2>
+<p>Údaje nepředáváme třetím osobám za účelem marketingu. Zpracovateli jsou poskytovatel webhostingu, poskytovatel e-mailových služeb a Google (Analytics, pouze se souhlasem). Při využití služeb Google může docházet k předání do USA na základě rozhodnutí o odpovídající ochraně (EU-U.S. Data Privacy Framework).</p>
+<h2>4. Vaše práva</h2>
+<p>Máte právo na přístup ke svým údajům, jejich opravu, výmaz, omezení zpracování, přenositelnost a právo vznést námitku proti zpracování založenému na oprávněném zájmu. Udělený souhlas můžete kdykoli odvolat. Svá práva uplatníte na e-mailu <a href="mailto:{MAIL}">{MAIL}</a>.</p>
+<p>Máte také právo podat stížnost u Úřadu pro ochranu osobních údajů (<a href="https://uoou.gov.cz" target="_blank" rel="noopener">uoou.gov.cz</a>).</p>
+<h2>5. Účinnost</h2>
+<p>Tyto zásady jsou účinné od <span data-ww-date>6. 10. 2026</span>.</p>
+"""
+    hero = sec('ww-dark ww-phero', wrap('ww-stack',
+        t('<p><a href="/">wwwwww.cz</a> / ochrana osobních údajů</p>', 'ww-crumbs'),
+        h('Zásady ochrany osobních údajů', 'h1', 'ww-h1'),
+        t('<p>Jak na wwwwww.cz nakládáme s vašimi osobními údaji a cookies.</p>', 'ww-lead ww-mw')))
+    content = sec('ww-white', wrap('ww-legal-wrap', t(body, 'ww-legaltext')))
+    ld = {'@context': 'https://schema.org', '@graph': [BUSINESS]}
+    return [header(), hero, content, footer(), system(ld, '<a class="wbtn wbtn--red" href="/kontakt/#poptavka">Poptat web</a>')]
 
 if __name__ == '__main__':
     for name, fn in [('home', home), ('kontakt', kontakt)]:
@@ -429,3 +469,4 @@ if __name__ == '__main__':
     for c in CITIES:
         (OUT / f'mesto-{c["slug"]}.json').write_text(json.dumps(city_page(c), ensure_ascii=False), encoding='utf-8')
     print('města:', len(CITIES))
+    (OUT / 'zasady.json').write_text(json.dumps(privacy_page(), ensure_ascii=False), encoding='utf-8')

@@ -451,3 +451,19 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .hv__win:nth-child(3){left:32%!important}
 @media (max-width:640px){.e-con.ww-ref-top{height:250px}.ww .ww-ref-shot{width:210px!important;height:215px!important}.hv__win{width:72%!important}}
 .ww-ref-hint{white-space:nowrap}
+/* kontakt: místo vložené mapy (GDPR) statická karta s odkazem do map */
+.e-con.ww-napmap{background:var(--ww-ink);border-radius:var(--ww-r);padding:clamp(26px,3vw,40px)!important;gap:22px;justify-content:center;align-items:flex-start;min-height:360px;position:relative;overflow:hidden;background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);background-size:40px 40px}
+.e-con.ww-napmap::after{content:"";position:absolute;width:420px;height:420px;right:-160px;bottom:-200px;border-radius:50%;background:radial-gradient(circle,rgba(227,18,11,.35),transparent 65%);pointer-events:none}
+.wmapbox{display:flex;flex-direction:column;gap:4px;color:#fff;font-family:var(--ww-font);position:relative;z-index:1}
+.wmapbox strong{font-size:clamp(24px,2.6vw,34px);font-weight:700;letter-spacing:-.03em;line-height:1.1}
+.wmapbox span{color:var(--ww-t2);font-size:17px}
+.wmapbox__pin{width:18px;height:18px;border-radius:50%;background:var(--ww-red);box-shadow:0 0 0 8px rgba(227,18,11,.2),0 0 0 18px rgba(227,18,11,.08);margin-bottom:22px}
+.ww-napmap .ww-btn--dark .elementor-button{background:#fff;color:var(--ww-ink)}
+.ww-napmap .ww-btn--dark .elementor-button:hover{background:#fff;color:var(--ww-red)}
+/* právní texty */
+.e-con.ww-legal-wrap{max-width:860px!important}
+.ww-legaltext h2{font-family:var(--ww-font);font-size:clamp(22px,2.4vw,30px);font-weight:700;letter-spacing:-.03em;color:var(--ww-d1);margin:1.6em 0 .5em}
+.ww-legaltext h2:first-child{margin-top:0}
+.ww-legaltext h3{font-family:var(--ww-font);font-size:18px;font-weight:600;color:var(--ww-d1);margin:1.2em 0 .3em}
+.ww-legaltext{color:var(--ww-d2)}
+.ww-legaltext strong{color:var(--ww-d1)}
