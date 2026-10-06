@@ -31,7 +31,7 @@ def city_links(cls='ww-towns ww-citylinks', current=None):
     items = ''.join(f'<a href="/tvorba-webovych-stranek-{c["slug"]}/">{c["name"]}</a>' for c in CITIES if c['slug'] != current)
     return t(f'<p>{items}</p>', cls)
 
-PRIVACY_PUBLISHED = False
+PRIVACY_PUBLISHED = True
 PRIV_URL = '/zasady-ochrany-osobnich-udaju/'
 PRIV_LINK = f' <a href="{PRIV_URL}">Zásady ochrany osobních údajů</a>' if PRIVACY_PUBLISHED else ''
 PRIV_FOOT = f'<a href="{PRIV_URL}">Ochrana osobních údajů</a> · ' if PRIVACY_PUBLISHED else ''
@@ -145,7 +145,7 @@ def footer():
                 t(f'<p><a href="tel:{TEL}">+420 {TEL_H}</a><br><a href="mailto:{MAIL}">{MAIL}</a><br>Yesmark<br>{ADDR}</p>'))),
         con('ww-footcities', h('Tvorba webových stránek v regionu', 'div', 'ww-ft'), city_links('ww-footlinks')),
         con('ww-foot-bottom',
-            t('<p>© <span data-ww-year>2026</span> wwwwww.cz · tvorba webových stránek Jeseník · koncept Yesmark</p>'),
+            t('<p>© <span data-ww-year>2026</span> wwwwww.cz · tvorba webových stránek Jeseník · koncept Yesmark<br>Provozovatel: Roman Lukač, IČO 14448157, Vápenná 124, 790 64 Vápenná · fyzická osoba zapsaná v živnostenském rejstříku</p>'),
             t('<p>' + PRIV_FOOT + '<a href="#elementor-action%3Aaction%3DcookiezBanner%3AopenPreferences">Nastavení cookies</a> · <a href="#">Nahoru ↑</a></p>'))), tag='footer')
 
 def system(ld, mbar_right):
@@ -430,12 +430,12 @@ def city_page(c):
 
 
 # ---------- ZÁSADY OCHRANY OSOBNÍCH ÚDAJŮ ----------
-OP = {'firma': '[OBCHODNÍ FIRMA / JMÉNO PROVOZOVATELE]', 'ico': '[IČO]', 'sidlo': ADDR, 'rejstrik': '[zápis v obchodním rejstříku / živnostenský rejstřík]'}
+OP = {'firma': 'Roman Lukač', 'ico': '14448157', 'sidlo': 'Vápenná 124, 790 64 Vápenná', 'rejstrik': 'fyzická osoba podnikající podle živnostenského zákona, zapsaná v živnostenském rejstříku'}
 
 def privacy_page():
     body = f"""
 <h2>1. Kdo zpracovává vaše údaje</h2>
-<p>Správcem osobních údajů je <strong>{OP['firma']}</strong>, IČO {OP['ico']}, se sídlem {OP['sidlo']}, {OP['rejstrik']} (dále jen „správce“). Web wwwwww.cz je webový koncept agentury Yesmark.</p>
+<p>Správcem osobních údajů je <strong>{OP['firma']}</strong>, IČO {OP['ico']}, se sídlem {OP['sidlo']}, {OP['rejstrik']} (dále jen „správce“). Kontaktní adresa (kancelář Yesmark): {ADDR}. Web wwwwww.cz je webový koncept agentury Yesmark.</p>
 <p>Kontakt pro otázky k osobním údajům: <a href="mailto:{MAIL}">{MAIL}</a>, tel. <a href="tel:{TEL}">+420 {TEL_H}</a>.</p>
 <h2>2. Jaké údaje zpracováváme a proč</h2>
 <h3>Poptávkový formulář a e-mail</h3>
