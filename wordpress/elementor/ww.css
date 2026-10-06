@@ -435,3 +435,19 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .e-con.ww-others.ww-sec{padding:70px 0!important}
 .e-con.ww-cityhero .ww-row{margin-top:6px}
 .e-con.ww-local:has(.ww-citycard){align-items:start}
+/* reference: menší náhled v okně prohlížeče (zdrojové printy mají nízké rozlišení) */
+.e-con.ww-ref-top{aspect-ratio:auto!important;height:290px;padding:30px 0 0!important;justify-content:flex-end!important;align-items:center!important;background:radial-gradient(ellipse 70% 60% at 50% 110%,rgba(227,18,11,.22),transparent 70%),linear-gradient(var(--ww-line-l) 1px,transparent 1px) 0 0/32px 32px,linear-gradient(90deg,var(--ww-line-l) 1px,transparent 1px) 0 0/32px 32px,var(--ww-paper-2)!important;overflow:hidden}
+.e-con.ww-ref-top::after{display:none}
+.ww .ww-ref-shot{position:relative!important;inset:auto!important;width:240px!important;height:250px!important;flex:none;border-radius:12px 12px 0 0;overflow:hidden;background:#fff;box-shadow:0 -1px 0 1px rgba(11,11,13,.06),0 30px 60px -20px rgba(11,11,13,.45);padding-top:22px!important;transition:transform .6s var(--ww-ease)}
+.ww .ww-ref-shot::before{content:"";position:absolute;left:0;right:0;top:0;height:22px;z-index:2;background:radial-gradient(circle,var(--ww-red) 3px,transparent 3.5px) 10px 50%/10px 10px no-repeat,radial-gradient(circle,#d4d4d8 3px,transparent 3.5px) 24px 50%/10px 10px no-repeat,radial-gradient(circle,#d4d4d8 3px,transparent 3.5px) 38px 50%/10px 10px no-repeat,#f4f4f5;border-bottom:1px solid var(--ww-line-l)}
+.ww .ww-ref-shot .elementor-widget-container{position:relative!important;inset:auto!important;height:100%!important}
+.ww .ww-ref-shot img{width:100%!important;height:100%!important;object-fit:cover;object-position:50% 0;border-radius:0}
+.e-con.ww-ref:hover .ww-ref-shot{transform:translateY(-8px)}
+.ww .ww-ref-hintw{left:50%!important;bottom:14px!important;transform:translateX(-50%)}
+/* hero: menší okna, ať se printy neroztahují */
+.hv__win{width:62%!important}
+.hv__win:nth-child(1){left:6%!important}
+.hv__win:nth-child(2){left:18%!important}
+.hv__win:nth-child(3){left:32%!important}
+@media (max-width:640px){.e-con.ww-ref-top{height:250px}.ww .ww-ref-shot{width:210px!important;height:215px!important}.hv__win{width:72%!important}}
+.ww-ref-hint{white-space:nowrap}

@@ -190,7 +190,7 @@ def services_section(title='Weby, které pracují za vás.', eid='sluzby'):
 def refs_section():
     def ref(tag, name, text, label, url, key):
         return con('ww-ref ww-rv',
-            con('ww-ref-top', img(SHOT[key], f'Reference: web {name}', 'ww-ref-shot', 'large'), html('<span class="ww-ref-hint">Najeďte myší a projeďte web ↓</span>', 'ww-ref-hintw')),
+            con('ww-ref-top', img(SHOT[key], f'Reference: web {name}', 'ww-ref-shot', 'large'), html('<span class="ww-ref-hint">Projeďte web ↓</span>', 'ww-ref-hintw')),
             con('ww-ref-body', h(tag, 'div', 'ww-ref-tag'), h(name, 'h3', 'ww-h3'), t(text), btn(label, url, 'ww-btn--plain ww-btn--ext', ext=True)))
     return sec('ww-light', wrap('',
         head('Reference', 'Weby, na které jsme hrdí.', 'Výběr realizací. Celé portfolio webů, e-shopů a kampaní najdete na Yesmark.eu.'),
