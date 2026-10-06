@@ -467,3 +467,5 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .ww-legaltext h3{font-family:var(--ww-font);font-size:18px;font-weight:600;color:var(--ww-d1);margin:1.2em 0 .3em}
 .ww-legaltext{color:var(--ww-d2)}
 .ww-legaltext strong{color:var(--ww-d1)}
+/* mobilní menu: backdrop-filter na scrollované hlavičce dělal z hlavičky „kontejner“ pro fixed menu → menu se zmenšilo na výšku hlavičky */
+.ww-menu-open .wh,.ww-menu-open .wh.is-scrolled{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:var(--ww-ink)!important}
