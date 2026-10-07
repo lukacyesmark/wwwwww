@@ -91,6 +91,7 @@ def to_html(elements):
         if k == 'heading':
             tag = s.get('header_size', 'h2')
             txt = _re.sub(r'<(?!/?(small|span|strong|em|br)\b)[^>]+>', '', s['title'])
+            if s.get('link', {}).get('url'): txt = f'<a href="{s["link"]["url"]}">{txt}</a>'
             out.append(f'<{tag}>{txt}</{tag}>' if tag in ('h1', 'h2', 'h3', 'h4') else f'<p><strong>{txt}</strong></p>')
         elif k == 'text-editor':
             if 'ww-towns' in cls: out.append('<ul>' + ''.join(f'<li>{a}</li>' for a in _re.findall(r'<a [^>]*>.*?</a>', s['editor'])) + '</ul>')
@@ -167,7 +168,7 @@ def footer():
                 t('<p>Tvorba webových stránek a e-shopů. Sídlíme v Jeseníku, weby tvoříme pro klienty z celé ČR. <strong>wwwwww.cz je webový koncept agentury Yesmark.</strong></p>'),
                 img(YM, 'Yesmark', 'ww-footlogo')),
             con('', h('Služby', 'div', 'ww-ft'),
-                t('<p><a href="/#sluzby">Tvorba webových stránek</a><br><a href="/#sluzby">E-shopy</a><br><a href="/#sluzby">Redesign webu</a><br><a href="/#sluzby">SEO optimalizace</a><br><a href="/#sluzby">Správa webu</a></p>')),
+                t('<p><a href="/tvorba-webovych-stranek/">Tvorba webových stránek</a><br><a href="/tvorba-webu-wordpress/">Weby na WordPressu</a><br><a href="/tvorba-eshopu/">E-shopy</a><br><a href="/redesign-webu/">Redesign webu</a><br><a href="/seo-optimalizace-webu/">SEO optimalizace</a><br><a href="/sprava-webu/">Správa webu</a><br><a href="/kolik-stoji-web/">Kolik stojí web</a></p>')),
             con('', h('Odkazy', 'div', 'ww-ft'),
                 t(f'<p><a href="/kontakt/">Kontakt – tvorba webů Jeseník</a><br><a href="/weby-pro-obory/">Weby pro obory</a><br><a href="/#cenik">Ceník a FAQ</a><br>'
                   f'<a href="{yes("reference/", "wwwwww_reference", "footer")}" target="_blank" rel="noopener">Reference ↗</a><br>'
@@ -206,8 +207,12 @@ BUSINESS = {
 }
 
 def services_section(title='Weby, které pracují za vás.', eid='sluzby'):
+    links = {'Tvorba webových stránek na míru': '/tvorba-webu-na-miru/', 'E-shopy': '/tvorba-eshopu/', 'Redesign webu': '/redesign-webu/',
+             'SEO optimalizace': '/seo-optimalizace-webu/', 'Správa a propagace': '/sprava-webu/'}
     def card(n, title, text, tg, main=False, d=''):
-        c = con('ww-card ww-rv' + (' ww-card--main' if main else ''), h(n, 'div', 'ww-num'), h(title, 'h3', 'ww-h3'), t(f'<p>{text}</p>'), tags(*tg))
+        hd = h(title, 'h3', 'ww-h3')
+        if title in links: hd['settings']['link'] = {'url': links[title], 'is_external': '', 'nofollow': ''}
+        c = con('ww-card ww-rv' + (' ww-card--main' if main else ''), h(n, 'div', 'ww-num'), hd, t(f'<p>{text}</p>'), tags(*tg))
         return c
     return sec('ww-dark', wrap('',
         head('Služby', title, 'Postaráme se o vše od návrhu po spuštění – design, programování, obsah, SEO i analytiku. Vy řešíte byznys, web vám nosí poptávky.'),
@@ -612,6 +617,59 @@ def hub_page():
     ld = {'@context': 'https://schema.org', '@graph': [BUSINESS, {'@type': 'CollectionPage', 'name': 'Weby pro obory', 'url': 'https://wwwwww.cz' + HUB_URL}]}
     return [header(), hero, body, contact, footer(), system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
 
+# ---------- STRÁNKY SLUŽEB ----------
+from sluzby import S as SLUZBY
+def sluzby_links(exclude=None):
+    return t('<p>' + ''.join(f'<a href="/{x["slug"]}/">{x["nav"]}</a>' for x in SLUZBY if x['slug'] != exclude) + '</p>', 'ww-towns ww-citylinks')
+
+def service_page(x):
+    n, kw = x['h1'], x['kw']
+    hero = sec('ww-dark ww-phero ww-cityhero', wrap('ww-hero-grid', con('ww-hero-copy',
+        t(f'<p><a href="/">wwwwww.cz</a> / {x["nav"].lower()}</p>', 'ww-crumbs'),
+        h(x['eyebrow'], 'div', 'ww-eyebrow ww-rv'),
+        h(f'{n}<span class="ww-red">.</span>', 'h1', 'ww-h1 ww-rv'),
+        t(f'<p>{x["lead"]}</p>', 'ww-lead ww-mw ww-rv'),
+        con('ww-row ww-rv', btn('Chci nezávaznou nabídku', '#poptavka'), btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--ghost ww-btn--plain')),
+        t('<p><span>✓ Weby od 9 900 Kč</span><span>✓ Nabídka zdarma</span><span>✓ Koncept agentury Yesmark</span></p>', 'ww-trust ww-rv')),
+        html(hero_visual(n), 'ww-rv')), eid='uvod')
+    nav = sec('ww-white ww-tocsec', wrap('', toc([('o-sluzbe', x['intro_h2']), ('prehled', x['grid_head'][0]), ('detail', 'Podrobnosti'),
+                                              ('reference', 'Reference'), ('cenik', 'Cena a FAQ'), ('poptavka', 'Poptávka')])))
+    intro = sec('ww-white', wrap('ww-local',
+        con('ww-local-copy ww-rv', h(x['eyebrow'], 'div', 'ww-eyebrow'), h(x['intro_h2'], 'h2', 'ww-h2s'),
+            t(''.join(f'<p>{p}</p>' for p in x['intro']))),
+        con('ww-citycard ww-rv', h(x['card_h3'], 'h3', 'ww-h3'),
+            t('<ul class="ww-checklist">' + ''.join(f'<li>{i}</li>' for i in x['card']) + '</ul>'),
+            btn('Probrat můj web', '#poptavka'))), eid='o-sluzbe')
+    k, ttl, lead = x['grid_head']
+    cards = [con('ww-card ww-mustcard ww-rv', h(f'{i+1:02d}', 'div', 'ww-num'), h(a, 'h3', 'ww-h3'), t(f'<p>{b}</p>', 'ww-musttext')) for i, (a, b) in enumerate(x['grid'])]
+    grid = sec('ww-dark', wrap('', head(k, ttl, lead), con('ww-grid4', *cards)), eid='prehled')
+    deep = sec('ww-light', wrap('ww-legal-wrap ww-rv', h(x['deep_h2'], 'h2', 'ww-h2s'), t(x['deep'], 'ww-legaltext')), eid='detail')
+    pricing = sec('ww-dark', wrap('ww-price',
+        con('ww-price-card ww-rv',
+            h('Cena', 'div', 'ww-eyebrow'),
+            h(f'<small>{n}</small>od 9 900 Kč', 'div', 'ww-price-num') if x['slug'] not in ('tvorba-eshopu', 'sprava-webu', 'seo-optimalizace-webu') else h(f'<small>{n}</small>na míru', 'div', 'ww-price-num'),
+            t('<p>Konečná cena záleží na rozsahu, funkcích a grafice. Nabídku vám připravíme zdarma a nezávazně.</p>', 'ww-muted'),
+            con('ww-row', btn('Chci cenovou nabídku', '#poptavka'))),
+        con('ww-rv', h(f'Časté otázky – {kw}', 'h2', 'ww-h2s'),
+            w('toggle', 'ww-faq', faq_schema='yes', tabs=[{'_id': uid(), 'tab_title': q, 'tab_content': f'<p>{a}</p>'} for q, a in x['faq']]))), eid='cenik')
+    contact = sec('ww-light', wrap('',
+        head('Poptávka', 'Pojďme to probrat.', 'Napište pár vět o svém podnikání nebo rovnou zavolejte. Ozvu se obvykle do jednoho pracovního dne.'),
+        contact_section('sluzba-' + x['slug'])), eid='poptavka')
+    links = sec('ww-white ww-others', wrap('ww-stack ww-rv',
+        h('Další služby', 'div', 'ww-eyebrow'), sluzby_links(x['slug']),
+        h('Tvoříme weby v těchto městech', 'div', 'ww-eyebrow'),
+        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{c["slug"]}/">{c["name"]}</a>' for c in CITIES) + '</p>', 'ww-towns ww-citylinks'),
+        btn('Weby pro obory', HUB_URL, 'ww-btn--dark')))
+    url = f'https://wwwwww.cz/{x["slug"]}/'
+    ld = {'@context': 'https://schema.org', '@graph': [BUSINESS,
+        {'@type': 'Service', '@id': url + '#service', 'name': n, 'serviceType': n, 'url': url, 'description': x['desc'],
+         'provider': {'@id': 'https://wwwwww.cz/#business'}, 'areaServed': {'@type': 'Country', 'name': 'Česká republika'}},
+        {'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'Tvorba webových stránek Jeseník', 'item': 'https://wwwwww.cz/'},
+            {'@type': 'ListItem', 'position': 2, 'name': n, 'item': url}]}]}
+    return [header(), hero, nav, intro, grid, deep, refs_section(), pricing, contact, links, footer(),
+            system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
+
 if __name__ == '__main__':
     for name, fn in [('home', home), ('kontakt', kontakt)]:
         data = fn()
@@ -631,6 +689,11 @@ if __name__ == '__main__':
     (OUT / 'obory-hub.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
     (OUT / 'obory-hub.html').write_text(to_html(d), encoding='utf-8')
     print('obory:', len(OBORY))
+    for x in SLUZBY:
+        d = service_page(x)
+        (OUT / f'sluzba-{x["slug"]}.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+        (OUT / f'sluzba-{x["slug"]}.html').write_text(to_html(d), encoding='utf-8')
+    print('služby:', len(SLUZBY))
     d = privacy_page()
     (OUT / 'zasady.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
     (OUT / 'zasady.html').write_text(to_html(d), encoding='utf-8')

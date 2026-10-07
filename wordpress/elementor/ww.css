@@ -499,3 +499,6 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .ww-toc a{font-weight:500;border:1px solid var(--ww-line-l);background:#fff;border-radius:999px;padding:8px 14px;line-height:1;color:var(--ww-d1)!important;text-decoration:none!important;transition:border-color .2s,color .2s}
 .ww-toc a:hover{border-color:var(--ww-red);color:var(--ww-red)!important}
 .ww-tocsec + .ww-sec{padding-top:56px!important}
+.ww-legaltext a{color:var(--ww-red)!important;text-decoration:underline!important;text-underline-offset:3px}
+.ww-card .ww-h3 a{color:inherit!important;text-decoration:none!important}
+.ww-card .ww-h3 a::after{content:" →";color:var(--ww-red)}
