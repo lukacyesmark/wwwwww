@@ -492,3 +492,10 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 @media (max-width:1100px){.e-con.ww-grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.e-con.ww-grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:640px){.e-con.ww-grid4,.e-con.ww-grid3{grid-template-columns:1fr}.e-con.ww-mustcard{min-height:0}}
 .ww .ww-bigtext{margin-top:22px!important}
+/* obsah stránky (TOC) na oborových stránkách */
+.e-con.ww-tocsec.ww-sec{padding:28px 0 0!important}
+.ww-toc p{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:14px;margin:0}
+.ww-toc b{font-weight:600;color:var(--ww-d2);margin-right:6px}
+.ww-toc a{font-weight:500;border:1px solid var(--ww-line-l);background:#fff;border-radius:999px;padding:8px 14px;line-height:1;color:var(--ww-d1)!important;text-decoration:none!important;transition:border-color .2s,color .2s}
+.ww-toc a:hover{border-color:var(--ww-red);color:var(--ww-red)!important}
+.ww-tocsec + .ww-sec{padding-top:56px!important}

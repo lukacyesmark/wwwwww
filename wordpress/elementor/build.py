@@ -77,6 +77,37 @@ def head(kicker, title, lead):
 def tags(*items):
     return t('<p>' + ''.join(f'<span>{i}</span>' for i in items) + '</p>', 'ww-tags')
 
+# ---------- čistý HTML výstup pro post_content (Rank Math analýza, fallback) ----------
+import re as _re
+def to_html(elements):
+    out = []
+    def walk(e):
+        cls = e.get('settings', {}).get('css_classes', '') + ' ' + e.get('settings', {}).get('_css_classes', '')
+        if any(k in cls.split() for k in ('ww-headwrap', 'ww-sys', 'ww-footer', 'ww-crumbs', 'ww-toc')): return
+        if e['elType'] == 'container':
+            for k in e['elements']: walk(k)
+            return
+        s, k = e['settings'], e['widgetType']
+        if k == 'heading':
+            tag = s.get('header_size', 'h2')
+            txt = _re.sub(r'<(?!/?(small|span|strong|em|br)\b)[^>]+>', '', s['title'])
+            out.append(f'<{tag}>{txt}</{tag}>' if tag in ('h1', 'h2', 'h3', 'h4') else f'<p><strong>{txt}</strong></p>')
+        elif k == 'text-editor':
+            if 'ww-towns' in cls: out.append('<ul>' + ''.join(f'<li>{a}</li>' for a in _re.findall(r'<a [^>]*>.*?</a>', s['editor'])) + '</ul>')
+            else: out.append(s['editor'])
+        elif k == 'button':
+            u = s['link']['url']
+            if not u.startswith('#') and not u.startswith('tel:'): out.append(f'<p><a href="{u}">{s["text"]}</a></p>')
+        elif k == 'image': out.append(f'<p><img src="{s["image"]["url"]}" alt="{s["image"]["alt"]}"></p>')
+        elif k == 'html': out.extend(f'<p>{m}</p>' for m in _re.findall(r'<img [^>]*>', s['html']))
+        elif k == 'toggle':
+            for tb in s['tabs']: out.append(f'<h3>{tb["tab_title"]}</h3>{tb["tab_content"]}')
+    for e in elements: walk(e)
+    return '\n'.join(x for x in out if x.strip())
+
+def toc(items):
+    return t('<p><b>Na této stránce:</b>' + ''.join(f'<a href="#{a}">{b}</a>' for a, b in items) + '</p>', 'ww-toc')
+
 # ---------- sdílené části ----------
 LOGO = '<svg viewBox="0 0 169.0 20" aria-hidden="true"><defs><linearGradient id="wwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e1b20"/><stop offset="1" stop-color="#e31e24"/></linearGradient><clipPath id="wwc"><rect x="-2" y="0" width="173.0" height="20"/></clipPath></defs><g clip-path="url(#wwc)" fill="none" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="10"><path d="M0.25 -4.00 L6.38 24.00 L12.75 -4.00 L19.12 24.00 L25.25 -4.00 M28.95 -4.00 L35.08 24.00 L41.45 -4.00 L47.83 24.00 L53.95 -4.00 M57.65 -4.00 L63.77 24.00 L70.15 -4.00 L76.53 24.00 L82.65 -4.00" stroke="#b3b3b3"/><path d="M86.35 -4.00 L92.47 24.00 L98.85 -4.00 L105.22 24.00 L111.35 -4.00 M115.05 -4.00 L121.17 24.00 L127.55 -4.00 L133.93 24.00 L140.05 -4.00 M143.75 -4.00 L149.88 24.00 L156.25 -4.00 L162.62 24.00 L168.75 -4.00" stroke="url(#wwg)"/></g></svg>'
 
@@ -287,6 +318,7 @@ def home():
             h('Jeseník · celá ČR', 'div', 'ww-eyebrow'),
             h('Tvorba webových stránek Jeseník – a kdekoli v Česku', 'h2', 'ww-h2s'),
             t('<p>Jsme <strong>webové studio z Jeseníku</strong> a koncept agentury Yesmark. Weby tvoříme pro firmy, řemeslníky, ubytování, gastro i realitní kanceláře z Jeseníku, Lipové-lázní, Zlatých Hor, Javorníku či Mikulovic – a stejně tak pro klienty z Olomouce, Ostravy, Prahy nebo Brna. Vzdálenost nehraje roli.</p>'
+              '<p>Tvorba webových stránek Jeseník pro nás znamená víc než hezký design: web musí být dohledatelný na Googlu, srozumitelný na mobilu a vést návštěvníka k poptávce.</p>'
               '<h3>Weby pro ubytování a turistický ruch v Jeseníkách</h3>'
               '<p>Penziony, apartmány a chaty potřebují web, který zaujme fotkami, jasně ukáže ceny a vede k rezervaci – v češtině, němčině i polštině.</p>'
               '<h3>Weby pro řemeslníky, služby a výrobní firmy z Jesenicka</h3>'
@@ -309,14 +341,14 @@ def home():
     pricing = sec('ww-dark', wrap('ww-price',
         con('ww-price-card ww-rv',
             h('Ceník', 'div', 'ww-eyebrow'),
-            h('<small>Tvorba webových stránek</small>od 9 900 Kč', 'div', 'ww-price-num'),
-            t('<p>Konečná částka se odvíjí od rozsahu, funkcí a grafického zpracování. Každý projekt naceňujeme individuálně – férově a za skutečný přínos.</p>', 'ww-muted'),
+            h('<small>Tvorba webových stránek Jeseník</small>od 9 900 Kč', 'div', 'ww-price-num'),
+            t('<p>Tvorba webových stránek Jeseník u nás nemá šablonovitý ceník. Konečná částka se odvíjí od rozsahu, funkcí a grafického zpracování. Každý projekt naceňujeme individuálně – férově a za skutečný přínos.</p>', 'ww-muted'),
             con('ww-row', btn('Chci cenovou nabídku', '/kontakt/#poptavka'))),
-        con('ww-rv', h('Časté otázky', 'h2', 'ww-h2s'),
+        con('ww-rv', h('Časté otázky – tvorba webových stránek Jeseník', 'h2', 'ww-h2s'),
             w('toggle', 'ww-faq', faq_schema='yes', tabs=[{'_id': uid(), 'tab_title': q, 'tab_content': f'<p>{a}</p>'} for q, a in faq]))), eid='cenik')
 
     contact = sec('ww-light', wrap('',
-        head('Poptávka', 'Pojďme postavit váš nový web.', 'Napište pár vět nebo rovnou zavolejte. Ozvu se obvykle do jednoho pracovního dne s dalším postupem.'),
+        head('Poptávka', 'Pojďme postavit váš nový web.', 'Tvorba webových stránek Jeseník začíná jednou zprávou. Napište pár vět nebo rovnou zavolejte – ozvu se obvykle do jednoho pracovního dne.'),
         contact_section('home')), eid='poptavka')
 
     cta = sec('ww-redbg ww-cta', wrap('ww-cta ww-rv',
@@ -388,6 +420,7 @@ def city_page(c):
             h(f'Weby pro firmy {gen}', 'div', 'ww-eyebrow'),
             h(f'Web, který vám přivede zákazníky {loc}', 'h2', 'ww-h2s'),
             t(''.join(f'<p>{x}</p>' for x in c['text']) +
+              f'<p>Tvorba webových stránek {n} u nás začíná krátkým hovorem o vašem podnikání a končí webem, který přivádí poptávky – ne jen vizitkou na internetu.</p>'
               f'<h3>Lokální SEO pro {n}</h3><p>Každý web stavíme tak, aby se ukázal lidem, kteří hledají vaše služby {loc} a okolí – správná struktura, obsah, rychlá orientace na mobilu a propojení s Google Firemním profilem.</p>')),
         con('ww-citycard ww-rv',
             h(f'Pro koho tvoříme {loc}', 'h3', 'ww-h3'),
@@ -396,7 +429,7 @@ def city_page(c):
             t(f'<ol class="ww-steps-list">{steps}</ol>'),
             btn('Domluvit konzultaci', '#poptavka'))))
     faq = [
-        (f'Kolik stojí tvorba webových stránek {loc}?', 'Tvorba webových stránek začíná na 9 900 Kč. Konečná cena záleží na rozsahu, funkcích a grafickém zpracování. Po krátké konzultaci dostanete nezávaznou nabídku zdarma.'),
+        (f'Kolik stojí tvorba webových stránek {loc}?', f'Tvorba webových stránek {n} začíná na 9 900 Kč. Konečná cena záleží na rozsahu, funkcích a grafickém zpracování. Po krátké konzultaci dostanete nezávaznou nabídku zdarma.'),
         ('Musím za vámi jezdit do Jeseníku?', 'Nemusíte. Konzultace, návrhy i předání webu zvládneme online – telefonem, videohovorem a e-mailem. Když je to potřeba, rádi se potkáme i osobně.'),
         (f'Pomůžete, aby nás našli zákazníci {gen}?', f'Ano. Web postavíme s ohledem na lokální SEO pro {n} – obsah zaměřený na vaše služby a lokalitu, Google Firemní profil a technické SEO od prvního dne.'),
         c['faq'],
@@ -405,13 +438,13 @@ def city_page(c):
     pricing = sec('ww-dark', wrap('ww-price',
         con('ww-price-card ww-rv',
             h(f'Ceník · {n}', 'div', 'ww-eyebrow'),
-            h('<small>Tvorba webových stránek</small>od 9 900 Kč', 'div', 'ww-price-num'),
+            h(f'<small>Tvorba webových stránek {n}</small>od 9 900 Kč', 'div', 'ww-price-num'),
             t('<p>Konečná částka se odvíjí od rozsahu, funkcí a grafického zpracování. Každý projekt naceňujeme individuálně a férově.</p>', 'ww-muted'),
             con('ww-row', btn('Chci cenovou nabídku', '#poptavka'))),
-        con('ww-rv', h(f'Časté otázky – tvorba webů {n}', 'h2', 'ww-h2s'),
+        con('ww-rv', h(f'Časté otázky – tvorba webových stránek {n}', 'h2', 'ww-h2s'),
             w('toggle', 'ww-faq', faq_schema='yes', tabs=[{'_id': uid(), 'tab_title': q, 'tab_content': f'<p>{a}</p>'} for q, a in faq]))), eid='cenik')
     contact = sec('ww-light', wrap('',
-        head('Poptávka', f'Nový web pro vaši firmu {gen}?', 'Napište pár vět nebo rovnou zavolejte. Ozvu se obvykle do jednoho pracovního dne s dalším postupem.'),
+        head('Poptávka', f'Nový web pro vaši firmu {gen}?', f'Tvorba webových stránek {n} začíná jednou zprávou. Napište pár vět nebo rovnou zavolejte – ozvu se obvykle do jednoho pracovního dne.'),
         contact_section('mesto-' + c['slug'])), eid='poptavka')
     others = sec('ww-white ww-others', wrap('ww-stack ww-rv',
         h('Tvoříme weby také pro', 'div', 'ww-eyebrow'),
@@ -488,6 +521,12 @@ GOALS = {'svatebni-web': 'ušetřil vám starosti s hosty', 'obec': 'dobře slou
          'skola': 'dobře sloužil rodičům i uchazečům', 'svj': 'ušetřil práci výboru', 'farnost': 'sloužil farníkům i návštěvníkům',
          'umelec-muzikant': 'přiváděl pořadatele a fanoušky', 'chovatelska-stanice': 'přiváděl ty správné zájemce'}
 
+def obor_title(o):
+    for f in ('{n}: 8 věcí, které musí mít | wwwwww.cz', '{n}: 8 věcí, které musí mít', '{n}: 8 věcí, co musí mít', '{n}: 8 tipů'):
+        x = f.format(n=o['name'])
+        if len(x) <= 60: return x
+    return o['name']
+
 def obor_page(o):
     n, short = o['name'], o['short']
     goal = GOALS.get(o['slug'], 'přiváděl zákazníky')
@@ -500,10 +539,12 @@ def obor_page(o):
         con('ww-row ww-rv', btn('Chci nezávaznou nabídku', '#poptavka'), btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--ghost ww-btn--plain')),
         t('<p><span>✓ Weby od 9 900 Kč</span><span>✓ Nabídka zdarma</span><span>✓ Koncept agentury Yesmark</span></p>', 'ww-trust ww-rv')),
         html(hero_visual(n), 'ww-rv')), eid='uvod')
+    nav = sec('ww-white ww-tocsec', wrap('', toc([('problem', 'Typický problém'), ('checklist', 'Co musí mít'), ('struktura', 'Struktura webu'),
+                                              ('reference', 'Reference'), ('cenik', 'Cena a FAQ'), ('poptavka', 'Poptávka')])))
     problem = sec('ww-white', wrap('',
         h('Typický problém', 'div', 'ww-eyebrow ww-rv'),
         h(f'Proč {kw} často nefunguje', 'h2', 'ww-h2s ww-rv'),
-        t(f'<p>{o["problem"]}</p>', 'ww-bigtext ww-rv')))
+        t(f'<p>{o["problem"]}</p>', 'ww-bigtext ww-rv')), eid='problem')
     cards = [con('ww-card ww-mustcard ww-rv', h(f'{i+1:02d}', 'div', 'ww-num'), t(f'<p>{m}</p>', 'ww-musttext')) for i, m in enumerate(o['must'])]
     must = sec('ww-dark', wrap('',
         head('Checklist', f'Co musí mít {kw}', 'Těchto osm věcí rozhoduje, jestli web návštěvníka přesvědčí, nebo pošle ke konkurenci.'),
@@ -521,7 +562,7 @@ def obor_page(o):
             t(f'<ul class="ww-checklist">{feats}</ul>'),
             h('SEO tipy pro obor', 'div', 'ww-eyebrow'),
             t(f'<ul class="ww-checklist">{seo}</ul>'),
-            btn('Probrat můj web', '#poptavka'))))
+            btn('Probrat můj web', '#poptavka'))), eid='struktura')
     faq = list(o['faq']) + [
         (f'Jak dlouho trvá vytvoření webu – {short}?', 'Jednodušší web bývá hotový za 2–4 týdny, rozsáhlejší s rezervacemi nebo e-shopem za 4–8 týdnů. Přesný harmonogram dostanete v nabídce.'),
         ('Budu si web upravovat sám?', 'Ano. Stavíme na WordPressu a Elementoru – texty, ceník, fotky i nové stránky změníte sami a ukážeme vám, jak na to.'),
@@ -553,7 +594,7 @@ def obor_page(o):
             {'@type': 'ListItem', 'position': 1, 'name': 'Tvorba webových stránek Jeseník', 'item': 'https://wwwwww.cz/'},
             {'@type': 'ListItem', 'position': 2, 'name': 'Weby pro obory', 'item': 'https://wwwwww.cz' + HUB_URL},
             {'@type': 'ListItem', 'position': 3, 'name': n, 'item': url}]}]}
-    return [header(), hero, problem, must, struct, refs_section(), pricing, contact, links, footer(),
+    return [header(), hero, nav, problem, must, struct, refs_section(), pricing, contact, links, footer(),
             system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
 
 def hub_page():
@@ -574,13 +615,22 @@ def hub_page():
 if __name__ == '__main__':
     for name, fn in [('home', home), ('kontakt', kontakt)]:
         data = fn()
+        (OUT / f'{name}.html').write_text(to_html(data), encoding='utf-8')
         (OUT / f'{name}.json').write_text(json.dumps(data, ensure_ascii=False), encoding='utf-8')
         print(name, len(json.dumps(data)) // 1024, 'kB')
     for c in CITIES:
-        (OUT / f'mesto-{c["slug"]}.json').write_text(json.dumps(city_page(c), ensure_ascii=False), encoding='utf-8')
+        d = city_page(c)
+        (OUT / f'mesto-{c["slug"]}.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+        (OUT / f'mesto-{c["slug"]}.html').write_text(to_html(d), encoding='utf-8')
     print('města:', len(CITIES))
     for o in OBORY:
-        (OUT / f'obor-{o["slug"]}.json').write_text(json.dumps(obor_page(o), ensure_ascii=False), encoding='utf-8')
-    (OUT / 'obory-hub.json').write_text(json.dumps(hub_page(), ensure_ascii=False), encoding='utf-8')
+        d = obor_page(o)
+        (OUT / f'obor-{o["slug"]}.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+        (OUT / f'obor-{o["slug"]}.html').write_text(to_html(d), encoding='utf-8')
+    d = hub_page()
+    (OUT / 'obory-hub.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+    (OUT / 'obory-hub.html').write_text(to_html(d), encoding='utf-8')
     print('obory:', len(OBORY))
-    (OUT / 'zasady.json').write_text(json.dumps(privacy_page(), ensure_ascii=False), encoding='utf-8')
+    d = privacy_page()
+    (OUT / 'zasady.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+    (OUT / 'zasady.html').write_text(to_html(d), encoding='utf-8')
