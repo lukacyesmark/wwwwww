@@ -112,9 +112,37 @@ def toc(items):
 # ---------- sdílené části ----------
 LOGO = '<svg viewBox="0 0 169.0 20" aria-hidden="true"><defs><linearGradient id="wwg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8e1b20"/><stop offset="1" stop-color="#e31e24"/></linearGradient><clipPath id="wwc"><rect x="-2" y="0" width="173.0" height="20"/></clipPath></defs><g clip-path="url(#wwc)" fill="none" stroke-width="2.5" stroke-linejoin="miter" stroke-miterlimit="10"><path d="M0.25 -4.00 L6.38 24.00 L12.75 -4.00 L19.12 24.00 L25.25 -4.00 M28.95 -4.00 L35.08 24.00 L41.45 -4.00 L47.83 24.00 L53.95 -4.00 M57.65 -4.00 L63.77 24.00 L70.15 -4.00 L76.53 24.00 L82.65 -4.00" stroke="#b3b3b3"/><path d="M86.35 -4.00 L92.47 24.00 L98.85 -4.00 L105.22 24.00 L111.35 -4.00 M115.05 -4.00 L121.17 24.00 L127.55 -4.00 L133.93 24.00 L140.05 -4.00 M143.75 -4.00 L149.88 24.00 L156.25 -4.00 L162.62 24.00 L168.75 -4.00" stroke="url(#wwg)"/></g></svg>'
 
+MENU_SLUZBY = [('Tvorba webových stránek', '/tvorba-webovych-stranek/', 'Web, který přivádí poptávky'),
+               ('Tvorba webu na míru', '/tvorba-webu-na-miru/', 'Struktura a design pro váš obor'),
+               ('Weby na WordPressu', '/tvorba-webu-wordpress/', 'Web, který si upravíte sami'),
+               ('Firemní web', '/firemni-web/', 'Důvěra, reference a kontakt'),
+               ('Tvorba e-shopu', '/tvorba-eshopu/', 'WooCommerce a PrestaShop'),
+               ('Redesign webu', '/redesign-webu/', 'Nový web místo starého'),
+               ('SEO optimalizace', '/seo-optimalizace-webu/', 'Aby vás našel Google'),
+               ('Správa webu', '/sprava-webu/', 'Aktualizace, zálohy, úpravy')]
+
+def _menu():
+    def dd(label, url, panel, cls=''):
+        return (f'<div class="wdd {cls}"><a class="wdd__top" href="{url}">{label}</a>'
+                f'<button class="wdd__btn" type="button" aria-expanded="false" aria-label="Rozbalit: {label}"></button>'
+                f'<div class="wdd__panel"><div class="wdd__in">{panel}</div></div></div>')
+    svc = ('<div class="wdd__grid">' + ''.join(f'<a class="wdd__item" href="{u}"><b>{n}</b><small>{d}</small></a>' for n, u, d in MENU_SLUZBY) + '</div>'
+           '<div class="wdd__side"><span class="wdd__k">Nevíte si rady?</span><strong>Jaký web potřebujete?</strong>'
+           '<p>Tři otázky a máte doporučení na míru.</p><a class="wdd__cta" href="/#kviz">Spustit kvíz</a>'
+           '<a class="wdd__more" href="/kolik-stoji-web/">Kolik stojí web →</a><a class="wdd__more" href="/weby-pro-obory/">Weby pro 72 oborů →</a></div>')
+    cols = []
+    for kraj in ('Olomoucký kraj', 'Moravskoslezský kraj', 'Pardubický kraj'):
+        links = ([('Jeseník', '/')] if kraj == 'Olomoucký kraj' else []) + [(c['name'], f'/tvorba-webovych-stranek-{c["slug"]}/') for c in CITIES if c['kraj'] == kraj]
+        cols.append(f'<div class="wdd__col{" wdd__col--2" if len(links) > 10 else ""}"><span class="wdd__k">{kraj}</span>' + ''.join(f'<a href="{u}">{n}</a>' for n, u in links) + '</div>')
+    loc = '<div class="wdd__cols">' + ''.join(cols) + '</div><p class="wdd__note">Sídlíme v Jeseníku, weby tvoříme pro klienty z celé České republiky.</p>'
+    return (dd('Služby', '/tvorba-webovych-stranek/', svc, 'wdd--svc')
+            + '<a href="/weby-pro-obory/">Obory</a>'
+            + dd('Lokality', '/#jesenicko', loc, 'wdd--loc')
+            + '<a href="/#reference">Reference</a><a href="/kolik-stoji-web/">Ceník</a><a href="/kontakt/">Kontakt</a>')
+MENU = _menu()
+
 def header():
-    nav = ''.join(f'<a href="{u}">{n}</a>' for n, u in [('Služby', '/#sluzby'), ('Proces', '/#proces'), ('Reference', '/#reference'),
-                                                         ('Jesenicko', '/#jesenicko'), ('Ceník', '/#cenik'), ('Kontakt', '/kontakt/')])
+    nav = MENU
     code = ('<header class="wh"><div class="wh__in">'
             f'<a class="wlogo" href="/" aria-label="wwwwww.cz – tvorba webových stránek Jeseník">{LOGO}</a>'
             f'<a class="wlogo__by" href="{yes(x="header_logo")}" target="_blank" rel="noopener"><small>koncept</small><img src="{YM["url"]}" alt="Yesmark" width="92" height="14"></a>'

@@ -37,6 +37,21 @@
   }
   $$('.wnav a').forEach(function (a) { if (a.getAttribute('href') === location.pathname) a.classList.add('is-active'); });
 
+  /* rozbalovací panely v menu */
+  var dds = $$('.wdd');
+  var closeDd = function (except) { dds.forEach(function (d) { if (d !== except) { d.classList.remove('is-open'); var b = $('.wdd__btn', d); if (b) b.setAttribute('aria-expanded', 'false'); } }); };
+  dds.forEach(function (d) {
+    var b = $('.wdd__btn', d);
+    b.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var open = !d.classList.contains('is-open');
+      closeDd(d); d.classList.toggle('is-open', open); b.setAttribute('aria-expanded', String(open));
+    });
+    if (location.pathname !== '/' && $$('.wdd__panel a', d).some(function (a) { return a.getAttribute('href') === location.pathname; })) $('.wdd__top', d).classList.add('is-active');
+  });
+  doc.addEventListener('click', function (e) { if (!(e.target.closest && e.target.closest('.wdd'))) closeDd(); });
+  addEventListener('keydown', function (e) { if (e.key === 'Escape') closeDd(); });
+
   /* reveal při scrollu (v editoru Elementoru vypnuto) */
   if (!inEditor && !reduce && 'IntersectionObserver' in window) {
     root.classList.add('ww-js');
