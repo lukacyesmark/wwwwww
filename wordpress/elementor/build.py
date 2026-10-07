@@ -138,7 +138,7 @@ def footer():
             con('', h('Služby', 'div', 'ww-ft'),
                 t('<p><a href="/#sluzby">Tvorba webových stránek</a><br><a href="/#sluzby">E-shopy</a><br><a href="/#sluzby">Redesign webu</a><br><a href="/#sluzby">SEO optimalizace</a><br><a href="/#sluzby">Správa webu</a></p>')),
             con('', h('Odkazy', 'div', 'ww-ft'),
-                t(f'<p><a href="/kontakt/">Kontakt – tvorba webů Jeseník</a><br><a href="/#cenik">Ceník a FAQ</a><br>'
+                t(f'<p><a href="/kontakt/">Kontakt – tvorba webů Jeseník</a><br><a href="/weby-pro-obory/">Weby pro obory</a><br><a href="/#cenik">Ceník a FAQ</a><br>'
                   f'<a href="{yes("reference/", "wwwwww_reference", "footer")}" target="_blank" rel="noopener">Reference ↗</a><br>'
                   f'<a href="{yes(x="footer")}" target="_blank" rel="noopener">Yesmark.eu ↗</a></p>')),
             con('', h('Kontakt', 'div', 'ww-ft'),
@@ -294,7 +294,8 @@ def home():
               '<h3>Osobně v Jeseníku, online kdekoli v Česku</h3>'
               f'<p>Sídlíme v Jeseníku ({ADDR}). Místní klienty rádi potkáme u nás v kanceláři, s ostatními vše vyřešíme přes videohovor, telefon a sdílený návrh – stejně rychle a osobně.</p>'),
             t('<p>' + ''.join(f'<span>{x}</span>' for x in ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava', 'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny', 'Hanušovice', 'celá ČR']) + '</p>', 'ww-towns'),
-            h('Tvoříme weby také pro', 'div', 'ww-eyebrow'), city_links()),
+            h('Tvoříme weby také pro', 'div', 'ww-eyebrow'), city_links(),
+            con('ww-row', btn('Weby pro obory', '/weby-pro-obory/', 'ww-btn--dark'))),
         html(mapsvg, 'ww-rv')), eid='jesenicko')
 
     faq = [
@@ -414,7 +415,10 @@ def city_page(c):
         contact_section('mesto-' + c['slug'])), eid='poptavka')
     others = sec('ww-white ww-others', wrap('ww-stack ww-rv',
         h('Tvoříme weby také pro', 'div', 'ww-eyebrow'),
-        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{o["slug"]}/">{o["name"]}</a>' for o in CITIES if o['slug'] != c['slug']) + '</p>', 'ww-towns ww-citylinks')))
+        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{o["slug"]}/">{o["name"]}</a>' for o in CITIES if o['slug'] != c['slug']) + '</p>', 'ww-towns ww-citylinks'),
+        h(f'Weby podle oboru – {n}', 'div', 'ww-eyebrow'),
+        obor_links(),
+        btn('Všechny obory', HUB_URL, 'ww-btn--dark')))
     url = f'https://wwwwww.cz/tvorba-webovych-stranek-{c["slug"]}/'
     ld = {'@context': 'https://schema.org', '@graph': [
         BUSINESS,
@@ -461,6 +465,112 @@ def privacy_page():
     ld = {'@context': 'https://schema.org', '@graph': [BUSINESS]}
     return [header(), hero, content, footer(), system(ld, '<a class="wbtn wbtn--red" href="/kontakt/#poptavka">Poptat web</a>')]
 
+
+# ---------- OBOROVÉ LANDING PAGES ----------
+from obory_a import A as _OA
+from obory_b import B as _OB
+from obory_c import C as _OC
+OBORY = _OA + _OB + _OC
+GROUPS = []
+for _o in OBORY:
+    if _o['group'] not in GROUPS: GROUPS.append(_o['group'])
+def obor_url(o):
+    return '/' + (('web-pro-' + o['slug']) if o['name'].startswith('Web pro') else o['slug']) + '/'
+HUB_URL = '/weby-pro-obory/'
+
+def obor_links(cls='ww-towns ww-citylinks', exclude=None, group=None):
+    items = ''.join(f'<a href="{obor_url(o)}">{o["short"][:1].upper() + o["short"][1:]}</a>' for o in OBORY
+                    if o['slug'] != exclude and (group is None or o['group'] == group))
+    return t(f'<p>{items}</p>', cls)
+
+GOALS = {'svatebni-web': 'ušetřil vám starosti s hosty', 'obec': 'dobře sloužil občanům', 'spolek': 'přiváděl nové členy a podporovatele',
+         'sportovni-klub': 'přiváděl nové členy', 'hasici': 'pomáhal s náborem a prezentací sboru', 'materska-skola': 'dobře sloužil rodičům',
+         'skola': 'dobře sloužil rodičům i uchazečům', 'svj': 'ušetřil práci výboru', 'farnost': 'sloužil farníkům i návštěvníkům',
+         'umelec-muzikant': 'přiváděl pořadatele a fanoušky', 'chovatelska-stanice': 'přiváděl ty správné zájemce'}
+
+def obor_page(o):
+    n, short = o['name'], o['short']
+    goal = GOALS.get(o['slug'], 'přiváděl zákazníky')
+    kw = n.lower()
+    hero = sec('ww-dark ww-phero ww-cityhero', wrap('ww-hero-grid', con('ww-hero-copy',
+        t(f'<p><a href="/">wwwwww.cz</a> / <a href="{HUB_URL}">weby pro obory</a> / {short}</p>', 'ww-crumbs'),
+        h(o['group'], 'div', 'ww-eyebrow ww-rv'),
+        h(f'{n}<span class="ww-red">.</span>', 'h1', 'ww-h1 ww-rv'),
+        t(f'<p>Co by měl mít {kw}, aby {goal}? Praktický přehled od webového studia z Jeseníku – checklist, struktura stránek, funkce i SEO tipy.</p>', 'ww-lead ww-mw ww-rv'),
+        con('ww-row ww-rv', btn('Chci nezávaznou nabídku', '#poptavka'), btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--ghost ww-btn--plain')),
+        t('<p><span>✓ Weby od 9 900 Kč</span><span>✓ Nabídka zdarma</span><span>✓ Koncept agentury Yesmark</span></p>', 'ww-trust ww-rv')),
+        html(hero_visual(n), 'ww-rv')), eid='uvod')
+    problem = sec('ww-white', wrap('',
+        h('Typický problém', 'div', 'ww-eyebrow ww-rv'),
+        h(f'Proč {kw} často nefunguje', 'h2', 'ww-h2s ww-rv'),
+        t(f'<p>{o["problem"]}</p>', 'ww-bigtext ww-rv')))
+    cards = [con('ww-card ww-mustcard ww-rv', h(f'{i+1:02d}', 'div', 'ww-num'), t(f'<p>{m}</p>', 'ww-musttext')) for i, m in enumerate(o['must'])]
+    must = sec('ww-dark', wrap('',
+        head('Checklist', f'Co musí mít {kw}', 'Těchto osm věcí rozhoduje, jestli web návštěvníka přesvědčí, nebo pošle ke konkurenci.'),
+        con('ww-grid4', *cards)), eid='checklist')
+    sitemap = ''.join(f'<li><span>{i+1:02d}</span>{pg}</li>' for i, pg in enumerate(o['pages']))
+    feats = ''.join(f'<li>{f}</li>' for f in o['features'])
+    seo = ''.join(f'<li>{x}</li>' for x in o['seo'])
+    struct = sec('ww-light', wrap('ww-local',
+        con('ww-local-copy ww-rv',
+            h('Ukázková struktura', 'div', 'ww-eyebrow'),
+            h(f'Jak by mohl vypadat {kw}', 'h2', 'ww-h2s'),
+            t(f'<p>Typický {kw} má {len(o["pages"])}–{len(o["pages"]) + 8} stránek. Tady je osvědčený základ, který podle potřeby rozšíříme:</p><ol class="ww-sitemap">{sitemap}</ol>')),
+        con('ww-citycard ww-rv',
+            h('Funkce a napojení', 'h3', 'ww-h3'),
+            t(f'<ul class="ww-checklist">{feats}</ul>'),
+            h('SEO tipy pro obor', 'div', 'ww-eyebrow'),
+            t(f'<ul class="ww-checklist">{seo}</ul>'),
+            btn('Probrat můj web', '#poptavka'))))
+    faq = list(o['faq']) + [
+        (f'Jak dlouho trvá vytvoření webu – {short}?', 'Jednodušší web bývá hotový za 2–4 týdny, rozsáhlejší s rezervacemi nebo e-shopem za 4–8 týdnů. Přesný harmonogram dostanete v nabídce.'),
+        ('Budu si web upravovat sám?', 'Ano. Stavíme na WordPressu a Elementoru – texty, ceník, fotky i nové stránky změníte sami a ukážeme vám, jak na to.'),
+        ('Tvoříte weby jen v Jeseníku?', 'Sídlíme v Jeseníku, ale weby tvoříme pro klienty z celé České republiky. Spolupráce běží online, místní rádi potkáme osobně.')]
+    pricing = sec('ww-dark', wrap('ww-price',
+        con('ww-price-card ww-rv',
+            h('Cena', 'div', 'ww-eyebrow'),
+            h(f'<small>{n}</small>od 9 900 Kč', 'div', 'ww-price-num'),
+            t('<p>Konečná cena záleží na počtu stránek, funkcích (rezervace, e-shop, jazyky) a grafice. Nabídku vám připravíme zdarma.</p>', 'ww-muted'),
+            con('ww-row', btn('Chci cenovou nabídku', '#poptavka'))),
+        con('ww-rv', h(f'Časté otázky – {kw}', 'h2', 'ww-h2s'),
+            w('toggle', 'ww-faq', faq_schema='yes', tabs=[{'_id': uid(), 'tab_title': q, 'tab_content': f'<p>{a}</p>'} for q, a in faq]))), eid='cenik')
+    contact = sec('ww-light', wrap('',
+        head('Poptávka', f'Chcete {kw}?', 'Napište pár vět o svém podnikání nebo rovnou zavolejte. Ozvu se obvykle do jednoho pracovního dne.'),
+        contact_section('obor-' + o['slug'])), eid='poptavka')
+    links = sec('ww-white ww-others', wrap('ww-stack ww-rv',
+        h(f'{n} tvoříme v těchto městech', 'div', 'ww-eyebrow'),
+        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{c["slug"]}/">{c["name"]}</a>' for c in CITIES) + '</p>', 'ww-towns ww-citylinks'),
+        h(f'Další obory – {o["group"].lower()}', 'div', 'ww-eyebrow'),
+        obor_links(exclude=o['slug'], group=o['group']),
+        btn('Všechny obory', HUB_URL, 'ww-btn--dark')))
+    url = 'https://wwwwww.cz' + obor_url(o)
+    ld = {'@context': 'https://schema.org', '@graph': [BUSINESS,
+        {'@type': 'Service', '@id': url + '#service', 'name': n, 'serviceType': 'Tvorba webových stránek', 'url': url,
+         'audience': {'@type': 'BusinessAudience', 'name': short}, 'provider': {'@id': 'https://wwwwww.cz/#business'},
+         'areaServed': {'@type': 'Country', 'name': 'Česká republika'},
+         'offers': {'@type': 'Offer', 'priceCurrency': 'CZK', 'price': '9900', 'description': 'Tvorba webu od 9 900 Kč'}},
+        {'@type': 'BreadcrumbList', 'itemListElement': [
+            {'@type': 'ListItem', 'position': 1, 'name': 'Tvorba webových stránek Jeseník', 'item': 'https://wwwwww.cz/'},
+            {'@type': 'ListItem', 'position': 2, 'name': 'Weby pro obory', 'item': 'https://wwwwww.cz' + HUB_URL},
+            {'@type': 'ListItem', 'position': 3, 'name': n, 'item': url}]}]}
+    return [header(), hero, problem, must, struct, refs_section(), pricing, contact, links, footer(),
+            system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
+
+def hub_page():
+    hero = sec('ww-dark ww-phero', wrap('ww-stack',
+        t('<p><a href="/">wwwwww.cz</a> / weby pro obory</p>', 'ww-crumbs'),
+        h('Weby pro obory<span class="ww-red">.</span>', 'h1', 'ww-h1 ww-rv'),
+        t(f'<p>Co by měl mít web pro kadeřnictví, penzion nebo stavební firmu? Pro {len(OBORY)} oborů jsme sepsali checklist, ukázkovou strukturu, funkce i SEO tipy. Najděte ten svůj.</p>', 'ww-lead ww-mw ww-rv')))
+    groups = []
+    for g in GROUPS:
+        cards = [con('ww-card ww-hubcard ww-rv', h(o['name'], 'h3', 'ww-h3'), t(f'<p>{o["problem"].split(".")[0]}.</p>'), btn('Co má web mít', obor_url(o), 'ww-btn--plain ww-btn--ghost'))
+                 for o in OBORY if o['group'] == g]
+        groups.append(con('ww-hubgroup', h(g, 'h2', 'ww-h2s ww-rv'), con('ww-grid3', *cards)))
+    body = sec('ww-dark', wrap('ww-stack ww-hubwrap', *groups))
+    contact = sec('ww-light', wrap('', head('Poptávka', 'Váš obor tu není?', 'Nevadí – weby tvoříme pro jakékoli podnikání. Napište nám, co děláte.'), contact_section('obory')), eid='poptavka')
+    ld = {'@context': 'https://schema.org', '@graph': [BUSINESS, {'@type': 'CollectionPage', 'name': 'Weby pro obory', 'url': 'https://wwwwww.cz' + HUB_URL}]}
+    return [header(), hero, body, contact, footer(), system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
+
 if __name__ == '__main__':
     for name, fn in [('home', home), ('kontakt', kontakt)]:
         data = fn()
@@ -469,4 +579,8 @@ if __name__ == '__main__':
     for c in CITIES:
         (OUT / f'mesto-{c["slug"]}.json').write_text(json.dumps(city_page(c), ensure_ascii=False), encoding='utf-8')
     print('města:', len(CITIES))
+    for o in OBORY:
+        (OUT / f'obor-{o["slug"]}.json').write_text(json.dumps(obor_page(o), ensure_ascii=False), encoding='utf-8')
+    (OUT / 'obory-hub.json').write_text(json.dumps(hub_page(), ensure_ascii=False), encoding='utf-8')
+    print('obory:', len(OBORY))
     (OUT / 'zasady.json').write_text(json.dumps(privacy_page(), ensure_ascii=False), encoding='utf-8')

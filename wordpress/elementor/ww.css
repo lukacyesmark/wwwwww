@@ -469,3 +469,26 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .ww-legaltext strong{color:var(--ww-d1)}
 /* mobilní menu: backdrop-filter na scrollované hlavičce dělal z hlavičky „kontejner“ pro fixed menu → menu se zmenšilo na výšku hlavičky */
 .ww-menu-open .wh,.ww-menu-open .wh.is-scrolled{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background:var(--ww-ink)!important}
+/* oborové stránky */
+.ww .ww-bigtext{font-size:clamp(20px,2.2vw,28px)!important;line-height:1.5!important;color:var(--ww-d1);font-weight:500;letter-spacing:-.01em;max-width:900px}
+.e-con.ww-grid4{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.e-con.ww-grid3{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.e-con.ww-mustcard{min-height:200px;justify-content:space-between}
+.ww .ww-musttext{color:var(--ww-t1)!important;font-size:18px!important;font-weight:500;line-height:1.4!important}
+.ww-sitemap{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px}
+.ww-sitemap li{display:flex;align-items:center;gap:14px;background:#fff;border:1px solid var(--ww-line-l);border-radius:12px;padding:14px 18px;font-weight:500;color:var(--ww-d1)}
+.ww-sitemap li span{font-size:12px;font-weight:600;color:var(--ww-red);letter-spacing:.08em}
+.ww-sitemap li:first-child{background:var(--ww-d1);color:#fff;border-color:var(--ww-d1)}
+.ww-checklist{list-style:none;margin:0;padding:0;display:grid;gap:10px;color:var(--ww-t2);font-size:15px}
+.ww-checklist li{position:relative;padding-left:28px;line-height:1.55}
+.ww-checklist li::before{content:"✓";position:absolute;left:0;top:0;color:var(--ww-red);font-weight:700}
+.e-con.ww-hubwrap{gap:clamp(56px,7vw,90px)!important}
+.e-con.ww-hubgroup{gap:28px}
+.e-con.ww-hubcard{gap:14px}
+.ww-hubcard .ww-h3 .elementor-heading-title{font-size:22px!important}
+.ww-hubcard .elementor-widget-button{margin-top:auto}
+.ww-hubcard .elementor-widget-button .elementor-button{padding:0;background:none;box-shadow:none;color:#fff;font-size:15px}
+.ww-hubcard .elementor-widget-button .elementor-button:hover{color:var(--ww-red);background:none;box-shadow:none;transform:none}
+@media (max-width:1100px){.e-con.ww-grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.e-con.ww-grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.e-con.ww-grid4,.e-con.ww-grid3{grid-template-columns:1fr}.e-con.ww-mustcard{min-height:0}}
+.ww .ww-bigtext{margin-top:22px!important}
