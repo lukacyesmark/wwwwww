@@ -512,6 +512,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .wstat b{font-size:clamp(40px,4.4vw,64px);font-weight:800;letter-spacing:-.05em;line-height:1;color:var(--ww-d1);font-variant-numeric:tabular-nums}
 .wstat span{font-size:15px;line-height:1.45;color:var(--ww-d2)}
 .wstat:nth-child(3) b{color:var(--ww-red)}
+.wstats--2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.wstats--2 .wstat:first-child b{color:var(--ww-red)}
 /* statement – slova se rozsvěcují při scrollu */
 .ww-home .ww-sw{color:rgba(11,11,13,.14);transition:color .35s ease}
 .ww-home .ww-sw.is-lit{color:inherit}
