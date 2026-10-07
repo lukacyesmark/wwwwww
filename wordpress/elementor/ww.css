@@ -421,8 +421,8 @@ body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9990;o
 .ww .ww-citylinks a{font-size:14px;font-weight:500;border:1px solid var(--ww-line-l);background:#fff;border-radius:999px;padding:8px 14px;color:var(--ww-d1);line-height:1;text-decoration:none}
 .ww .ww-citylinks a:hover{border-color:var(--ww-red);color:var(--ww-red)}
 .e-con.ww-footcities{margin-top:48px!important;gap:12px}
-.ww .ww-footlinks p{font-size:14px;line-height:2;color:var(--ww-t3)}
-.ww .ww-footlinks a{color:var(--ww-t2)!important;text-decoration:none!important;margin-right:18px;white-space:nowrap}
+.ww .ww-footlinks p{font-size:14px;line-height:2;color:var(--ww-t3);display:flex;flex-wrap:wrap;column-gap:18px}
+.ww .ww-footlinks a{color:var(--ww-t2)!important;text-decoration:none!important;white-space:nowrap}
 .ww .ww-footlinks a:hover{color:var(--ww-red)!important}
 /* městská stránka */
 .e-con.ww-citycard{background:var(--ww-ink);color:var(--ww-t1);border-radius:var(--ww-r);padding:clamp(26px,3vw,40px)!important;gap:18px;position:relative;overflow:hidden}

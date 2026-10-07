@@ -136,12 +136,19 @@ def _menu():
         cols.append(f'<div class="wdd__col{" wdd__col--2" if len(links) > 10 else ""}"><span class="wdd__k">{kraj}</span>' + ''.join(f'<a href="{u}">{n}</a>' for n, u in links) + '</div>')
     loc = '<div class="wdd__cols">' + ''.join(cols) + '</div><p class="wdd__note">Sídlíme v Jeseníku, weby tvoříme pro klienty z celé České republiky.</p>'
     return (dd('Služby', '/tvorba-webovych-stranek/', svc, 'wdd--svc')
-            + '<a href="/weby-pro-obory/">Obory</a>'
-            + dd('Lokality', '/#jesenicko', loc, 'wdd--loc')
             + '<a href="/#reference">Reference</a><a href="/kolik-stoji-web/">Ceník</a><a href="/kontakt/">Kontakt</a>')
 MENU = _menu()
 
+# Globální šablony (Elementor → Šablony → Uložené šablony). ID zapisuje deploy_templates.py do tpl.json.
+TPL_FILE = HERE / 'tpl.json'
+TPL = json.loads(TPL_FILE.read_text()) if TPL_FILE.exists() else {}
+def tpl_ref(key, cls):
+    return con('ww ww-tpl ' + cls, w('template', template_id=str(TPL[key])), tag='div', inner=False)
+
 def header():
+    return tpl_ref('header', 'ww-tpl-header') if TPL.get('header') else header_inner()
+
+def header_inner():
     nav = MENU
     code = ('<header class="wh"><div class="wh__in">'
             f'<a class="wlogo" href="/" aria-label="wwwwww.cz – tvorba webových stránek Jeseník">{LOGO}</a>'
@@ -190,6 +197,20 @@ def contact_section(page):
     return con('ww-contact', person, formcard)
 
 def footer():
+    return tpl_ref('footer', 'ww-tpl-footer') if TPL.get('footer') else footer_inner()
+
+def js_loader():
+    js = (HERE / 'ww.js').read_text(encoding='utf-8')
+    b64 = base64.b64encode(js.encode('utf-8')).decode()
+    return ('<script>(function(){var b=atob("' + b64 + '");'
+            'var run=function(){new Function(new TextDecoder().decode(Uint8Array.from(b,function(c){return c.charCodeAt(0)})))()};'
+            'document.readyState==="loading"?document.addEventListener("DOMContentLoaded",run):run()})()</script>')
+
+def footer_tpl():
+    # patička + JavaScript webu – jedna šablona pro všechny stránky
+    return [footer_inner(), con('ww ww-sys', html(js_loader()), inner=False)]
+
+def footer_inner():
     return sec('ww-dark ww-footer', wrap('',
         con('ww-foot',
             con('', html(f'<a class="wlogo" href="/" aria-label="wwwwww.cz">{LOGO}</a>'),
@@ -209,10 +230,7 @@ def footer():
             t('<p>' + PRIV_FOOT + '<a href="#elementor-action%3Aaction%3DcookiezBanner%3AopenPreferences">Nastavení cookies</a> · <a href="#">Nahoru ↑</a></p>'))), tag='footer')
 
 def system(ld, mbar_right):
-    js = (HERE / 'ww.js').read_text(encoding='utf-8')
-    b64 = base64.b64encode(js.encode('utf-8')).decode()
-    loader = ('<script>(function(){var b=atob("' + b64 + '");'
-              'new Function(new TextDecoder().decode(Uint8Array.from(b,function(c){return c.charCodeAt(0)})))()})()</script>')
+    loader = '' if TPL.get('footer') else js_loader()
     mbar = (f'<div class="wmbar"><a class="wbtn wbtn--ghost" href="tel:{TEL}">Zavolat</a>{mbar_right}</div>')
     ldj = '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>'
     return con('ww ww-sys', html(mbar + ldj + loader), inner=False)
@@ -753,6 +771,8 @@ def service_page(x):
             system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
 
 if __name__ == '__main__':
+    (OUT / 'tpl-header.json').write_text(json.dumps([header_inner()], ensure_ascii=False), encoding='utf-8')
+    (OUT / 'tpl-footer.json').write_text(json.dumps(footer_tpl(), ensure_ascii=False), encoding='utf-8')
     for name, fn in [('home', home), ('kontakt', kontakt)]:
         data = fn()
         (OUT / f'{name}.html').write_text(to_html(data), encoding='utf-8')
