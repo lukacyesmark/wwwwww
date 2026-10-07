@@ -259,6 +259,47 @@ def hero_visual(kw):
         '<div class="hv__toast" aria-hidden="true"><em>✓</em><div><strong>Nová poptávka z webu</strong><small>právě teď</small></div></div>'
         '</div></div>')
 
+
+# ---------- interaktivní bloky hlavní stránky ----------
+STATS = ('<div class="wstats">'
+    '<div class="wstat"><b data-count="72">72</b><span>oborů s checklistem, co má web mít</span></div>'
+    '<div class="wstat"><b data-count="24">24</b><span>měst s vlastní stránkou a lokálním SEO</span></div>'
+    '<div class="wstat"><b data-count="9900">9 900</b><span>Kč – za tolik začíná nový web</span></div>'
+    '<div class="wstat"><b data-count="1">1</b><span>člověk, se kterým řešíte vše od kafe po spuštění</span></div>'
+    '</div>')
+
+BEFORE_AFTER = ('<div class="wba" style="--pos:50%">'
+    '<div class="wba__pane wba__new" aria-hidden="true">'
+      '<div class="wba__nav"><b>novak<i>.</i>cz</b><span>Služby</span><span>Reference</span><span>Ceník</span><em>Poptat opravu</em></div>'
+      '<div class="wba__hero"><small>Instalatér · Jeseník a okolí</small><strong>Voda teče, kde má. Do 24 hodin u vás.</strong>'
+      '<p>Opravy, rekonstrukce koupelen a topení. Férová cena předem.</p><div class="wba__btns"><em>Poptat opravu</em><span>Zavolat</span></div>'
+      '<div class="wba__chips"><span>★ 4,9 Google</span><span>✓ 15 let praxe</span><span>✓ Cena předem</span></div></div>'
+      '<div class="wba__toast"><em>✓</em><div><b>Nová poptávka</b><small>před 2 minutami</small></div></div>'
+    '</div>'
+    '<div class="wba__pane wba__old" aria-hidden="true">'
+      '<div class="wba__oldhead">Vítejte na stránkách firmy NOVÁK</div>'
+      '<div class="wba__oldnav"><u>Úvod</u> | <u>O nás</u> | <u>Služby</u> | <u>Fotogalerie</u> | <u>Kniha návštěv</u></div>'
+      '<div class="wba__oldbody"><p><b>Firma Novák</b> provádí instalatérské práce již od roku 1998. Naše firma nabízí širokou škálu služeb v oblasti vody, topení a plynu. Pro více informací nás kontaktujte telefonicky nebo e-mailem.</p>'
+      '<p class="wba__blink">!!! STRÁNKY JSOU V REKONSTRUKCI !!!</p>'
+      '<p>Počet návštěv: <span class="wba__cnt">0 0 1 2 3 4</span></p><p class="wba__ie">Optimalizováno pro Internet Explorer 6.0 a rozlišení 800×600</p></div>'
+    '</div>'
+    '<div class="wba__line" aria-hidden="true"><span>‹ ›</span></div>'
+    '<em class="wba__tag wba__tag--old">Před</em><em class="wba__tag wba__tag--new">Po</em>'
+    '<input class="wba__range" type="range" min="0" max="100" value="50" aria-label="Porovnání starého a nového webu">'
+    '</div>')
+
+def _q(n, key, title, opts):
+    return (f'<div class="wquiz__q" data-q="{key}"><p class="wquiz__n">Otázka {n} / 3</p><h3>{title}</h3><div class="wquiz__opts">'
+            + ''.join(f'<button type="button" data-v="{v}">{l}</button>' for v, l in opts) + '</div></div>')
+QUIZ = ('<div class="wquiz"><div class="wquiz__bar"><i></i></div>'
+    + _q(1, 'obor', 'Čím se živíte?', [('sluzby', 'Služby a řemesla'), ('ubytovani', 'Ubytování a gastro'), ('produkty', 'Prodávám produkty'), ('komunita', 'Obec, spolek, škola'), ('jine', 'Něco jiného')])
+    + _q(2, 'cil', 'Co má web hlavně dělat?', [('poptavky', 'Přivádět poptávky'), ('rezervace', 'Rezervace a objednávky'), ('prodej', 'Prodávat online'), ('info', 'Informovat a budovat důvěru')])
+    + _q(3, 'web', 'Máte už web?', [('ne', 'Zatím ne'), ('stary', 'Ano, ale je zastaralý'), ('seo', 'Ano, ale nenosí zákazníky')])
+    + '<div class="wquiz__res"><p class="wquiz__n">Naše doporučení</p><h3 data-r="title"></h3><p data-r="text"></p><ul data-r="list"></ul>'
+      '<div class="wquiz__cta"><a class="wbtn wbtn--red" data-r="send" href="#poptavka">Poslat poptávku s odpověďmi</a><a class="wbtn wbtn--ghost" data-r="more" href="/">Více o řešení</a></div>'
+      '<button type="button" class="wquiz__again">↺ Začít znovu</button></div>'
+    '</div>')
+
 # ---------- HLAVNÍ STRÁNKA ----------
 def home():
     towns = ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava', 'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny', 'Hanušovice', 'Ramzová']
@@ -290,7 +331,8 @@ def home():
             why('01', 'Design, který prodává', 'Každý prvek má důvod – přivést návštěvníka k telefonu nebo poptávce. Žádné hezké, ale prázdné stránky.'),
             why('02', 'Najde vás Google', 'Weby stavíme s ohledem na vyhledávače a místní hledání. Aby vás našli lidé z Jeseníku i turisté z celé republiky.'),
             why('03', 'Upravíte si ho sami', 'WordPress a Elementor: texty, fotky i nové stránky změníte sami. Ukážeme vám, jak na to.'),
-            why('04', 'Člověk, ne tiket', 'Komunikujete přímo s tím, kdo web staví. Osobní schůzka v Jeseníku, nebo online hovor odkudkoli.'))))
+            why('04', 'Člověk, ne tiket', 'Komunikujete přímo s tím, kdo web staví. Osobní schůzka v Jeseníku, nebo online hovor odkudkoli.')),
+        html(STATS, 'ww-rv')))
 
     def step(n, title, text):
         return con('ww-step', h(n, 'div', 'ww-num'), h(title, 'h3', 'ww-h3'), t(f'<p>{text}</p>'))
@@ -310,8 +352,8 @@ def home():
     pins = [('Lipová-lázně', 234, 273, -8, 17, 'end'), ('Česká Ves', 284, 242, 8, -4, 'start'), ('Mikulovice', 346, 199, 8, -3, 'start'),
             ('Zlaté Hory', 395, 234, 8, -3, 'start'), ('Javorník', 138, 105, -8, -7, 'end'), ('Vidnava', 258, 124, 8, -6, 'start'),
             ('Žulová', 200, 187, -8, -3, 'end'), ('Bělá pod Pradědem', 265, 337, 8, 15, 'start'), ('Velké Losiny', 162, 472, -8, 4, 'end')]
-    rays = ''.join(f'<line class="ray" x1="270" y1="270" x2="{x}" y2="{y}"/>' for _, x, y, *_ in pins)
-    pts = ''.join(f'<circle class="p" cx="{x}" cy="{y}" r="4"/><text class="l" x="{x+dx}" y="{y+dy}" text-anchor="{a}">{n}</text>' for n, x, y, dx, dy, a in pins)
+    rays = ''.join(f'<line class="ray" style="--i:{i}" x1="270" y1="270" x2="{x}" y2="{y}"/>' for i, (_, x, y, *_) in enumerate(pins))
+    pts = ''.join(f'<g class="pin" style="--i:{i}"><circle class="p" cx="{x}" cy="{y}" r="4"/><text class="l" x="{x+dx}" y="{y+dy}" text-anchor="{a}">{n}</text></g>' for i, (n, x, y, dx, dy, a) in enumerate(pins))
     mapsvg = ('<div class="wmap"><svg viewBox="0 0 540 540" role="img" aria-label="Mapa Jesenicka – kde tvoříme webové stránky">'
               '<defs><linearGradient id="wsw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3120b" stop-opacity="0"/><stop offset="1" stop-color="#e3120b" stop-opacity=".35"/></linearGradient></defs>'
               f'{rings}<circle class="r" cx="270" cy="270" r="262" stroke-dasharray="2 6"/>'
@@ -362,8 +404,20 @@ def home():
         con('ww-row', btn(f'Zavolat {TEL_H}', f'tel:{TEL}', 'ww-btn--white ww-btn--plain'), btn('Napsat poptávku', '/kontakt/#poptavka', 'ww-btn--dark'))))
 
     ld = {'@context': 'https://schema.org', '@graph': [BUSINESS, {'@type': 'WebSite', '@id': 'https://wwwwww.cz/#web', 'url': 'https://wwwwww.cz/', 'name': 'wwwwww.cz', 'inLanguage': 'cs-CZ', 'publisher': {'@id': 'https://wwwwww.cz/#business'}}]}
-    return [header(), hero, html_section(marquee), yesmark, services_section(), whysec, process, refs_section(), local, pricing, contact, cta, footer(),
+    ba = sec('ww-dark ww-basec', wrap('ww-ba-grid',
+        con('ww-rv ww-ba-copy',
+            h('Redesign v praxi', 'div', 'ww-eyebrow'),
+            h('Před a po. Posuňte si to.', 'h2', 'ww-h2'),
+            t('<p>Starý web, který nikoho nepřesvědčí, vs. moderní web, který vede k poptávce. Chyťte jezdec a porovnejte – takhle vypadá rozdíl, který zákazník pozná za pár vteřin.</p>', 'ww-muted ww-lead'),
+            con('ww-row', btn('Chci redesign webu', '/redesign-webu/', 'ww-btn--ghost ww-btn--plain'))),
+        html(BEFORE_AFTER, 'ww-rv')), eid='pred-a-po')
+    quiz = sec('ww-dark ww-quizsec', wrap('',
+        head('Kvíz · 30 vteřin', 'Jaký web potřebujete?', 'Tři rychlé otázky a dostanete doporučení na míru – i s tím, co by váš web neměl postrádat. Odpovědi pak jedním klikem pošlete v poptávce.'),
+        html(QUIZ, 'ww-rv')), eid='kviz')
+    page = [header(), hero, html_section(marquee), yesmark, services_section(), whysec, process, refs_section(), ba, local, quiz, pricing, contact, cta, footer(),
             system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
+    for el in page: el['settings']['css_classes'] += ' ww-home'
+    return page
 
 def html_section(code):
     return con('ww ww-marq', html(code), inner=False)
