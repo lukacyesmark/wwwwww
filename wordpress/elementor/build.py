@@ -247,8 +247,12 @@ BUSINESS = {
     'areaServed': [{'@type': 'City', 'name': n} for n in ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava',
                                                           'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny']]
                   + [{'@type': 'AdministrativeArea', 'name': 'Okres Jeseník'}, {'@type': 'AdministrativeArea', 'name': 'Jeseníky'}, {'@type': 'Country', 'name': 'Česká republika'}],
-    'parentOrganization': {'@type': 'Organization', 'name': 'Yesmark', 'url': 'https://yesmark.eu/'},
-    'employee': {'@type': 'Person', 'name': 'Roman Lukač', 'jobTitle': 'Webdesign a vývoj'},
+    'parentOrganization': {'@type': 'Organization', '@id': 'https://yesmark.eu/#organization', 'name': 'Yesmark',
+                           'url': 'https://yesmark.eu/', 'logo': YM['url'], 'sameAs': ['https://yesmark.eu/']},
+    'brand': {'@type': 'Brand', 'name': 'wwwwww'},
+    'founder': {'@type': 'Person', '@id': 'https://wwwwww.cz/#roman-lukac', 'name': 'Roman Lukač', 'jobTitle': 'Webdesign a vývoj',
+                'worksFor': {'@id': 'https://yesmark.eu/#organization'}},
+    'employee': {'@id': 'https://wwwwww.cz/#roman-lukac'},
     'knowsAbout': ['Tvorba webových stránek', 'Tvorba e-shopů', 'Webdesign', 'SEO optimalizace', 'WordPress', 'Elementor'],
 }
 
