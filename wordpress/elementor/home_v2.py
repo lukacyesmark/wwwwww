@@ -38,7 +38,8 @@ def v_header():
     svc = ''.join(f'<a href="{u}">{n}</a>' for n, u in SLUZBY_MENU)
     code = ('<div class="v-head">'
             '<button class="v-tab v-tab--menu" type="button" aria-expanded="false" aria-controls="v-menu"><span class="v-burg"><i></i><i></i></span><span class="v-tab__t">Menu</span></button>'
-            f'<a class="v-mark" href="/" aria-label="wwwwww.cz – tvorba webových stránek">{small}</a>'
+            f'<div class="v-markw"><a class="v-mark" href="/" aria-label="wwwwww.cz – tvorba webových stránek">{small}</a>'
+            f'<a class="v-by" href="{b.yes(x="header_logo_v2")}" target="_blank" rel="noopener"><small>koncept</small><img src="{b.YM["url"]}" alt="Yesmark" width="70" height="11"></a></div>'
             '<a class="v-tab v-tab--cta" href="#poptavka">Máte projekt?</a>'
             '</div>'
             '<div class="v-menu" id="v-menu" aria-hidden="true"><div class="v-menu__in">'
@@ -66,6 +67,13 @@ def v_hero():
 def v_statement():
     return vsec('v-statement',
         vwrap('', h('Navrženo tak, aby si vás zapamatovali. Stavíme weby, které zákazníci nejen projdou, ale ozvou se.', 'h2', 'v-giant v-clip')))
+
+def v_yesmark():
+    return vsec('v-yes v-dark',
+        vwrap('v-yes__grid',
+            con('v-yes__logo', label('Webový koncept agentury'), img(b.YM, 'Yesmark – marketingová agentura Jeseník', 'v-yes__img')),
+            t('<p>Za wwwwww.cz stojí tým <strong>agentury Yesmark</strong> z Jeseníku. Stejné know-how jako u kampaní, grafiky a SEO pro naše klienty – jen s jasným zaměřením na weby. Když budete chtít, navážeme brandingem, kampaněmi i tiskem.</p>', 'v-serif v-serif--m'),
+            t(f'<p><a class="v-btn v-btn--light" href="{b.yes(x="homepage_v2_strip")}" target="_blank" rel="noopener">Poznejte Yesmark ↗</a></p>', 'v-yes__cta')))
 
 def v_highlight():
     refs = [
@@ -113,7 +121,7 @@ def svc_visual(kind, name):
         k = kind[5:]
         return f'<div class="v-vis v-vis--shot"><img src="{SHOT[k]["url"]}" alt="{name} – ukázka webu" loading="lazy"></div>'
     if kind == 'photo':
-        return f'<div class="v-vis v-vis--shot"><img src="{b.PHOTO_URL}" alt="Roman Lukač – správa webu" loading="lazy"></div>'
+        return f'<div class="v-vis v-vis--photo"><img src="{b.PHOTO_URL}" alt="Roman Lukač – správa webu" loading="lazy"></div>'
     if kind == 'shop':
         cards = ''.join(f'<div class="v-shop__p"><i></i><b>{n}</b><span>{p}</span></div>' for n, p in [('Lněná košile', '1 290 Kč'), ('Keramický hrnek', '390 Kč'), ('Svíčka Jeseníky', '249 Kč'), ('Dárkový set', '890 Kč')])
         return (f'<div class="v-vis v-vis--shop" aria-hidden="true"><div class="v-shop__bar"><b>obchod<em>.</em>cz</b><span>Košík <em>2</em></span></div>'
@@ -139,7 +147,7 @@ def v_services():
                     html(svc_visual(vis, sub), 'v-svc__vis')))))
     return con('wv2 v-svcs', *panels, tag='section', eid='sluzby', inner=False)
 
-NUMS = [('9 900', 'Kč', 'Cena od', 'Za tolik začíná nový web. Přesnou cenu dostanete v nabídce zdarma.'),
+NUMS = [('9 900', 'Kč', 'Nový web už od', 'Tolik stojí základní web. Přesnou cenu podle rozsahu dostanete v nabídce zdarma.'),
         ('1', '', 'Člověk, ne tiket', 'Jeden člověk od prvního kafe po spuštění. Žádné předávání mezi odděleními.'),
         ('2–4', 'týdny', 'Do spuštění', 'Tak dlouho obvykle trvá jednodušší web. E-shop nebo web na míru 4–8 týdnů.')]
 
@@ -220,6 +228,7 @@ def v_footer():
             f'<a href="{b.yes("reference/", "wwwwww_reference", "footer")}" target="_blank" rel="noopener">Reference ↗</a><a href="{b.yes(x="footer")}" target="_blank" rel="noopener">Yesmark.eu ↗</a></div>'
             f'<div><p class="v-foot__k">Kontakt</p><a href="tel:{TEL}">+420 {TEL_H}</a><a href="mailto:{MAIL}">{MAIL}</a><span>Yesmark, {b.ADDR}</span></div>'
             f'<div class="v-foot__cities"><p class="v-foot__k">Tvorba webových stránek v regionu</p><p>{cities}</p></div></div>'
+            f'<div class="v-foot__yes"><span>wwwwww.cz je webový koncept agentury</span><a href="{b.yes(x="footer_v2")}" target="_blank" rel="noopener"><img src="{b.YM["url"]}" alt="Yesmark" width="140" height="21"></a></div>'
             f'<div class="v-foot__mark">{bigmark("v-bigmark v-bigmark--foot")}</div>'
             '<div class="v-foot__bottom"><p>© <span data-ww-year>2026</span> wwwwww.cz · koncept Yesmark · Provozovatel: Roman Lukač, IČO 14448157, Vápenná 124, 790 64 Vápenná · fyzická osoba zapsaná v živnostenském rejstříku</p>'
             f'<p>{b.PRIV_FOOT}<a href="#elementor-action%3Aaction%3DcookiezBanner%3AopenPreferences">Nastavení cookies</a></p></div></div>')
@@ -238,7 +247,7 @@ def home_v2():
     sysc = b.system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')
     sysc['settings']['css_classes'] += ' wv2-sys'
     loader = con('ww ww-sys', html(b.js_loader()), inner=False)
-    return [v_header(), v_hero(), v_statement(), v_highlight(), v_list(v_obory()), v_services(), v_numbers(), v_process(),
+    return [v_header(), v_hero(), v_statement(), v_yesmark(), v_highlight(), v_list(v_obory()), v_services(), v_numbers(), v_process(),
             v_local(), v_quiz(), v_price(faq), v_contact(), v_footer(), sysc, loader]
 
 if __name__ == '__main__':

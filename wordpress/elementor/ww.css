@@ -997,3 +997,24 @@ html:not(.ww-js) .v-num__i{position:relative;opacity:1;padding:24px var(--v-gut)
   .v-num__big{align-self:center}
   .v-num__cap{align-self:end;background:var(--v-bg);padding:10px 14px;border-radius:8px}
 }
+/* návrh – úpravy 2: menší reference, Yesmark */
+.v-hl__slide{grid-template-columns:1.2fr 1fr}
+.v-hl__img{justify-self:center;width:min(400px,100%)!important;aspect-ratio:4/5!important;transition:transform 1.2s var(--ww-ease),object-position 9s linear}
+.v-hl__img:hover{object-position:bottom}
+.v-vis--shot{max-width:400px;aspect-ratio:4/5;justify-self:end;margin-left:auto}
+.v-vis--shot img{transition:object-position 9s linear}
+.v-vis--photo{max-width:400px;aspect-ratio:4/5;margin-left:auto}
+.v-vis--photo img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block}
+.v-markw{display:flex;flex-direction:column;align-items:center;gap:6px;pointer-events:auto}
+.v-by{display:flex;align-items:center;gap:6px;text-decoration:none!important;opacity:.85}
+.v-by small{font:500 8px var(--v-sans);letter-spacing:.18em;text-transform:uppercase;color:var(--v-mute)}
+.v-by img{width:62px;height:auto;display:block}
+.e-con.wv2.v-yes{padding:clamp(56px,6vw,90px) 0!important}
+.e-con.v-yes__grid{display:grid!important;grid-template-columns:auto 1.6fr auto;gap:clamp(30px,5vw,80px);align-items:center}
+.e-con.v-yes__logo{gap:14px}
+.wv2 .v-yes__logo .v-label .elementor-heading-title{color:rgba(242,239,234,.5)!important}
+.v-yes__img img{width:clamp(150px,14vw,210px)!important;height:auto}
+.v-yes .v-serif strong{font-weight:400;color:#fff}
+.v-foot__yes{display:flex;align-items:center;gap:14px;margin-top:clamp(50px,6vw,90px);font-size:13px;color:rgba(242,239,234,.55)}
+.v-foot__yes img{width:120px;height:auto;display:block}
+@media (max-width:860px){.e-con.v-yes__grid{grid-template-columns:1fr;gap:26px}.v-vis--shot,.v-vis--photo{max-width:320px;margin-left:0}.v-hl__img{width:min(320px,100%)!important;justify-self:start}.v-by small{display:none}}
