@@ -26,6 +26,7 @@ def yes(path='', c='wwwwww_brand', x='web'):
     return f'https://yesmark.eu/{path}?' + UTM.format(c=c, x=x)
 
 from cities import CITIES
+from cities_local import L as CITY_LOCAL
 
 def city_links(cls='ww-towns ww-citylinks', current=None):
     items = ''.join(f'<a href="/tvorba-webovych-stranek-{c["slug"]}/">{c["name"]}</a>' for c in CITIES if c['slug'] != current)
@@ -277,26 +278,18 @@ def services_section(title='Weby, které pracují za vás.', eid='sluzby'):
 
 
 def refs_section():
-    def ref(tag, name, text, label, url, key):
+    def ref(tag, name, line, label, url, key):
         return con('ww-ref ww-rv',
-            con('ww-ref-top', img(SHOT[key], f'Reference: web {name}', 'ww-ref-shot', 'large'), html('<span class="ww-ref-hint">Projeďte web ↓</span>', 'ww-ref-hintw')),
-            con('ww-ref-body', h(tag, 'div', 'ww-ref-tag'), h(name, 'h3', 'ww-h3'), t(text), btn(label, url, 'ww-btn--plain ww-btn--ext', ext=True)))
+            con('ww-ref-top', img(SHOT[key], f'Reference: web {name}', 'ww-ref-shot', 'large')),
+            con('ww-ref-body', h(tag, 'div', 'ww-ref-tag'), h(name, 'h3', 'ww-h3'), t(f'<p>{line}</p>'), btn(label, url, 'ww-btn--plain ww-btn--ext', ext=True)))
     return sec('ww-light', wrap('',
-        head('Reference', 'Weby, na které jsme hrdí.', 'Výběr realizací. Celé portfolio webů, e-shopů a kampaní najdete na Yesmark.eu.'),
+        h('Reference', 'div', 'ww-eyebrow ww-rv'),
         con('ww-refs',
-            ref('Web · CNC obrábění', 'Konradt',
-                '<p>Pro společnost KONRADT jsme vytvořili nové webové stránky zaměřené na profesionální prezentaci služeb v oblasti CNC obrábění, montáže a zpracování kovů. Při realizaci jsme kladli důraz na moderní technický vzhled, přehledné představení výrobních možností společnosti a srozumitelnou prezentaci jednotlivých služeb.</p>'
-                '<p>Součástí realizace byla také optimalizace struktury a obsahu webu s ohledem na vyhledávače a lepší dohledatelnost služeb v oblasti CNC frézování, CNC soustružení, montážních prací a dodávek odlitků.</p>',
-                'konradt.cz', 'https://www.konradt.cz/', 'konradt'),
-            ref('Web · Reality Jeseníky', 'Monika Veličková',
-                '<p>Pro realitní makléřku Moniku Veličkovou jsme vytvořili nové webové stránky zaměřené na prezentaci nemovitostí a realitních služeb v Jeseníkách. Při realizaci jsme kladli důraz na moderní a osobitý design, přehlednou prezentaci nabízených nemovitostí a především na budování osobní značky, která staví na znalosti regionu, individuálním přístupu a zkušenostech s realitami i investicemi.</p>',
-                'monikavelickova.cz', 'https://monikavelickova.cz/', 'monika-velickova'),
-            ref('Web · Technika a služby', 'Břinčil',
-                '<p>Při realizaci webu pro firmu Břinčil jsme kladli důraz na moderní a přehledný design, snadnou orientaci návštěvníků a kvalitní prezentaci společnosti i její techniky. Nový web zároveň slouží jako podpůrná prezentace hlavní společnosti Břinčil &amp; Míka s.r.o., pro kterou jsme v minulosti rovněž realizovali kompletní online prezentaci.</p>',
-                'brincil.cz', 'https://brincil.cz/', 'brincil')),
+            ref('Web · CNC obrábění', 'Konradt', 'Technický web pro CNC obrábění a montáže.', 'konradt.cz', 'https://www.konradt.cz/', 'konradt'),
+            ref('Web · Reality', 'Monika Veličková', 'Osobní značka realitní makléřky v Jeseníkách.', 'monikavelickova.cz', 'https://monikavelickova.cz/', 'monika-velickova'),
+            ref('Web · Technika', 'Břinčil', 'Přehledná prezentace firmy a techniky.', 'brincil.cz', 'https://brincil.cz/', 'brincil')),
         con('ww-row ww-refs-more ww-rv',
-            t('<p>Další weby, e-shopy a kampaně najdete v portfoliu Yesmark.</p>', 'ww-muted'),
-            btn('Všechny reference', yes('reference/', 'wwwwww_reference', 'homepage_all'), 'ww-btn--dark ww-btn--ext', ext=True))), eid='reference')
+            btn('Všechny reference', yes('reference/', 'wwwwww_reference', 'subpage_all'), 'ww-btn--dark ww-btn--ext', ext=True))), eid='reference')
 
 
 def hero_visual(kw):
@@ -510,8 +503,13 @@ def kontakt():
 
 
 # ---------- MĚSTSKÉ LANDING PAGES ----------
+def CITY_OBORY(c):
+    k = sum(map(ord, c['slug']))
+    return [OBORY[(k + i * 7) % len(OBORY)] for i in range(10)]
+
 def city_page(c):
     n, loc, gen = c['name'], c['loc'], c['gen']
+    cl = CITY_LOCAL[c['slug']]
     hero = sec('ww-dark ww-phero ww-cityhero', wrap('ww-hero-grid', con('ww-hero-copy',
         t(f'<p><a href="/">wwwwww.cz</a> / tvorba webů {n}</p>', 'ww-crumbs'),
         h(f'Tvorba webových stránek <span class="ww-red">{n}</span>', 'h1', 'ww-h1 ww-rv'),
@@ -526,7 +524,8 @@ def city_page(c):
         con('ww-local-copy ww-rv',
             h(f'Weby pro firmy {gen}', 'div', 'ww-eyebrow'),
             h(f'Web, který vám přivede zákazníky {loc}', 'h2', 'ww-h2s'),
-            t(''.join(f'<p>{x}</p>' for x in c['text']) +
+            t(''.join(f'<p>{x}</p>' for x in c['text']) + f'<p>{cl["local"]}</p>' +
+              f'<h3>Weby pro firmy {gen} a okolí</h3><p>Pracujeme pro klienty přímo {loc} i z okolí – {", ".join(cl["okoli"][:-1])} a {cl["okoli"][-1]}.</p>' +
               f'<p>Tvorba webových stránek {n} u nás začíná krátkým hovorem o vašem podnikání a končí webem, který přivádí poptávky – ne jen vizitkou na internetu.</p>'
               f'<h3>Lokální SEO pro {n}</h3><p>Každý web stavíme tak, aby se ukázal lidem, kteří hledají vaše služby {loc} a okolí – správná struktura, obsah, rychlá orientace na mobilu a propojení s Google Firemním profilem.</p>')),
         con('ww-citycard ww-rv',
@@ -537,11 +536,9 @@ def city_page(c):
             btn('Domluvit konzultaci', '#poptavka'))))
     faq = [
         (f'Kolik stojí tvorba webových stránek {loc}?', f'Tvorba webových stránek {n} začíná na 9 900 Kč. Konečná cena záleží na rozsahu, funkcích a grafickém zpracování. Po krátké konzultaci dostanete nezávaznou nabídku zdarma.'),
-        ('Musím za vámi jezdit do Jeseníku?', 'Nemusíte. Konzultace, návrhy i předání webu zvládneme online – telefonem, videohovorem a e-mailem. Když je to potřeba, rádi se potkáme i osobně.'),
         (f'Pomůžete, aby nás našli zákazníci {gen}?', f'Ano. Web postavíme s ohledem na lokální SEO pro {n} – obsah zaměřený na vaše služby a lokalitu, Google Firemní profil a technické SEO od prvního dne.'),
         c['faq'],
-        ('Budu si moci web upravovat sám?', 'Ano. Stavíme na WordPressu a Elementoru – texty, fotky i nové stránky si upravíte sami a ukážeme vám, jak na to.'),
-    ]
+    ] + list(cl['faq'])
     pricing = sec('ww-dark', wrap('ww-price',
         con('ww-price-card ww-rv',
             h(f'Ceník · {n}', 'div', 'ww-eyebrow'),
@@ -555,9 +552,9 @@ def city_page(c):
         contact_section('mesto-' + c['slug'])), eid='poptavka')
     others = sec('ww-white ww-others', wrap('ww-stack ww-rv',
         h('Tvoříme weby také pro', 'div', 'ww-eyebrow'),
-        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{o["slug"]}/">{o["name"]}</a>' for o in CITIES if o['slug'] != c['slug']) + '</p>', 'ww-towns ww-citylinks'),
-        h(f'Weby podle oboru – {n}', 'div', 'ww-eyebrow'),
-        obor_links(),
+        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{o["slug"]}/">{o["name"]}</a>' for o in CITIES if o['slug'] != c['slug'] and o['kraj'] == c['kraj']) + '</p>', 'ww-towns ww-citylinks'),
+        h('Weby podle oboru', 'div', 'ww-eyebrow'),
+        t('<p>' + ''.join(f'<a href="{obor_url(o)}">{o["short"][:1].upper() + o["short"][1:]}</a>' for o in CITY_OBORY(c)) + '</p>', 'ww-towns ww-citylinks'),
         btn('Všechny obory', HUB_URL, 'ww-btn--dark')))
     url = f'https://wwwwww.cz/tvorba-webovych-stranek-{c["slug"]}/'
     ld = {'@context': 'https://schema.org', '@graph': [
@@ -569,7 +566,11 @@ def city_page(c):
         {'@type': 'BreadcrumbList', 'itemListElement': [
             {'@type': 'ListItem', 'position': 1, 'name': 'Tvorba webových stránek Jeseník', 'item': 'https://wwwwww.cz/'},
             {'@type': 'ListItem', 'position': 2, 'name': f'Tvorba webů {n}', 'item': url}]}]}
-    return [header(), hero, local, services_section(f'Tvorba webových stránek {n}: co umíme.'), refs_section(), pricing, contact, others, footer(),
+    tips = sec('ww-dark', wrap('',
+        head(f'{n} a okolí', f'Co na webu {loc} funguje', f'Tři věci, které u firem {gen} a okolí dělají největší rozdíl.'),
+        con('ww-grid3', *[con('ww-card ww-rv', h(f'{i+1:02d}', 'div', 'ww-num'), h(a, 'h3', 'ww-h3'), t(f'<p>{b_}</p>')) for i, (a, b_) in enumerate(cl['tips'])]),
+        t('<p>Služby: <a href="/tvorba-webovych-stranek/">tvorba webů</a> · <a href="/tvorba-eshopu/">e-shopy</a> · <a href="/redesign-webu/">redesign</a> · <a href="/seo-optimalizace-webu/">SEO</a> · <a href="/sprava-webu/">správa webu</a></p>', 'ww-muted ww-svclinks')), eid='sluzby')
+    return [header(), hero, local, tips, refs_section(), pricing, contact, others, footer(),
             system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')]
 
 
@@ -617,6 +618,7 @@ for _o in OBORY:
 def obor_url(o):
     return '/' + (('web-pro-' + o['slug']) if o['name'].startswith('Web pro') else o['slug']) + '/'
 HUB_URL = '/weby-pro-obory/'
+BIG_CITIES = {'olomouc', 'ostrava', 'opava', 'prerov', 'prostejov', 'sumperk', 'pardubice', 'bruntal'}
 
 def obor_links(cls='ww-towns ww-citylinks', exclude=None, group=None):
     items = ''.join(f'<a href="{obor_url(o)}">{o["short"][:1].upper() + o["short"][1:]}</a>' for o in OBORY
@@ -670,24 +672,21 @@ def obor_page(o):
             h('SEO tipy pro obor', 'div', 'ww-eyebrow'),
             t(f'<ul class="ww-checklist">{seo}</ul>'),
             btn('Probrat můj web', '#poptavka'))), eid='struktura')
-    faq = list(o['faq']) + [
-        (f'Jak dlouho trvá vytvoření webu – {short}?', 'Jednodušší web bývá hotový za 2–4 týdny, rozsáhlejší s rezervacemi nebo e-shopem za 4–8 týdnů. Přesný harmonogram dostanete v nabídce.'),
-        ('Budu si web upravovat sám?', 'Ano. Stavíme na WordPressu a Elementoru – texty, ceník, fotky i nové stránky změníte sami a ukážeme vám, jak na to.'),
-        ('Tvoříte weby jen v Jeseníku?', 'Sídlíme v Jeseníku, ale weby tvoříme pro klienty z celé České republiky. Spolupráce běží online, místní rádi potkáme osobně.')]
+    faq = list(o['faq'])
     pricing = sec('ww-dark', wrap('ww-price',
         con('ww-price-card ww-rv',
             h('Cena', 'div', 'ww-eyebrow'),
             h(f'<small>{n}</small>od 9 900 Kč', 'div', 'ww-price-num'),
             t('<p>Konečná cena záleží na počtu stránek, funkcích (rezervace, e-shop, jazyky) a grafice. Nabídku vám připravíme zdarma.</p>', 'ww-muted'),
             con('ww-row', btn('Chci cenovou nabídku', '#poptavka'))),
-        con('ww-rv', h(f'Časté otázky – {kw}', 'h2', 'ww-h2s'),
+        con('ww-rv', h('Časté otázky', 'h2', 'ww-h2s'),
             w('toggle', 'ww-faq', faq_schema='yes', tabs=[{'_id': uid(), 'tab_title': q, 'tab_content': f'<p>{a}</p>'} for q, a in faq]))), eid='cenik')
     contact = sec('ww-light', wrap('',
-        head('Poptávka', f'Chcete {kw}?', 'Napište pár vět o svém podnikání nebo rovnou zavolejte. Ozvu se obvykle do jednoho pracovního dne.'),
+        head('Poptávka', 'Chcete takový web?', 'Napište pár vět o svém podnikání nebo rovnou zavolejte. Ozvu se obvykle do jednoho pracovního dne.'),
         contact_section('obor-' + o['slug'])), eid='poptavka')
     links = sec('ww-white ww-others', wrap('ww-stack ww-rv',
-        h(f'{n} tvoříme v těchto městech', 'div', 'ww-eyebrow'),
-        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{c["slug"]}/">{c["name"]}</a>' for c in CITIES) + '</p>', 'ww-towns ww-citylinks'),
+        h('Tvoříme v těchto městech', 'div', 'ww-eyebrow'),
+        t('<p><a href="/">Jeseník</a>' + ''.join(f'<a href="/tvorba-webovych-stranek-{c["slug"]}/">{c["name"]}</a>' for c in CITIES if c['slug'] in BIG_CITIES) + '</p>', 'ww-towns ww-citylinks'),
         h(f'Další obory – {o["group"].lower()}', 'div', 'ww-eyebrow'),
         obor_links(exclude=o['slug'], group=o['group']),
         btn('Všechny obory', HUB_URL, 'ww-btn--dark')))
