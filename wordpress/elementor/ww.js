@@ -326,5 +326,61 @@
     });
   })();
 
+  /* ===== NOVÝ DESIGN (.wv2) ===== */
+  if ($('.wv2') && !inEditor) (function () {
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+    /* menu přes celou obrazovku */
+    var mt = $('.v-tab--menu'), menu = $('#v-menu');
+    if (mt && menu) {
+      var setV = function (open) {
+        doc.body.classList.toggle('v-menu-open', open);
+        mt.setAttribute('aria-expanded', String(open)); menu.setAttribute('aria-hidden', String(!open));
+        $('.v-tab__t', mt).textContent = open ? 'Zavřít' : 'Menu';
+        doc.body.style.overflow = open ? 'hidden' : '';
+      };
+      mt.addEventListener('click', function () { setV(!doc.body.classList.contains('v-menu-open')); });
+      $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setV(false); }); });
+      addEventListener('keydown', function (e) { if (e.key === 'Escape') setV(false); });
+    }
+    /* hero – úvodní animace */
+    var hero = $('.v-hero');
+    if (hero) requestAnimationFrame(function () { setTimeout(function () { hero.classList.add('is-ready'); }, 80); });
+    /* realizace – přepínání */
+    $$('.v-hl').forEach(function (hl) {
+      var slides = $$('.v-hl__slide', hl), cnt = $('.v-hl__count b', hl), i = 0, timer;
+      var go = function (n) {
+        i = (n + slides.length) % slides.length;
+        slides.forEach(function (s, k) { s.classList.toggle('is-on', k === i); });
+        if (cnt) cnt.textContent = ('0' + (i + 1)).slice(-2);
+      };
+      $$('[data-dir]', hl).forEach(function (bt) { bt.addEventListener('click', function () { clearInterval(timer); go(i + +bt.getAttribute('data-dir')); }); });
+      if (!reduce) timer = setInterval(function () { go(i + 1); }, 7000);
+    });
+    /* scroll efekty */
+    var shape = $('.v-hero .v-shape'), mark = $('.v-hero .v-bigmark'), clip = $('.v-clip .elementor-heading-title'),
+        svcs = $$('.v-svc'), num = $('.v-num'), numItems = num ? $$('.v-num__i', num) : [], ghost = num && $('.v-num__ghost', num), photo = num && $('.v-num__photo', num);
+    var tick = function () {
+      var vh = innerHeight, y = scrollY;
+      if (!reduce && shape && y < vh * 1.2) { shape.style.transform = 'translateY(' + (y * 0.25).toFixed(1) + 'px)'; if (mark) mark.style.transform = 'translateY(' + (-y * 0.12).toFixed(1) + 'px)'; }
+      if (clip) { var r = clip.getBoundingClientRect(); clip.style.setProperty('--v-bp', clamp((vh - r.top) / (vh + r.height) * 100, 0, 100).toFixed(1) + '%'); }
+      if (!reduce) svcs.forEach(function (s, k) {
+        var r = s.getBoundingClientRect();
+        var p = clamp(1 - r.top / vh, 0, 1);               /* 0 = panel pod obrazovkou, 1 = nahoře */
+        var next = svcs[k + 1], q = next ? clamp(1 - next.getBoundingClientRect().top / vh, 0, 1) : 0;
+        s.style.transform = 'rotate(' + ((1 - p) * -3).toFixed(2) + 'deg) scale(' + (1 - q * 0.06).toFixed(3) + ')';
+      });
+      if (num) {
+        var nr = num.getBoundingClientRect(), n = numItems.length;
+        var prog = clamp(-nr.top / (nr.height - vh), 0, 0.9999), idx = Math.floor(prog * n);
+        numItems.forEach(function (it, k) { it.classList.toggle('is-on', k === idx); });
+        if (ghost) ghost.style.setProperty('--gy', (-(prog - 0.5) * 60).toFixed(1) + 'vh');
+        if (photo && !reduce) photo.style.transform = 'rotate(' + (-3 + prog * 6).toFixed(2) + 'deg)';
+      }
+    };
+    var ticking = false;
+    addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(function () { ticking = false; tick(); }); } }, { passive: true });
+    addEventListener('resize', tick); tick();
+  })();
+
   $$('[data-ww-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 })();
