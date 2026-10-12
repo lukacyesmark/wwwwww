@@ -349,6 +349,21 @@ QUIZ = ('<div class="wquiz"><div class="wquiz__bar"><i></i></div>'
     '</div>')
 
 # ---------- HLAVNÍ STRÁNKA ----------
+def jesenik_map():
+    rings = ''.join(f'<circle class="r" cx="270" cy="270" r="{r}"/>' for r in (46, 92, 184))
+    pins = [('Lipová-lázně', 234, 273, -8, 17, 'end'), ('Česká Ves', 284, 242, 8, -4, 'start'), ('Mikulovice', 346, 199, 8, -3, 'start'),
+            ('Zlaté Hory', 395, 234, 8, -3, 'start'), ('Javorník', 138, 105, -8, -7, 'end'), ('Vidnava', 258, 124, 8, -6, 'start'),
+            ('Žulová', 200, 187, -8, -3, 'end'), ('Bělá pod Pradědem', 265, 337, 8, 15, 'start'), ('Velké Losiny', 162, 472, -8, 4, 'end')]
+    rays = ''.join(f'<line class="ray" style="--i:{i}" x1="270" y1="270" x2="{x}" y2="{y}"/>' for i, (_, x, y, *_) in enumerate(pins))
+    pts = ''.join(f'<g class="pin" style="--i:{i}"><circle class="p" cx="{x}" cy="{y}" r="4"/><text class="l" x="{x+dx}" y="{y+dy}" text-anchor="{a}">{n}</text></g>' for i, (n, x, y, dx, dy, a) in enumerate(pins))
+    return ('<div class="wmap"><svg viewBox="0 0 540 540" role="img" aria-label="Mapa Jesenicka – kde tvoříme webové stránky">'
+              '<defs><linearGradient id="wsw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3120b" stop-opacity="0"/><stop offset="1" stop-color="#e3120b" stop-opacity=".35"/></linearGradient></defs>'
+              f'{rings}<circle class="r" cx="270" cy="270" r="262" stroke-dasharray="2 6"/>'
+              '<path class="sw" d="M270 270 L532 270 A262 262 0 0 0 455 85 Z" fill="url(#wsw)"/>'
+              f'{rays}{pts}<circle class="hqr" cx="270" cy="270" r="10"/><circle class="hq" cx="270" cy="270" r="9"/>'
+              '<text class="lh" x="284" y="300">Jeseník</text></svg></div>')
+
+
 def home():
     towns = ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava', 'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny', 'Hanušovice', 'Ramzová']
     marquee = '<div class="mq" aria-hidden="true"><div class="mq__t">' + ''.join(f'<span>{x}</span>' for x in towns * 2) + '</div></div>'
@@ -396,18 +411,7 @@ def home():
             step('03 / Spuštění', 'Pustíme web do světa', 'Testy na mobilech i počítačích, SEO nastavení, analytika a Google Firemní profil. Pak teprve jde web ven.'),
             step('04 / Správa a propagace', 'Rosteme spolu dál', 'Zabezpečení, aktualizace, úpravy obsahu, SEO a placená propagace. Zůstáváme s vámi i po spuštění.'))), eid='proces')
 
-    rings = ''.join(f'<circle class="r" cx="270" cy="270" r="{r}"/>' for r in (46, 92, 184))
-    pins = [('Lipová-lázně', 234, 273, -8, 17, 'end'), ('Česká Ves', 284, 242, 8, -4, 'start'), ('Mikulovice', 346, 199, 8, -3, 'start'),
-            ('Zlaté Hory', 395, 234, 8, -3, 'start'), ('Javorník', 138, 105, -8, -7, 'end'), ('Vidnava', 258, 124, 8, -6, 'start'),
-            ('Žulová', 200, 187, -8, -3, 'end'), ('Bělá pod Pradědem', 265, 337, 8, 15, 'start'), ('Velké Losiny', 162, 472, -8, 4, 'end')]
-    rays = ''.join(f'<line class="ray" style="--i:{i}" x1="270" y1="270" x2="{x}" y2="{y}"/>' for i, (_, x, y, *_) in enumerate(pins))
-    pts = ''.join(f'<g class="pin" style="--i:{i}"><circle class="p" cx="{x}" cy="{y}" r="4"/><text class="l" x="{x+dx}" y="{y+dy}" text-anchor="{a}">{n}</text></g>' for i, (n, x, y, dx, dy, a) in enumerate(pins))
-    mapsvg = ('<div class="wmap"><svg viewBox="0 0 540 540" role="img" aria-label="Mapa Jesenicka – kde tvoříme webové stránky">'
-              '<defs><linearGradient id="wsw" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e3120b" stop-opacity="0"/><stop offset="1" stop-color="#e3120b" stop-opacity=".35"/></linearGradient></defs>'
-              f'{rings}<circle class="r" cx="270" cy="270" r="262" stroke-dasharray="2 6"/>'
-              '<path class="sw" d="M270 270 L532 270 A262 262 0 0 0 455 85 Z" fill="url(#wsw)"/>'
-              f'{rays}{pts}<circle class="hqr" cx="270" cy="270" r="10"/><circle class="hq" cx="270" cy="270" r="9"/>'
-              '<text class="lh" x="284" y="300">Jeseník</text></svg></div>')
+    mapsvg = jesenik_map()
     local = sec('ww-white', wrap('ww-local',
         con('ww-local-copy ww-rv',
             h('Jeseník · celá ČR', 'div', 'ww-eyebrow'),

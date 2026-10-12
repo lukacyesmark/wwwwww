@@ -58,7 +58,7 @@ def v_hero():
     return vsec('v-hero',
         html(shape, 'v-hero__bg'),
         vwrap('v-hero__grid',
-            con('v-hero__l', h('Tvorba webových stránek v Jeseníku, které prodávají.', 'h1', 'v-h1')),
+            con('v-hero__l', label('Tvorba webových stránek Jeseník · koncept Yesmark', 'v-hero__k'), h('Tvorba webových stránek v Jeseníku, které prodávají.', 'h1', 'v-h1')),
             con('v-hero__r',
                 t('<p>Navrhneme a postavíme <strong>web nebo e-shop na míru</strong>, který zaujme, dobře se najde na Googlu a z návštěvníků dělá zákazníky. Z Jeseníku pro celé Česko.</p>', 'v-lead'),
                 t(f'<p><a class="v-link" href="#poptavka">Nezávazná nabídka</a><a class="v-link" href="tel:{TEL}">{TEL_H}</a></p>', 'v-hero__links'))),
@@ -75,11 +75,35 @@ def v_yesmark():
             t('<p>Za wwwwww.cz stojí tým <strong>agentury Yesmark</strong> z Jeseníku. Stejné know-how jako u kampaní, grafiky a SEO pro naše klienty – jen s jasným zaměřením na weby. Když budete chtít, navážeme brandingem, kampaněmi i tiskem.</p>', 'v-serif v-serif--m'),
             t(f'<p><a class="v-btn v-btn--light" href="{b.yes(x="homepage_v2_strip")}" target="_blank" rel="noopener">Poznejte Yesmark ↗</a></p>', 'v-yes__cta')))
 
+def v_marquee():
+    towns = ['Jeseník', 'Lipová-lázně', 'Zlaté Hory', 'Javorník', 'Mikulovice', 'Vidnava', 'Žulová', 'Bělá pod Pradědem', 'Česká Ves', 'Velké Losiny', 'Hanušovice', 'Ramzová']
+    code = '<div class="mq" aria-hidden="true"><div class="mq__t">' + ''.join(f'<span>{x}</span>' for x in towns * 2) + '</div></div>'
+    return con('wv2 v-mq ww-home', html(code), tag='div', inner=False)
+
+def v_why():
+    pts = [('Design, který prodává', 'Každý prvek má důvod – přivést návštěvníka k telefonu nebo poptávce. Žádné hezké, ale prázdné stránky.'),
+           ('Najde vás Google', 'Weby stavíme s ohledem na vyhledávače a místní hledání. Aby vás našli lidé z Jeseníku i turisté z celé republiky.'),
+           ('Upravíte si ho sami', 'WordPress a Elementor: texty, fotky i nové stránky změníte sami. Ukážeme vám, jak na to.'),
+           ('Člověk, ne tiket', 'Komunikujete přímo s tím, kdo web staví. Osobní schůzka v Jeseníku, nebo online hovor odkudkoli.')]
+    cols = [con('v-why__i ww-rv', h(f'{i + 1:02d}', 'div', 'v-step__n'), h(a, 'h3', 'v-step__t'), t(f'<p>{c}</p>', 'v-small')) for i, (a, c) in enumerate(pts)]
+    return vsec('v-why',
+        vwrap('', label('Proč wwwwww'),
+              h('Web není vizitka. Je to <em>obchodník</em>, který pro vás pracuje 24/7.', 'h2', 'v-statement2 ww-rv'),
+              con('v-steps v-why__grid', *cols)))
+
+def v_ba():
+    return con('wv2 v-sec v-basec2 v-dark ww-home',
+        vwrap('v-ba2',
+            con('v-ba2__copy ww-rv', label('Redesign v praxi'), h('Před a po. Posuňte si to.', 'h2', 'v-h2'),
+                t('<p>Starý web, který nikoho nepřesvědčí, vs. moderní web, který vede k poptávce. Chyťte jezdec a porovnejte – takhle vypadá rozdíl, který zákazník pozná za pár vteřin.</p>', 'v-serif v-serif--m'),
+                t('<p><a class="v-more" href="/redesign-webu/"><span>Chci redesign webu</span><i>→</i></a></p>', 'v-more-w')),
+            html(b.BEFORE_AFTER, 'ww-rv')), tag='section', eid='pred-a-po', inner=False)
+
 def v_highlight():
     refs = [
-        ('konradt', 'KONRADT', 'CNC obrábění a montáže', 'Moderní technický web, který srozumitelně představí výrobní možnosti a služby v CNC frézování, soustružení i dodávkách odlitků.', 'https://www.konradt.cz/', 'Strojírenství', 'Web + SEO'),
-        ('monika-velickova', 'Monika Veličková', 'Reality v Jeseníkách', 'Osobitý web realitní makléřky postavený na osobní značce, znalosti regionu a přehledné prezentaci nemovitostí.', 'https://monikavelickova.cz/', 'Reality', 'Osobní značka'),
-        ('brincil', 'Břinčil', 'Technika a služby', 'Přehledný web s důrazem na snadnou orientaci a kvalitní prezentaci firmy i její techniky.', 'https://brincil.cz/', 'Služby', 'Firemní web')]
+        ('konradt', 'KONRADT', 'CNC obrábění a montáže', 'Pro společnost KONRADT jsme vytvořili nové webové stránky zaměřené na profesionální prezentaci služeb v oblasti CNC obrábění, montáže a zpracování kovů. Důraz jsme kladli na moderní technický vzhled, přehledné představení výrobních možností a srozumitelnou prezentaci služeb. Součástí byla i optimalizace struktury a obsahu pro lepší dohledatelnost CNC frézování, soustružení, montážních prací a dodávek odlitků.', 'https://www.konradt.cz/', 'Web · CNC obrábění', 'konradt.cz'),
+        ('monika-velickova', 'Monika Veličková', 'Reality v Jeseníkách', 'Pro realitní makléřku Moniku Veličkovou jsme vytvořili nové webové stránky zaměřené na prezentaci nemovitostí a realitních služeb v Jeseníkách. Důraz jsme kladli na moderní a osobitý design, přehlednou prezentaci nabízených nemovitostí a především na budování osobní značky, která staví na znalosti regionu, individuálním přístupu a zkušenostech s realitami i investicemi.', 'https://monikavelickova.cz/', 'Web · Reality Jeseníky', 'monikavelickova.cz'),
+        ('brincil', 'Břinčil', 'Technika a služby', 'Při realizaci webu pro firmu Břinčil jsme kladli důraz na moderní a přehledný design, snadnou orientaci návštěvníků a kvalitní prezentaci společnosti i její techniky. Nový web zároveň slouží jako podpůrná prezentace hlavní společnosti Břinčil &amp; Míka s.r.o., pro kterou jsme v minulosti rovněž realizovali kompletní online prezentaci.', 'https://brincil.cz/', 'Web · Technika a služby', 'brincil.cz')]
     slides = ''
     for i, (k, name, sub, text, url, t1, t2) in enumerate(refs):
         slides += (f'<article class="v-hl__slide{" is-on" if i == 0 else ""}" data-i="{i}">'
@@ -109,11 +133,12 @@ def v_list(items):
             html(f'<nav class="v-biglist" aria-label="Weby podle oboru">{links}</nav>')))
 
 SVC = [
-    ('Weby', 'Tvorba webových stránek na míru', 'Od jednoduché firemní prezentace po rozsáhlý web. Moderní design, srozumitelný obsah a jasná cesta k poptávce – web, který vám dělá dobré jméno i obchod.', '/tvorba-webovych-stranek/', 'shot:konradt'),
-    ('E-shopy', 'E-shopy, WooCommerce, PrestaShop', 'Přehledný obchod připravený na růst. Objednávka na pár kliků, platby, doprava a administrace, kterou zvládnete sami.', '/tvorba-eshopu/', 'shop'),
-    ('Redesign', 'Nový web místo starého', 'Starý web, který nic nepřináší? Převlékneme ho do moderního kabátu a postavíme znovu – bez ztráty pozic v Googlu.', '/redesign-webu/', 'shot:monika-velickova'),
-    ('SEO', 'SEO optimalizace a lokální SEO', 'Struktura, obsah a technické SEO od prvního dne, aby vás zákazníci našli dřív než konkurenci. Včetně Google Firemního profilu.', '/seo-optimalizace-webu/', 'serp'),
-    ('Správa', 'Správa, aktualizace a propagace', 'Aktualizace, zálohy, úpravy obsahu i PPC kampaně s týmem Yesmark. Zůstáváme s vámi i po spuštění.', '/sprava-webu/', 'photo'),
+    ('Weby', 'Tvorba webových stránek na míru', 'Od jednoduché firemní prezentace po rozsáhlý web. Moderní design, srozumitelný obsah a jasná cesta k poptávce – web, který vám dělá dobré jméno i obchod.', '/tvorba-webovych-stranek/', 'shot:konradt', ['UX &amp; UI design', 'Kódování na míru', 'WordPress + Elementor', 'October CMS', 'Responzivní design']),
+    ('E-shopy', 'E-shopy, WooCommerce, PrestaShop', 'Přehledný obchod připravený na růst. Objednávky, platby i doprava bez starostí – a administrace, kterou zvládnete sami.', '/tvorba-eshopu/', 'shop', ['WooCommerce', 'PrestaShop']),
+    ('Redesign', 'Nový web místo starého', 'Starý web, který nic nepřináší? Převlékneme ho do moderního kabátu a postavíme znovu – tentokrát na prodej a bez ztráty pozic v Googlu.', '/redesign-webu/', 'shot:monika-velickova', ['Nový design', 'Nový obsah']),
+    ('SEO', 'SEO optimalizace a lokální SEO', 'Struktura, obsah a technické SEO od prvního dne, aby vás zákazníci našli dřív než konkurenci.', '/seo-optimalizace-webu/', 'serp', ['On-page SEO', 'Google Firemní profil']),
+    ('Správa', 'Správa a propagace', 'Aktualizace, zabezpečení, úpravy obsahu i PPC kampaně. Zůstáváme s vámi i po spuštění.', '/sprava-webu/', 'photo', ['Údržba', 'PPC kampaně']),
+    ('Grafika', 'Grafika a branding', 'Logo, vizuální styl a grafika pro web i tisk – všechno pod jednou střechou Yesmark.', 'yesmark', 'brand', ['Logo', 'Vizuální styl']),
 ]
 
 def svc_visual(kind, name):
@@ -122,6 +147,10 @@ def svc_visual(kind, name):
         return f'<div class="v-vis v-vis--shot"><img src="{SHOT[k]["url"]}" alt="{name} – ukázka webu" loading="lazy"></div>'
     if kind == 'photo':
         return f'<div class="v-vis v-vis--photo"><img src="{b.PHOTO_URL}" alt="Roman Lukač – správa webu" loading="lazy"></div>'
+    if kind == 'brand':
+        return (f'<div class="v-vis v-vis--brand" aria-hidden="true"><div class="v-brand__logo">{b.LOGO}</div>'
+                '<div class="v-brand__sw"><i style="background:#161616"></i><i style="background:#e3120b"></i><i style="background:#b3b3b3"></i><i style="background:#f2efea"></i></div>'
+                '<p class="v-brand__type">Aa <span>Inter Tight</span></p></div>')
     if kind == 'shop':
         cards = ''.join(f'<div class="v-shop__p"><i></i><b>{n}</b><span>{p}</span></div>' for n, p in [('Lněná košile', '1 290 Kč'), ('Keramický hrnek', '390 Kč'), ('Svíčka Jeseníky', '249 Kč'), ('Dárkový set', '890 Kč')])
         return (f'<div class="v-vis v-vis--shop" aria-hidden="true"><div class="v-shop__bar"><b>obchod<em>.</em>cz</b><span>Košík <em>2</em></span></div>'
@@ -136,14 +165,17 @@ def svc_visual(kind, name):
 
 def v_services():
     panels = []
-    for i, (word, sub, text, url, vis) in enumerate(SVC):
+    for i, (word, sub, text, url, vis, tg) in enumerate(SVC):
+        ext = url == 'yesmark'
+        if ext: url = b.yes(x='homepage_v2_grafika')
         panels.append(con(f'v-svc v-svc--{i % 3}',
             vwrap('v-svc__in',
                 h(word, 'h2', 'v-svc__word'),
                 con('v-svc__row',
                     h(f'{i + 1:02d}', 'div', 'v-svc__num'),
                     con('v-svc__txt', h(sub, 'h3', 'v-serif v-serif--m'), t(f'<p>{text}</p>', 'v-body'),
-                        t(f'<p><a class="v-more" href="{url}"><span>Více o službě</span><i>→</i></a></p>', 'v-more-w')),
+                        t('<p>' + ''.join(f'<span>{x}</span>' for x in tg) + '</p>', 'v-chips'),
+                        t(f'<p><a class="v-more" href="{url}"' + (' target="_blank" rel="noopener"><span>Yesmark.eu</span><i>↗</i>' if ext else '><span>Více o službě</span><i>→</i>') + '</a></p>', 'v-more-w')),
                     html(svc_visual(vis, sub), 'v-svc__vis')))))
     return con('wv2 v-svcs', *panels, tag='section', eid='sluzby', inner=False)
 
@@ -162,11 +194,11 @@ def v_numbers():
     return vsec('v-numsec', html(code))
 
 def v_process():
-    steps = [('Analýza a návrh', 'Projdeme cíle, zákazníky a konkurenci. Navrhneme strukturu a obsah, který prodává.'),
-             ('Design a realizace', 'Design na míru, programování a obsah s důrazem na detail. Průběžně vidíte, jak web roste.'),
-             ('Spuštění', 'Testy na mobilech, SEO nastavení, analytika a Google Firemní profil.'),
-             ('Správa a propagace', 'Zabezpečení, aktualizace, úpravy obsahu, SEO a kampaně. Zůstáváme s vámi.')]
-    cols = [con('v-step ww-rv', h(f'{i + 1:02d}', 'div', 'v-step__n'), h(a, 'h3', 'v-step__t'), t(f'<p>{c}</p>', 'v-small')) for i, (a, c) in enumerate(steps)]
+    steps = [('Analýza a návrh', 'Poznáme váš byznys', 'Projdeme vaše cíle, zákazníky a konkurenci. Navrhneme strukturu webu a obsah, který prodává – šablonové řešení, nebo kódování na míru.'),
+             ('Design a realizace', 'Navrhneme a postavíme', 'Design na míru, programování a obsah s důrazem na detail. Průběžně vidíte, jak web roste, a můžete říct svůj názor.'),
+             ('Spuštění', 'Pustíme web do světa', 'Testy na mobilech i počítačích, SEO nastavení, analytika a Google Firemní profil. Pak teprve jde web ven.'),
+             ('Správa a propagace', 'Rosteme spolu dál', 'Zabezpečení, aktualizace, úpravy obsahu, SEO a placená propagace. Zůstáváme s vámi i po spuštění.')]
+    cols = [con('v-step ww-rv', h(f'{i + 1:02d} / {k}', 'div', 'v-step__n'), h(a, 'h3', 'v-step__t'), t(f'<p>{c}</p>', 'v-small')) for i, (k, a, c) in enumerate(steps)]
     return vsec('v-proc',
         vwrap('', con('v-row2 ww-rv', h('Od kafe ke spuštění.', 'h2', 'v-h2'),
                       t('<p>Jasný postup bez překvapení. Víte, co se děje, kdy to bude a kolik to stojí.</p>', 'v-serif v-serif--m')),
@@ -179,12 +211,13 @@ def v_local():
             '<h3>Weby pro ubytování a turistický ruch v Jeseníkách</h3><p>Penziony, apartmány a chaty potřebují web, který zaujme fotkami, jasně ukáže ceny a vede k rezervaci – v češtině, němčině i polštině.</p>'
             '<h3>Weby pro řemeslníky, služby a výrobní firmy z Jesenicka</h3><p>Instalatér z Jeseníku, truhlář ze Zlatých Hor nebo strojírna z Javorníku – každý potřebuje web, který se ukáže, když ho místní zákazník hledá na Googlu.</p>'
             f'<h3>Osobně v Jeseníku, online kdekoli v Česku</h3><p>Sídlíme v Jeseníku ({b.ADDR}). Místní klienty rádi potkáme u nás v kanceláři, s ostatními vše vyřešíme přes videohovor, telefon a sdílený návrh.</p>')
-    return vsec('v-local',
+    return con('wv2 v-sec v-local ww-home',
         vwrap('v-local__grid',
-            con('v-local__l ww-rv', label('Jeseník · celá ČR'), h('Tvorba webových stránek Jeseník – a kdekoli v Česku', 'h2', 'v-h2')),
+            con('v-local__l ww-rv', label('Jeseník · celá ČR'), h('Tvorba webových stránek Jeseník – a kdekoli v Česku', 'h2', 'v-h2'),
+                html(b.jesenik_map(), 'ww-rv v-map')),
             con('v-local__r ww-rv', t('<p>Sídlíme pod Pradědem. Weby ale stavíme pro klienty z celé republiky – osobně, nebo online.</p>', 'v-serif v-serif--m'),
                 t(body, 'v-body v-prose'),
-                label('Tvoříme weby také pro'), t(f'<p>{towns}</p>', 'v-towns'))), eid='jesenicko')
+                label('Tvoříme weby také pro'), t(f'<p>{towns}</p>', 'v-towns'))), tag='section', eid='jesenicko', inner=False)
 
 def v_quiz():
     return con('wv2 v-sec v-quizsec v-dark ww-home',
@@ -247,8 +280,8 @@ def home_v2():
     sysc = b.system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')
     sysc['settings']['css_classes'] += ' wv2-sys'
     loader = con('ww ww-sys', html(b.js_loader()), inner=False)
-    return [v_header(), v_hero(), v_statement(), v_yesmark(), v_highlight(), v_list(v_obory()), v_services(), v_numbers(), v_process(),
-            v_local(), v_quiz(), v_price(faq), v_contact(), v_footer(), sysc, loader]
+    return [v_header(), v_hero(), v_marquee(), v_statement(), v_yesmark(), v_highlight(), v_list(v_obory()), v_services(), v_why(), v_numbers(), v_process(),
+            v_ba(), v_local(), v_quiz(), v_price(faq), v_contact(), v_footer(), sysc, loader]
 
 if __name__ == '__main__':
     d = home_v2()
