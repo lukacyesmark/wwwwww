@@ -300,15 +300,11 @@ def refs_section():
 
 
 def hero_visual(kw):
-    def win(label, key, name):
-        return (f'<div class="hv__win"><div class="hv__bar"><i></i><i></i><i></i><b>{label}</b></div>'
-                f'<div class="hv__shot"><img src="{SHOT[key]["url"]}" alt="{kw} – ukázka webu {name}" decoding="async"></div></div>')
-    return ('<div class="hv"><div class="hv__stack">'
-        + win('brincil.cz', 'brincil', 'Břinčil') + win('monikavelickova.cz', 'monika-velickova', 'Monika Veličková') + win('konradt.cz', 'konradt', 'KONRADT') +
-        '<div class="hv__chip" aria-hidden="true">Navrženo a postaveno v Jeseníku</div>'
-        '<div class="hv__toast" aria-hidden="true"><em>✓</em><div><strong>Nová poptávka z webu</strong><small>právě teď</small></div></div>'
-        '</div></div>')
-
+    # jedna plochá karta s ukázkou webu (reference se střídá podle stránky)
+    refs = [('konradt', 'KONRADT'), ('monika-velickova', 'Monika Veličková'), ('brincil', 'Břinčil')]
+    key, name = refs[sum(map(ord, kw)) % 3]
+    return (f'<figure class="v-hv"><img src="{SHOT[key]["url"]}" alt="{kw} – ukázka webu {name}" decoding="async">'
+            f'<figcaption>Reference · {name}</figcaption></figure>')
 
 # ---------- interaktivní bloky hlavní stránky ----------
 STATS = ('<div class="wstats wstats--2">'

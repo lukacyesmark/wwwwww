@@ -278,13 +278,14 @@ def home_v2():
     ]
     ld = {'@context': 'https://schema.org', '@graph': [b.BUSINESS, {'@type': 'WebSite', '@id': 'https://wwwwww.cz/#web', 'url': 'https://wwwwww.cz/', 'name': 'wwwwww.cz', 'inLanguage': 'cs-CZ', 'publisher': {'@id': 'https://wwwwww.cz/#business'}}]}
     sysc = b.system(ld, '<a class="wbtn wbtn--red" href="#poptavka">Poptat web</a>')
-    sysc['settings']['css_classes'] += ' wv2-sys'
-    loader = con('ww ww-sys', html(b.js_loader()), inner=False)
-    return [v_header(), v_hero(), v_marquee(), v_statement(), v_yesmark(), v_highlight(), v_list(v_obory()), v_services(), v_why(), v_numbers(), v_process(),
-            v_ba(), v_local(), v_quiz(), v_price(faq), v_contact(), v_footer(), sysc, loader]
+    return [b.header(), v_hero(), v_marquee(), v_statement(), v_yesmark(), v_highlight(), v_list(v_obory()), v_services(), v_why(), v_numbers(), v_process(),
+            v_ba(), v_local(), v_quiz(), v_price(faq), v_contact(), b.footer(), sysc]
 
 if __name__ == '__main__':
     d = home_v2()
     (b.OUT / 'home-v2.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
     (b.OUT / 'home-v2.html').write_text(b.to_html(d), encoding='utf-8')
+    # nový design je hlavní stránka
+    (b.OUT / 'home.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+    (b.OUT / 'home.html').write_text(b.to_html(d), encoding='utf-8')
     print('home-v2', len(json.dumps(d)) // 1024, 'kB')

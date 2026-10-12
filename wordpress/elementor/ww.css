@@ -1047,3 +1047,64 @@ html:not(.ww-js) .v-num__i{position:relative;opacity:1;padding:24px var(--v-gut)
 .v-map .wmap{max-width:420px;margin:0}
 .v-local .wmap .r{stroke:rgba(22,22,22,.18)}
 @media (max-width:860px){.e-con.v-ba2{grid-template-columns:1fr}.v-vis--brand{margin-left:0;max-width:320px}.v-map .wmap{max-width:320px}}
+/* ===== výkon na telefonech (iPhone) ===== */
+@media (max-width:860px),(pointer:coarse){
+  body::after{display:none}
+  .e-con.v-svc{position:relative!important;min-height:0;transform:none!important;will-change:auto;border-radius:18px 18px 0 0}
+  .v-num{height:auto!important}
+  .v-num__stick{position:relative;height:auto;display:block;padding:70px 0;overflow:visible}
+  .v-num__ghost,.v-num__photo{display:none}
+  .v-num__items{position:relative}
+  .v-num__i{position:relative;opacity:1;padding:26px var(--v-gut);grid-template-rows:none;border-top:1px solid var(--v-line)}
+  .v-num__cap{background:none;padding:0}
+  .wv2 .v-clip .elementor-heading-title{background:none;color:var(--v-ink)!important;-webkit-background-clip:border-box;background-clip:border-box}
+  .v-hl__img{transition:none}
+  .wv2 .mq__t{animation-duration:60s}
+}
+
+/* ===== NOVÝ STYL PRO CELÝ WEB (přebarvení původních ww-* bloků) ===== */
+:root{--ww-ink:#161616;--ww-ink-2:#1f1f1f;--ww-ink-3:#2a2a2a;--ww-line-d:rgba(255,255,255,.12);--ww-paper:#f2efea;--ww-paper-2:#e7e3dc;--ww-line-l:rgba(22,22,22,.14);
+  --ww-t1:#f2efea;--ww-t2:rgba(242,239,234,.68);--ww-t3:rgba(242,239,234,.45);--ww-d1:#161616;--ww-d2:#55514b;--ww-r:12px;--ww-font:"Inter Tight","Helvetica Neue",Arial,sans-serif}
+body{background:var(--v-bg)}
+.ww .elementor-widget-heading .elementor-heading-title{font-family:var(--v-sans)!important;font-weight:500!important}
+.ww .elementor-widget-text-editor{font-family:var(--v-sans);font-weight:300}
+.ww .elementor-widget-text-editor strong{font-weight:500}
+.ww .ww-h1 .elementor-heading-title{font-weight:500!important;letter-spacing:-.045em;line-height:1}
+.ww .ww-h2 .elementor-heading-title,.ww .ww-h2s .elementor-heading-title{letter-spacing:-.035em}
+.ww .ww-eyebrow .elementor-heading-title{font-size:11px;letter-spacing:.14em}
+.ww .ww-eyebrow .elementor-heading-title::before{display:none}
+.ww-lead,.ww .ww-lead{font-family:var(--v-serif)!important}
+.ww .ww-lead p{font-family:var(--v-serif);font-weight:300;font-size:clamp(20px,1.8vw,26px);line-height:1.35;letter-spacing:-.015em}
+.ww .elementor-widget-button .elementor-button{border-radius:4px;font-size:12px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:16px 20px;box-shadow:none!important}
+.ww .elementor-widget-button .elementor-button:hover{transform:none;background:var(--ww-ink);box-shadow:none}
+.ww-dark .elementor-widget-button .elementor-button:hover{background:#fff;color:var(--ww-ink)}
+.ww .ww-btn--plain .elementor-button-text::after{content:none}
+/* podstránky – úvod */
+.e-con.ww-phero,.e-con.ww-hero{padding:150px 0 80px!important;min-height:0}
+.e-con.ww-phero::after,.e-con.ww-hero::after,.e-con.ww-hero::before{display:none}
+.e-con.ww-cityhero .ww-hero-grid{align-items:end}
+.ww-crumbs p{font-size:12px;letter-spacing:.04em}
+.ww-trust p{font-size:13px}
+.v-hv{margin:0 0 0 auto;width:min(360px,100%);position:relative}
+.v-hv img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:top;border-radius:14px;display:block;transition:object-position 9s linear;box-shadow:0 40px 80px -40px rgba(0,0,0,.8)}
+.v-hv:hover img{object-position:bottom}
+.v-hv figcaption{font-family:var(--v-serif);font-weight:300;font-size:17px;color:var(--ww-t2);margin-top:12px}
+/* karty a bloky – méně „AI“ efektů */
+.e-con.ww-card,.e-con.ww-citycard,.e-con.ww-person,.e-con.ww-price-card,.e-con.ww-formcard,.e-con.ww-ref{border-radius:12px}
+.e-con.ww-card::before,.e-con.ww-card::after,.e-con.ww-citycard::after,.e-con.ww-person::after,.e-con.ww-price-card::after{display:none!important}
+.e-con.ww-card:hover{transform:none}
+.e-con.ww-price-card{background:var(--ww-ink-2)}
+.e-con.ww-formcard{background:transparent;border:0;padding:0!important}
+.ww-formcard .ww-form input:not([type=checkbox]),.ww-formcard .ww-form textarea{background:transparent!important;border:0!important;border-bottom:1px solid rgba(22,22,22,.35)!important;border-radius:0!important;padding:12px 0!important;font:400 17px var(--v-sans)!important;box-shadow:none!important}
+.ww-formcard .ww-form .elementor-button{background:var(--ww-ink)!important;border-radius:4px!important;text-transform:uppercase;font-size:12px!important;letter-spacing:.08em}
+.ww-formcard .ww-form .elementor-button:hover{background:var(--ww-red)!important}
+.ww .ww-num .elementor-heading-title{color:var(--ww-red)}
+.ww .ww-towns span,.ww-towns a{border-radius:4px}
+.ww-toc a{border-radius:4px!important}
+.ww .ww-faq .elementor-tab-title{font-family:var(--v-sans)!important;font-weight:500!important}
+.ww .ww-price-num .elementor-heading-title{font-weight:500!important;letter-spacing:-.05em}
+.ww .ww-price-num small{font-family:var(--v-serif);font-weight:300}
+.ww .ww-checklist li::before{color:var(--ww-red)}
+/* staré prvky hlavičky už nejsou */
+.wcursor,.wprog{display:none!important}
+.ww .ww-formcard .ww-form .elementor-field-type-submit .elementor-button,.ww .ww-form button.elementor-button{border-radius:4px!important;box-shadow:none!important;text-transform:uppercase;letter-spacing:.08em;font-size:12px!important}

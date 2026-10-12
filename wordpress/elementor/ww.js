@@ -201,7 +201,7 @@
 
     /* 5) pás s obcemi – rychlost a směr podle scrollu */
     var mq = $('.ww-home .mq__t'), anim = mq && mq.getAnimations ? mq.getAnimations()[0] : null, lastY = scrollY, vel = 0;
-    if (!reduce && anim) tasks.push(function () {
+    if (!reduce && fine && anim) tasks.push(function () {
       var d = scrollY - lastY; lastY = scrollY;
       vel += (clamp(d, -60, 60) / 6 - vel) * 0.3;
       anim.playbackRate = (d < 0 ? -1 : 1) * (1 + Math.abs(vel));
@@ -359,6 +359,8 @@
     /* scroll efekty */
     var shape = $('.v-hero .v-shape'), mark = $('.v-hero .v-bigmark'), clip = $('.v-clip .elementor-heading-title'),
         svcs = $$('.v-svc'), num = $('.v-num'), numItems = num ? $$('.v-num__i', num) : [], ghost = num && $('.v-num__ghost', num), photo = num && $('.v-num__photo', num);
+    var lite = !fine || matchMedia('(max-width: 860px)').matches;   /* telefony: jen lehké efekty */
+    if (lite) { shape = mark = clip = null; svcs = []; }
     var tick = function () {
       var vh = innerHeight, y = scrollY;
       if (!reduce && shape && y < vh * 1.2) { shape.style.transform = 'translateY(' + (y * 0.25).toFixed(1) + 'px)'; if (mark) mark.style.transform = 'translateY(' + (-y * 0.12).toFixed(1) + 'px)'; }
