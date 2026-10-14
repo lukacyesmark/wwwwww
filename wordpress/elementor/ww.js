@@ -384,5 +384,52 @@
     addEventListener('resize', tick); tick();
   })();
 
+  /* ===== NÁVRH v3 (.wv3) ===== */
+  if ($('.wv3') && !inEditor) (function () {
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+    var head = $('.c3-head'), burger = $('.c3-burger'), menu = $('#c3-menu');
+    if (burger) {
+      var setM = function (o) { doc.body.classList.toggle('c3-menu-open', o); burger.setAttribute('aria-expanded', String(o)); menu.setAttribute('aria-hidden', String(!o)); doc.body.style.overflow = o ? 'hidden' : ''; };
+      burger.addEventListener('click', function () { setM(!doc.body.classList.contains('c3-menu-open')); });
+      $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setM(false); }); });
+      addEventListener('keydown', function (e) { if (e.key === 'Escape') setM(false); });
+    }
+    /* odkrývání */
+    if ('IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { threshold: 0.12 });
+      $$('.wv3 .c3-rv').forEach(function (el) { io.observe(el); });
+    } else $$('.wv3 .c3-rv').forEach(function (el) { el.classList.add('is-in'); });
+    /* médium se při scrollu zvětšuje */
+    var media = $('.c3-media');
+    var tick = function () {
+      if (head) head.classList.toggle('is-scrolled', scrollY > 20);
+      if (media && !reduce) { var r = media.parentNode.getBoundingClientRect(); var p = clamp((innerHeight - r.top) / (innerHeight * 0.9), 0, 1); media.style.setProperty('--ms', (0.72 + p * 0.28).toFixed(3)); }
+    };
+    var tk = false; addEventListener('scroll', function () { if (!tk) { tk = true; requestAnimationFrame(function () { tk = false; tick(); }); } }, { passive: true }); tick();
+    /* služby – plovoucí náhled u kurzoru */
+    var fl = $('.c3-float'), fimg = fl && $('img', fl);
+    if (fl && fine) $$('.c3-row').forEach(function (r) {
+      r.addEventListener('pointerenter', function () { fimg.src = r.getAttribute('data-img'); fl.classList.add('is-on'); });
+      r.addEventListener('pointerleave', function () { fl.classList.remove('is-on'); });
+      r.addEventListener('pointermove', function (e) { fl.style.setProperty('--fx', (e.clientX + 24) + 'px'); fl.style.setProperty('--fy', (e.clientY - 140) + 'px'); });
+    });
+    /* reference – tažení myší */
+    $$('.c3-track').forEach(function (tr) {
+      var down = false, sx = 0, sl = 0, moved = false;
+      tr.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'mouse') return; down = true; moved = false; sx = e.clientX; sl = tr.scrollLeft; tr.classList.add('is-drag'); });
+      addEventListener('pointermove', function (e) { if (!down) return; var d = e.clientX - sx; if (Math.abs(d) > 4) moved = true; tr.scrollLeft = sl - d; });
+      addEventListener('pointerup', function () { down = false; tr.classList.remove('is-drag'); });
+      tr.addEventListener('click', function (e) { if (moved) { e.preventDefault(); moved = false; } }, true);
+    });
+    /* barevná slideshow */
+    $$('.c3-show').forEach(function (sh) {
+      var sl = $$('.c3-slide', sh), bars = $$('.c3-bars b', sh), i = 0, t0 = performance.now(), dur = 6000, raf;
+      var go = function (n) { i = (n + sl.length) % sl.length; sl.forEach(function (s, k) { s.classList.toggle('is-on', k === i); }); bars.forEach(function (b, k) { b.style.setProperty('--p', k < i ? '100%' : '0%'); }); sh.classList.toggle('is-sand', sl[i].classList.contains('c3-slide--sand')); t0 = performance.now(); };
+      $$('.c3-bars i', sh).forEach(function (bi, k) { bi.addEventListener('click', function () { go(k); }); });
+      var loop = function (t) { var p = Math.min(1, (t - t0) / dur); if (bars[i]) bars[i].style.setProperty('--p', (p * 100).toFixed(1) + '%'); if (p >= 1) go(i + 1); raf = requestAnimationFrame(loop); };
+      go(0); if (!reduce) raf = requestAnimationFrame(loop);
+    });
+  })();
+
   $$('[data-ww-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 })();
