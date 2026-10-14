@@ -1322,3 +1322,33 @@ body:has(.wv3)::after{display:none}
 .c3-media__in{aspect-ratio:auto!important;height:0;padding-bottom:56.25%}
 @media (max-width:900px){.c3-media__in{padding-bottom:125%}}
 .e-con.wv3.c3-hero{flex-wrap:nowrap!important}
+/* =================== CELÝ WEB VE STYLU v3 – světlé podstránky =================== */
+body{background:var(--c3-bg)}
+.ww-dark,.ww-dark2,.e-con.ww-person,.e-con.ww-price-card,.ww-tpl{--ww-ink:var(--c3-bg);--ww-ink-2:#fff;--ww-ink-3:#efebe4;--ww-line-d:var(--c3-line);
+  --ww-t1:var(--c3-ink);--ww-t2:var(--c3-mute);--ww-t3:#8d867f}
+:root{--ww-paper-2:#efebe4;--ww-line-l:var(--c3-line);--ww-d1:var(--c3-ink);--ww-d2:var(--c3-mute)}
+.e-con.ww-person,.e-con.ww-price-card{background:#fff!important;border:1px solid var(--c3-line)!important;color:var(--c3-ink)}
+.ww-light .e-con.ww-person,.ww-light .e-con.ww-price-card{border-color:transparent!important}
+/* písmo nadpisů jako na hlavní stránce */
+.ww .ww-h1 .elementor-heading-title,.ww .ww-h2 .elementor-heading-title,.ww .ww-h2s .elementor-heading-title,.ww .ww-price-num .elementor-heading-title{font-family:var(--c3-serif)!important;font-weight:400!important;letter-spacing:-.02em;line-height:1.06}
+.ww .ww-h1 .elementor-heading-title{font-size:clamp(42px,5.4vw,80px)}
+.ww .ww-eyebrow .elementor-heading-title{color:var(--c3-mute)!important;letter-spacing:0;text-transform:none;font-size:13px;font-weight:400}
+.ww .elementor-widget-text-editor{color:var(--c3-mute)}
+.ww-dark .elementor-widget-text-editor strong,.ww-light .elementor-widget-text-editor strong{color:var(--c3-ink)}
+/* tlačítka – tmavé pilulky, hover červená */
+.ww .elementor-widget-button .elementor-button{border-radius:999px;text-transform:none;letter-spacing:0;font-size:14px;font-weight:500;padding:14px 22px;background:var(--c3-ink);color:#fff}
+.ww .elementor-widget-button .elementor-button:hover,.ww-dark .elementor-widget-button .elementor-button:hover{background:var(--ww-red);color:#fff}
+.ww .ww-btn--ghost .elementor-button,.ww-dark .ww-btn--ghost .elementor-button{background:transparent;color:var(--c3-ink);box-shadow:inset 0 0 0 1px var(--c3-line)!important}
+.ww .ww-btn--ghost .elementor-button:hover,.ww-dark .ww-btn--ghost .elementor-button:hover{background:var(--c3-ink);color:#fff;box-shadow:none!important}
+.ww .ww-formcard .ww-form .elementor-field-type-submit .elementor-button,.ww .ww-form button.elementor-button{border-radius:999px!important;text-transform:none;letter-spacing:0;font-size:14px!important;background:var(--c3-ink)!important}
+.ww .ww-form button.elementor-button:hover{background:var(--ww-red)!important}
+/* úvod podstránek – světlý, bez stínů */
+.v-hv img{box-shadow:0 30px 60px -40px rgba(26,20,17,.45)}
+.ww-dark .ww-card,.ww-dark .ww-citycard{background:#fff!important;border-color:var(--c3-line)!important}
+.ww-toc a{background:transparent!important;border:1px solid var(--c3-line)!important;color:var(--c3-ink)!important;border-radius:999px!important}
+.ww-toc a:hover{background:var(--c3-ink)!important;color:#fff!important}
+.e-con.ww-citycard,.e-con.ww-napmap{background-color:var(--c3-brown)!important;color:#f3eee8}
+.ww .ww-citycard .elementor-widget-button .elementor-button,.ww .ww-napmap .elementor-widget-button .elementor-button{background:#fff;color:var(--c3-ink)}
+.ww .ww-citycard .elementor-widget-button .elementor-button:hover,.ww .ww-napmap .elementor-widget-button .elementor-button:hover{background:var(--ww-red);color:#fff}
+.ww-photo img{border-color:var(--c3-line)!important}
+.ww .ww-statement .elementor-heading-title{font-family:var(--c3-serif)!important;font-weight:400!important;letter-spacing:-.02em}

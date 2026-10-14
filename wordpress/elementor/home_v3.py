@@ -45,7 +45,7 @@ def c3_header():
             '<div class="c3-head__r">' + pill('Poptat web', '#poptavka', 'c3-pill--dark c3-hide-s') +
             '<button class="c3-burger" type="button" aria-expanded="false" aria-controls="c3-menu" aria-label="Menu"><i></i><i></i></button></div></header>'
             '<div class="c3-menu" id="c3-menu" aria-hidden="true"><div class="c3-menu__in">'
-            '<nav class="c3-menu__main" aria-label="Hlavní navigace"><a href="/tvorba-webovych-stranek/">Služby</a><a href="#reference">Reference</a>'
+            '<nav class="c3-menu__main" aria-label="Hlavní navigace"><a href="/tvorba-webovych-stranek/">Služby</a><a href="/#reference">Reference</a>'
             '<a href="/weby-pro-obory/">Obory</a><a href="/kolik-stoji-web/">Ceník</a><a href="/kontakt/">Kontakt</a></nav>'
             f'<div class="c3-menu__svc">{svc}</div>'
             f'<p class="c3-menu__c"><a href="tel:{TEL}">{TEL_H}</a> · <a href="mailto:{MAIL}">{MAIL}</a></p></div></div>')
@@ -171,12 +171,16 @@ def c3_footer():
             f'<p>{b.PRIV_FOOT}<a href="#elementor-action%3Aaction%3DcookiezBanner%3AopenPreferences">Nastavení cookies</a></p></div></div>')
     return con('wv3 c3-footer c3-dark', html(code), tag='footer', inner=False)
 
-def home_v3():
+def home_v3(live=False):
+    """live=True: hlavička a patička jako globální šablony (hlavní stránka), jinak vše přímo ve stránce (náhled)."""
     faq = _faq()
     ld = {'@context': 'https://schema.org', '@graph': [b.BUSINESS, {'@type': 'WebSite', '@id': 'https://wwwwww.cz/#web', 'url': 'https://wwwwww.cz/', 'name': 'wwwwww.cz', 'inLanguage': 'cs-CZ', 'publisher': {'@id': 'https://wwwwww.cz/#business'}}]}
     mbar = (f'<div class="wmbar"><a class="wbtn wbtn--ghost" href="tel:{TEL}">Zavolat</a><a class="wbtn wbtn--red" href="#poptavka">Poptat web</a></div>'
             '<script type="application/ld+json">' + json.dumps(ld, ensure_ascii=False) + '</script>')
-    sysc = con('ww ww-sys wv3-sys', html(mbar + b.js_loader()), inner=False)
+    sysc = con('ww ww-sys wv3-sys', html(mbar + ('' if live else b.js_loader())), inner=False)
+    if live:
+        return [b.header(), c3_hero(), c3_services(), c3_refs(), c3_obory(), c3_slides(), c3_process(), c3_quiz(), c3_ba(),
+                c3_local(), c3_price(faq), c3_contact(), b.footer(), sysc]
     return [c3_header(), c3_hero(), c3_services(), c3_refs(), c3_obory(), c3_slides(), c3_process(), c3_quiz(), c3_ba(),
             c3_local(), c3_price(faq), c3_contact(), c3_footer(), sysc]
 
@@ -194,4 +198,8 @@ if __name__ == '__main__':
     d = home_v3()
     (b.OUT / 'home-v3.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
     (b.OUT / 'home-v3.html').write_text(b.to_html(d), encoding='utf-8')
+    # hlavní stránka (globální hlavička a patička)
+    d = home_v3(live=True)
+    (b.OUT / 'home.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
+    (b.OUT / 'home.html').write_text(b.to_html(d), encoding='utf-8')
     print('home-v3', len(json.dumps(d)) // 1024, 'kB')

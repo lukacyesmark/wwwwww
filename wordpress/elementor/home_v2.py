@@ -285,7 +285,4 @@ if __name__ == '__main__':
     d = home_v2()
     (b.OUT / 'home-v2.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
     (b.OUT / 'home-v2.html').write_text(b.to_html(d), encoding='utf-8')
-    # nový design je hlavní stránka
-    (b.OUT / 'home.json').write_text(json.dumps(d, ensure_ascii=False), encoding='utf-8')
-    (b.OUT / 'home.html').write_text(b.to_html(d), encoding='utf-8')
     print('home-v2', len(json.dumps(d)) // 1024, 'kB')
