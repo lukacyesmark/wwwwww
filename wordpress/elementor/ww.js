@@ -131,6 +131,14 @@
       });
     };
     walk(el);
+    /* samotnou tečku / čárku za slovem nenechat spadnout na nový řádek */
+    $$('.ww-w', el).forEach(function (w) {
+      var host = w.parentNode !== el && w.parentNode.childNodes.length === 1 ? w.parentNode : w, prev = host.previousSibling;
+      if (/^[.,!?:;]$/.test(w.textContent) && prev && prev.nodeType === 1 && prev.classList.contains('ww-w')) {
+        prev.firstChild.appendChild(host === w ? doc.createTextNode(w.textContent) : (host.textContent = w.textContent, host));
+        if (host === w) w.parentNode.removeChild(w);
+      }
+    });
     el.classList.add('ww-split');
     requestAnimationFrame(function () { requestAnimationFrame(function () { el.classList.add('is-split'); }); });
   });
