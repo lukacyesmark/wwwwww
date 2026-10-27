@@ -431,5 +431,46 @@
     });
   })();
 
+  /* ===== REDESIGN v4 (.wv4) ===== */
+  if ($('.wv4') && !inEditor) (function () {
+    var head = $('.v4-head'), burger = $('.v4-burger'), menu = $('#v4-menu');
+    if (burger && menu) {
+      var setM = function (o) { doc.body.classList.toggle('v4-menu-open', o); burger.setAttribute('aria-expanded', String(o)); menu.setAttribute('aria-hidden', String(!o)); doc.body.style.overflow = o ? 'hidden' : ''; };
+      burger.addEventListener('click', function () { setM(!doc.body.classList.contains('v4-menu-open')); });
+      $$('a', menu).forEach(function (a) { a.addEventListener('click', function () { setM(false); }); });
+      addEventListener('keydown', function (e) { if (e.key === 'Escape') setM(false); });
+    }
+    $$('.v4-nav a').forEach(function (a) { var hr = a.getAttribute('href'); if (hr !== '/' && hr === location.pathname) a.classList.add('is-active'); });
+    var onS = function () { if (head) head.classList.toggle('is-scrolled', scrollY > 10); };
+    addEventListener('scroll', onS, { passive: true }); onS();
+    /* odkrývání */
+    var rv = $$('.wv4 .v4-rv, .wv4 .v4-steps-w');
+    if ('IntersectionObserver' in window && !reduce) {
+      var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -6% 0px', threshold: 0.08 });
+      rv.forEach(function (el) { io.observe(el); });
+    } else rv.forEach(function (el) { el.classList.add('is-in'); });
+    /* úvod – web, který se sám postaví */
+    $$('.v4-build').forEach(function (bd) {
+      var cur = $('.v4-build__cursor', bd), btn = $('.v4-b-btns u', bd), s = 0, timer = 0, vis = false;
+      var set = function (n) {
+        s = n; bd.setAttribute('data-s', String(n));
+        for (var k = 1; k <= 5; k++) bd.classList.toggle('is-' + k, k <= n);
+        if (n === 4 && cur && btn) {
+          var r = bd.getBoundingClientRect(), q = btn.getBoundingClientRect();
+          bd.style.setProperty('--cx', (q.left - r.left + q.width * 0.55) + 'px');
+          bd.style.setProperty('--cy', (q.top - r.top + q.height * 0.6) + 'px');
+        }
+        if (n === 0) { bd.style.removeProperty('--cx'); bd.style.removeProperty('--cy'); }
+      };
+      if (reduce) { set(5); return; }
+      var dur = [1400, 1100, 1300, 1100, 950, 3400];
+      var loop = function () { clearTimeout(timer); timer = setTimeout(function () { set(s >= 5 ? 0 : s + 1); loop(); }, dur[s]); };
+      set(0);
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (en) { var v = en[0].isIntersecting; if (v && !vis) loop(); if (!v) clearTimeout(timer); vis = v; }).observe(bd);
+      } else loop();
+    });
+  })();
+
   $$('[data-ww-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
 })();
