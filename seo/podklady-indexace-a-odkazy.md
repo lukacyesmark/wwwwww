@@ -46,7 +46,18 @@ Search Console → Kontrola URL → vložit adresu → Požádat o indexování.
 9. https://wwwwww.cz/tvorba-webovych-stranek-novy-jicin/
 10. https://wwwwww.cz/tvorba-webovych-stranek-trinec/
 
-Zbytek měst a obory až potom, nebo je Google najde sám přes mapu webu.
+**Den 4**
+1. https://wwwwww.cz/web-pro-restaurace/
+2. https://wwwwww.cz/web-pro-penzion/
+3. https://wwwwww.cz/web-pro-svj/
+4. https://wwwwww.cz/web-pro-skola/
+5. https://wwwwww.cz/web-pro-realitni-makler/
+
+Zbytek měst Google najde sám přes mapu webu.
+
+**Obory (10. 11. 2026):** v indexu je jen 5 oborů výše. Ostatních 67 má dočasně noindex (odkazy zůstávají
+průchozí) a nejsou v mapě webu, která má teď 42 adres. Vrácení všech oborů do indexu:
+`python3 wordpress/elementor/obory_robots.py index`
 
 ---
 
