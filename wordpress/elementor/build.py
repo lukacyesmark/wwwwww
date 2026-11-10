@@ -184,8 +184,9 @@ def contact_section(page):
         submit_actions=['email'],
         email_to=MAIL, email_subject='Poptávka z wwwwww.cz — [field id="name"]',
         email_content='[all-fields]', email_from='web@wwwwww.cz', email_from_name='wwwwww.cz',
-        email_reply_to='[field id="email"]', email_content_type='plain',
+        email_reply_to='email', email_content_type='plain',   # Elementor chce ID pole, ne [field id=…]
         form_metadata=['date', 'time', 'page_url', 'remote_ip'],
+        custom_messages='yes',   # bez toho Elementor ukazuje anglické výchozí hlášky
         success_message='Díky, poptávka dorazila. Ozvu se obvykle do jednoho pracovního dne. Spěcháte? Volejte 731 842 606.',
         error_message='Odeslání se nepovedlo. Napište prosím na lukac@yesmark.eu nebo volejte 731 842 606.',
         required_field_message='Toto pole je povinné.', invalid_message='Zkontrolujte prosím zadané údaje.',
