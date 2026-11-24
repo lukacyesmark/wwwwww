@@ -17,7 +17,7 @@
   --r:24px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:"Inter Tight",Helvetica,Arial,sans-serif;font-weight:400;background:var(--wine);color:var(--ink);font-size:18px;line-height:1.35;-webkit-font-smoothing:antialiased}
+body{font-family:"Inter Tight",Helvetica,Arial,sans-serif;font-weight:400;background:var(--bg);color:var(--ink);font-size:18px;line-height:1.35;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
 h1,h2,h3{font-weight:400}
 a{color:inherit;text-decoration:none}
@@ -50,9 +50,9 @@ svg{display:block}
 .hero .tint{position:absolute;inset:0;z-index:1;background:#720830;mix-blend-mode:multiply;opacity:.86}
 .hero .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(42,3,15,.55) 0%,rgba(42,3,15,0) 22%,rgba(42,3,15,0) 55%,rgba(42,3,15,.55) 100%)}
 .hero .bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 20px;z-index:5;color:#fff;font-size:16px}
-.digits{position:absolute;z-index:3;top:86px;left:40px;right:40px;display:grid;grid-template-columns:repeat(4,1fr);justify-items:center;color:var(--cream);font-size:318px;line-height:.78;letter-spacing:-.05em}
-.digits-cap{position:absolute;z-index:4;top:372px;right:40px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.digits-cap .t{height:24px;font-size:12px}
+.claim{position:absolute;z-index:3;top:74px;left:34px;right:34px;color:var(--cream);font-size:286px;line-height:.9;letter-spacing:-.045em;white-space:nowrap}
+.offer{position:absolute;z-index:4;top:374px;left:44px;right:40px;display:flex;flex-wrap:wrap;gap:8px}
+.offer .t{height:30px;font-size:13px;background:rgba(253,249,246,.16);color:var(--cream);border:1px solid rgba(253,249,246,.45)}
 .place{position:absolute;z-index:4;left:40px;bottom:120px;background:var(--cream);border-radius:26px;padding:26px 52px 28px 50px;font-size:140px;line-height:1;letter-spacing:.2em;color:var(--wine);box-shadow:0 30px 60px -30px rgba(20,0,8,.6)}
 .next{position:absolute;z-index:4;right:40px;bottom:120px;width:360px;background:rgba(253,249,246,.94);border-radius:var(--r);padding:12px;display:grid;grid-template-columns:96px 1fr;gap:14px;color:var(--ink);box-shadow:0 30px 60px -30px rgba(20,0,8,.6)}
 .next img{width:96px;height:128px;object-fit:cover;object-position:top;border-radius:14px}
@@ -141,18 +141,18 @@ section{padding:110px 0 0}
 .tile .tags{margin-bottom:6px}
 
 /* info boxes */
-.boxes{margin:120px 40px 0;display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.boxes{margin:110px 40px 0;display:grid;grid-template-columns:1fr 1fr;gap:28px}
 .box{background:var(--blue-2);border-radius:var(--r);padding:12px;display:flex;gap:12px;min-height:130px}
 .box .ic{flex:none;width:108px;height:108px;background:#fff;border-radius:12px;display:grid;place-items:center}
 .box p{font-size:17px;line-height:1.3;padding-top:8px;text-decoration:underline;text-underline-offset:3px}
 
 /* partners */
-.partners{margin:80px 40px 0;padding:34px 0 40px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:22px 44px;align-items:center}
-.partners span{font-size:13px;letter-spacing:.32em;text-transform:uppercase;width:100%}
-.partners img{height:40px;width:auto;filter:grayscale(1) contrast(1.2);mix-blend-mode:multiply;opacity:.8}
+.partners{margin:0 40px;display:grid;grid-template-columns:repeat(6,1fr);gap:20px}
+.partner{background:#fff;border-radius:var(--r);height:150px;display:grid;place-items:center;padding:20px}
+.partner img{max-height:62px;width:auto;max-width:100%}
 
 /* footer */
-footer{background:var(--wine);color:#fff;border-radius:var(--r) var(--r) 0 0;margin-top:90px;padding:20px 20px 70px}
+footer{background:var(--wine);color:#fff;border-radius:var(--r) var(--r) 0 0;margin-top:0;padding:20px 20px 70px}
 footer .dot{background:var(--cream)}
 footer .bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:56px}
 footer .cols{display:grid;grid-template-columns:286px 286px 1fr 1fr;gap:0 20px}
@@ -167,6 +167,46 @@ footer .legal .g{color:#e2b9c6}
 .ext{display:inline-block;width:13px;height:13px;border:1.4px solid currentColor;border-radius:3px;margin-left:6px;vertical-align:1px;position:relative}
 .ext::after{content:"";position:absolute;right:1px;top:1px;width:6px;height:1.4px;background:currentColor;transform:rotate(-45deg);transform-origin:right}
 .mock{position:fixed;}
+
+/* ---------- mobile ---------- */
+@media (max-width:900px){
+  .px{padding-left:16px;padding-right:16px}
+  .hero{height:auto;padding:64px 16px 110px;display:flex;flex-direction:column;gap:18px}
+  .hero .bar{padding:14px 16px;font-size:13px}
+  .hero .bar .initials>span:not(.lang){display:none}
+  .claim{position:relative;top:auto;left:auto;right:auto;font-size:22vw;white-space:normal;line-height:.86}
+  .offer{position:relative;top:auto;left:auto;right:auto}
+  .offer .t{height:26px;font-size:11px}
+  .place{position:relative;left:auto;bottom:auto;align-self:flex-start;font-size:10.5vw;padding:14px 22px 16px;border-radius:18px}
+  .next{position:relative;right:auto;bottom:auto;width:100%}
+  .sheet{margin-top:-60px}
+  .sheet .intro{padding:0 16px;font-size:18px}
+  .pills{margin:20px 8px 0;gap:6px}.pills .track{padding:6px;gap:6px}
+  .pill{height:50px;font-size:22px;padding:0 16px}.pill.home{width:38px}
+  .round{width:50px;height:50px}.pills>.round:not(.go){display:none}
+  .h{font-size:44px}
+  section{padding-top:72px}
+  .sec-top{margin-bottom:32px}
+  .row{padding-left:16px;gap:16px}
+  .progress{margin:28px 16px 0}
+  .feat{width:86vw;height:420px}.feat .ttl{font-size:34px;left:20px;right:20px;bottom:20px}
+  .sum{width:72vw}
+  .ev{width:80vw}.ev .ph{height:220px}.ev .bd{min-height:220px}.ev h3{font-size:26px;padding-top:30px}
+  .place-card,.place-card.s{width:86vw;height:420px}.place-card .ttl{font-size:38px;padding:0 20px}
+  .kino{margin-top:72px;padding:60px 0}
+  .film{width:70vw}.film img{height:360px}
+  .split{margin:0 16px;grid-template-columns:1fr}.split .pic{height:280px}.split h3{font-size:34px}
+  .hours div{font-size:15px}
+  .tiles,.boxes{margin-left:16px;margin-right:16px;grid-template-columns:1fr;gap:14px}
+  .boxes{margin-top:72px}
+  .tile{font-size:30px;padding:24px;min-height:100px}
+  .partners{margin:0 16px;grid-template-columns:repeat(2,1fr);gap:12px}.partner{height:110px}
+  #partneri{padding-bottom:72px!important}
+  footer .bar{flex-direction:column;align-items:flex-start;gap:10px;margin-bottom:36px}
+  footer .bar .initials{white-space:normal}
+  footer .cols{grid-template-columns:1fr;gap:28px}
+  footer .big a{font-size:30px;line-height:1.6}
+}
 </style>
 </head>
 <body>
@@ -182,8 +222,8 @@ footer .legal .g{color:#e2b9c6}
       <span><b>M</b>ěstské <b>K</b>ulturní <b>S</b>tředisko <b>J</b>avorník</span></div>
     <div><span class="dot"></span>infocentrum dnes 8.00–15.30</div>
   </div>
-  <div class="digits" aria-label="1881"><span>1</span><span>8</span><span>8</span><span>1</span></div>
-  <div class="digits-cap"><span class="t g">vila čp. 160 · od roku 1881</span></div>
+  <h1 class="claim">kulturní dům</h1>
+  <div class="offer"><span class="t">divadlo</span><span class="t">kino olympia</span><span class="t">knihovna</span><span class="t">muzeum</span><span class="t">turistické centrum soud</span><span class="t">dětská herna</span></div>
   <div class="place">JAVORNÍK</div>
   <a class="next" href="#program">
     <img src="img/akce-koncert.jpg" alt="">
@@ -353,9 +393,24 @@ footer .legal .g{color:#e2b9c6}
     <a class="box" href="#"><span class="ic"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="#000" stroke-width="2"><path d="M30 54s-18-15-18-29a18 18 0 0 1 36 0c0 14-18 29-18 29z"/><circle cx="30" cy="25" r="6"/></svg></span><p>Akce v okolí: Vánoce na zámku Jánský Vrch, Klamárium, Pradědovo dětské muzeum v Bludově.</p></a>
   </div>
 
+</section>
+
+<!-- PARTNEŘI -->
+<section id="partneri" style="padding-bottom:110px">
+  <div class="px sec-top"><h2 class="h">partneři</h2></div>
   <div class="partners">
-    <span>partneři</span>
-    <img src="img/mesto-javornik.png" alt="Město Javorník"><img src="img/partner-olk.png" alt="Olomoucký kraj"><img src="img/partner-orc.png" alt="ORC"><img src="img/partner-szm.png" alt="Slezské zemské muzeum"><img src="img/partner-tan.png" alt="Tančírna"><img src="img/partner-ccr.png" alt=""><img src="img/partner-erp.png" alt=""><img src="img/partner-jscr.png" alt=""><img src="img/partner-kud.png" alt=""><img src="img/partner-vmj.png" alt=""><img src="img/partner-waz.png" alt="">
+    <div class="partner"><img src="img/mesto-javornik.png" alt="Město Javorník"></div>
+    <div class="partner"><img src="img/partner-olk.png" alt="Olomoucký kraj"></div>
+    <div class="partner"><img src="img/partner-ccr.png" alt="Centrála cestovního ruchu Olomouckého kraje"></div>
+    <div class="partner"><img src="img/partner-orc.png" alt="Olomouc Region Card"></div>
+    <div class="partner"><img src="img/partner-erp.png" alt="Euroregion Praděd"></div>
+    <div class="partner"><img src="img/partner-jscr.png" alt="Jeseníky"></div>
+    <div class="partner"><img src="img/partner-kud.png" alt="Kudyznudy.cz"></div>
+    <div class="partner"><img src="img/partner-szm.png" alt="Slezské zemské muzeum"></div>
+    <div class="partner"><img src="img/partner-vmj.png" alt="Vlastivědné muzeum Jesenicka"></div>
+    <div class="partner"><img src="img/partner-mkz.png" alt="Městská kulturní zařízení Jeseník"></div>
+    <div class="partner"><img src="img/partner-tan.png" alt="Tančírna"></div>
+    <div class="partner"><img src="img/partner-waz.png" alt="Wazy.cz"></div>
   </div>
 </section>
 
@@ -371,7 +426,7 @@ footer .legal .g{color:#e2b9c6}
   </div>
   <div class="cols">
     <div class="big"><a href="#">program</a><a href="#">kino</a><a href="#">kulturní dům</a><a href="#">soud</a><a href="#">muzeum</a><a href="#">knihovna</a></div>
-    <div class="mid"><a href="#">dětská herna</a><a href="#">elektrokola</a><a href="#">tipy na výlet</a><a href="#">ubytování</a><a href="#">pronájmy</a><a href="#">technické informace divadla</a><a href="#">kariéra</a></div>
+    <div class="mid"><a href="#">dětská herna</a><a href="#">elektrokola</a><a href="#">tipy na výlet</a><a href="#">ubytování</a><a href="#">pronájmy</a><a href="#">technické informace</a><a href="#">kariéra</a></div>
     <div class="info">
       <p>infocentrum po–pá: 8.00–15.30<br><span class="g">v létě i o víkendu</span></p>
       <p><span class="dot"></span>Kulturní dům, Nádražní 160 <span class="ext"></span><br><span class="g">607 644 198 / 584 440 276</span></p>
