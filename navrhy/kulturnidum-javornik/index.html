@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Kulturní dům Javorník – návrh redesignu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,400..600,0..1,0&display=block" rel="stylesheet">
+<style>
+:root{
+  --primary:#7a1236; --primary-600:#5f0c29; --primary-50:#fbeef1; --primary-100:#f6d9e0;
+  --gold:#c99a45; --gold-50:#fbf3e4;
+  --surface:#fbf8f6; --surface-2:#f4eeea; --card:#ffffff;
+  --ink:#1e1719; --muted:#6c5f63; --line:#e9e0dc;
+  --dark:#1a1214; --dark-2:#2a1f22;
+  --r-sm:12px; --r:20px; --r-lg:28px;
+  --shadow:0 1px 2px rgba(30,23,25,.05),0 8px 24px -8px rgba(30,23,25,.12);
+  --shadow-lg:0 24px 60px -20px rgba(30,23,25,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Plus Jakarta Sans",system-ui,sans-serif;background:var(--surface);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.ms{font-family:"Material Symbols Rounded";font-weight:400;font-style:normal;font-size:22px;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;-webkit-font-feature-settings:"liga";font-feature-settings:"liga";font-variation-settings:"FILL" 0,"wght" 450,"GRAD" 0,"opsz" 24}
+.ms.fill{font-variation-settings:"FILL" 1,"wght" 500,"GRAD" 0,"opsz" 24}
+.serif{font-family:"Fraunces",Georgia,serif;font-weight:600;letter-spacing:-.01em}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--primary)}
+.eyebrow::before{content:"";width:22px;height:2px;background:var(--gold);border-radius:2px}
+h2.sec{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:44px;line-height:1.08;letter-spacing:-.02em;margin-top:12px}
+.lead{color:var(--muted);font-size:17px;max-width:620px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:48px;padding:0 22px;border-radius:999px;font-weight:700;font-size:15px;border:1px solid transparent;white-space:nowrap}
+.btn .ms{font-size:20px}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 8px 20px -8px rgba(122,18,54,.6)}
+.btn-light{background:#fff;color:var(--ink)}
+.btn-ghost{border-color:rgba(255,255,255,.45);color:#fff;background:rgba(255,255,255,.08);backdrop-filter:blur(6px)}
+.btn-outline{border-color:var(--line);background:#fff;color:var(--ink)}
+.btn-sm{height:38px;padding:0 16px;font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 16px;border-radius:999px;border:1px solid var(--line);background:#fff;font-weight:600;font-size:14px;color:var(--ink)}
+.chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.tag{display:inline-flex;align-items:center;gap:5px;height:26px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:700;background:var(--primary-50);color:var(--primary)}
+.tag.gold{background:var(--gold-50);color:#8a6420}
+.tag.dark{background:rgba(255,255,255,.14);color:#fff}
+
+/* ---------- top bar ---------- */
+.topbar{background:var(--dark);color:#d8cfd1;font-size:13px}
+.topbar .wrap{display:flex;justify-content:space-between;align-items:center;height:40px;gap:24px}
+.topbar .l,.topbar .r{display:flex;gap:22px;align-items:center}
+.topbar span{display:inline-flex;align-items:center;gap:6px}
+.topbar .ms{font-size:17px;color:var(--gold)}
+header.nav{position:sticky;top:0;z-index:50;background:rgba(251,248,246,.92);backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
+header.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:78px;gap:24px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:46px;height:46px;border-radius:14px;background:var(--primary);display:grid;place-items:center;color:#fff;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)}
+.logo-mark .ms{font-size:26px}
+.logo b{display:block;font-family:"Fraunces",serif;font-size:20px;line-height:1.1;font-weight:700}
+.logo small{display:block;font-size:12px;color:var(--muted);font-weight:500}
+nav.menu{display:flex;gap:4px}
+nav.menu a{white-space:nowrap;padding:10px 13px;border-radius:999px;font-weight:600;font-size:15px;color:#3b3033;display:inline-flex;align-items:center;gap:2px}
+nav.menu a.on{background:var(--primary-50);color:var(--primary)}
+nav.menu a .ms{font-size:18px;color:var(--muted)}
+.nav-actions{display:flex;gap:10px;align-items:center}
+.icon-btn{width:44px;height:44px;border-radius:999px;display:grid;place-items:center;border:1px solid var(--line);background:#fff}
+
+/* ---------- hero ---------- */
+.hero{position:relative;min-height:680px;color:#fff;overflow:hidden;display:flex;align-items:flex-end}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 35%}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(26,18,20,.86) 0%,rgba(26,18,20,.55) 45%,rgba(26,18,20,.05) 75%),linear-gradient(0deg,rgba(26,18,20,.6),transparent 40%)}
+.hero .wrap{position:relative;z-index:2;width:100%;padding-top:96px;padding-bottom:72px;display:grid;grid-template-columns:1.25fr .75fr;gap:48px;align-items:end}
+.hero h1{font-family:"Fraunces",serif;font-weight:600;font-size:76px;line-height:1;letter-spacing:-.025em;margin:18px 0 22px}
+.hero h1 em{font-style:italic;color:#f3c983}
+.hero p{font-size:19px;color:#eadfe1;max-width:560px}
+.hero .ctas{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
+.hero .stats{display:flex;gap:36px;margin-top:44px;padding-top:26px;border-top:1px solid rgba(255,255,255,.18)}
+.hero .stats b{display:block;font-family:"Fraunces",serif;font-size:30px;font-weight:600}
+.hero .stats span{font-size:13px;color:#cfc3c6}
+.next-card{background:rgba(255,255,255,.96);color:var(--ink);border-radius:var(--r-lg);padding:14px;box-shadow:var(--shadow-lg);display:grid;grid-template-columns:118px 1fr;gap:16px}
+.next-card img{width:118px;height:160px;object-fit:cover;border-radius:16px}
+.next-card .k{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);display:flex;align-items:center;gap:6px}
+.next-card .k i{width:8px;height:8px;border-radius:9px;background:#e0335b;box-shadow:0 0 0 4px rgba(224,51,91,.18)}
+.next-card h3{font-family:"Fraunces",serif;font-size:22px;line-height:1.15;margin:8px 0 10px}
+.next-card ul{list-style:none;font-size:14px;color:var(--muted);display:grid;gap:6px}
+.next-card li{display:flex;gap:8px;align-items:center}
+.next-card li .ms{font-size:18px;color:var(--primary)}
+.next-card .btn{margin-top:12px}
+
+/* ---------- quick links ---------- */
+.quick{margin-top:-44px;position:relative;z-index:5}
+.quick .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.q{background:var(--card);border-radius:var(--r);padding:20px 18px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:14px;border:1px solid rgba(233,224,220,.6)}
+.q .ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:var(--primary-50);color:var(--primary)}
+.q:nth-child(even) .ic{background:var(--gold-50);color:#9a7026}
+.q b{font-size:15px;line-height:1.25}
+.q small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+
+section{padding:104px 0}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:40px}
+
+/* ---------- events ---------- */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.events{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.ev{background:var(--card);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;border:1px solid rgba(233,224,220,.7)}
+.ev .ph{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--surface-2)}
+.ev .ph img{width:100%;height:100%;object-fit:cover;object-position:top}
+.date{position:absolute;top:14px;left:14px;background:#fff;border-radius:16px;padding:8px 12px;text-align:center;box-shadow:0 6px 18px -6px rgba(0,0,0,.35);min-width:62px}
+.date b{display:block;font-family:"Fraunces",serif;font-size:26px;line-height:1;color:var(--primary)}
+.date span{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin-top:3px}
+.ev .ph .tag{position:absolute;top:14px;right:14px;background:rgba(26,18,20,.72);color:#fff;backdrop-filter:blur(6px)}
+.ev .bd{padding:18px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.ev h3{font-size:18px;line-height:1.25;font-weight:800}
+.ev .meta{display:grid;gap:5px;font-size:13.5px;color:var(--muted)}
+.ev .meta span{display:flex;gap:7px;align-items:center}
+.ev .meta .ms{font-size:17px;color:var(--primary)}
+.ev .ft{margin-top:auto;padding-top:14px;border-top:1px dashed var(--line);display:flex;justify-content:space-between;align-items:center}
+.price{font-weight:800;font-size:15px}
+.price small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.ev.feature{grid-column:span 2;flex-direction:row}
+.ev.feature .ph{aspect-ratio:auto;width:46%;flex:none}
+.ev.feature .bd{padding:28px}
+.ev.feature h3{font-family:"Fraunces",serif;font-size:30px;font-weight:600;letter-spacing:-.01em}
+.ev.feature p{color:var(--muted);font-size:15px}
+
+/* ---------- kino ---------- */
+.kino{background:var(--dark);color:#fff;border-radius:40px;margin:0 20px;padding:88px 0;position:relative;overflow:hidden}
+.kino::before{content:"";position:absolute;width:620px;height:620px;right:-160px;top:-220px;background:radial-gradient(circle,rgba(201,154,69,.28),transparent 65%)}
+.kino .wrap{position:relative;display:grid;grid-template-columns:.9fr 1.1fr;gap:64px;align-items:center}
+.kino h2.sec{color:#fff}
+.kino .eyebrow{color:#f3c983}
+.kino .lead{color:#cbbfc2}
+.films{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.film{background:var(--dark-2);border-radius:var(--r-lg);overflow:hidden;border:1px solid rgba(255,255,255,.07)}
+.film img{width:100%;aspect-ratio:3/4;object-fit:cover}
+.film .bd{padding:16px 18px 18px}
+.film h3{font-size:17px;font-weight:800}
+.film .meta{font-size:13.5px;color:#cbbfc2;margin-top:6px;display:flex;gap:14px}
+.film .meta span{display:flex;align-items:center;gap:6px}
+.film .meta .ms{font-size:17px;color:#f3c983}
+.kino-list{margin-top:32px;display:grid;gap:10px}
+.kino-list div{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);font-size:15px}
+.kino-list .ms{color:#f3c983}
+.kino-list small{color:#a99ca0;margin-left:auto;font-size:13px}
+
+/* ---------- discover (bento) ---------- */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:250px;gap:20px}
+.tile{position:relative;border-radius:var(--r-lg);overflow:hidden;color:#fff;box-shadow:var(--shadow)}
+.tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(20,13,15,.85) 0%,rgba(20,13,15,.25) 50%,rgba(20,13,15,0) 75%)}
+.tile .bd{position:absolute;left:0;right:0;bottom:0;padding:24px;z-index:2}
+.tile h3{font-family:"Fraunces",serif;font-size:26px;font-weight:600;line-height:1.1;margin-top:10px}
+.tile p{font-size:14px;color:#e8dde0;margin-top:6px;max-width:440px}
+.tile .go{position:absolute;top:18px;right:18px;z-index:2;width:42px;height:42px;border-radius:99px;background:rgba(255,255,255,.92);color:var(--ink);display:grid;place-items:center}
+.t-big{grid-column:span 2;grid-row:span 2}
+.t-big h3{font-size:38px}
+.t-wide{grid-column:span 2}
+
+/* ---------- info centrum ---------- */
+.info{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.photo-stack{position:relative;height:560px}
+.photo-stack img{position:absolute;border-radius:var(--r-lg);object-fit:cover;box-shadow:var(--shadow-lg)}
+.photo-stack .a{width:78%;height:400px;top:0;left:0}
+.photo-stack .b{width:56%;height:300px;right:0;bottom:0;border:8px solid var(--surface)}
+.award{position:absolute;left:24px;bottom:36px;background:#fff;border-radius:20px;padding:14px 18px;display:flex;gap:12px;align-items:center;box-shadow:var(--shadow-lg);max-width:300px}
+.award .ic{width:44px;height:44px;border-radius:14px;background:var(--gold-50);color:#9a7026;display:grid;place-items:center;flex:none}
+.award b{font-size:14px;display:block;line-height:1.25}
+.award small{font-size:12px;color:var(--muted)}
+.hours{margin-top:28px;background:#fff;border-radius:var(--r);border:1px solid var(--line);overflow:hidden}
+.hours .row{display:grid;grid-template-columns:1.2fr 1fr 1fr;padding:14px 20px;font-size:15px;border-top:1px solid var(--line)}
+.hours .row:first-child{border-top:0;background:var(--surface-2);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hours .row b{font-weight:700}
+.features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.features div{display:flex;gap:10px;align-items:center;font-size:14.5px;font-weight:600}
+.features .ms{width:36px;height:36px;border-radius:11px;background:var(--primary-50);color:var(--primary);display:grid;place-items:center;font-size:19px}
+
+/* ---------- services ---------- */
+.services{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.svc{background:#fff;border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr 1fr;border:1px solid rgba(233,224,220,.7)}
+.svc img{width:100%;height:100%;object-fit:cover;min-height:340px}
+.svc .bd{padding:30px;display:flex;flex-direction:column;gap:14px}
+.svc h3{font-family:"Fraunces",serif;font-size:28px;font-weight:600;line-height:1.1}
+.svc p{color:var(--muted);font-size:14.5px}
+.svc ul{list-style:none;display:grid;gap:8px;font-size:14px}
+.svc li{display:flex;gap:8px;align-items:flex-start}
+.svc li .ms{font-size:18px;color:var(--primary);margin-top:1px}
+.svc .price-big{font-family:"Fraunces",serif;font-size:34px;font-weight:600;color:var(--primary);line-height:1}
+.svc .price-big small{font-family:"Plus Jakarta Sans";font-size:14px;color:var(--muted);font-weight:500}
+
+/* ---------- other events ---------- */
+.others{display:grid;grid-template-columns:repeat(5,1fr);gap:18px}
+.oth{background:#fff;border-radius:var(--r);overflow:hidden;border:1px solid var(--line)}
+.oth img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:top}
+.oth .bd{padding:14px 16px 16px}
+.oth b{font-size:14.5px;line-height:1.3;display:block}
+.oth small{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:5px;margin-top:6px}
+.oth small .ms{font-size:15px}
+
+/* ---------- banner ---------- */
+.banner{background:linear-gradient(120deg,var(--primary) 0%,#9b1d47 60%,#b8445f 100%);border-radius:var(--r-lg);color:#fff;padding:40px 44px;display:flex;align-items:center;justify-content:space-between;gap:32px;position:relative;overflow:hidden}
+.banner::after{content:"movie";font-family:"Material Symbols Rounded";position:absolute;right:-30px;bottom:-70px;font-size:240px;opacity:.08;line-height:1}
+.banner h3{font-family:"Fraunces",serif;font-size:30px;font-weight:600;line-height:1.15}
+.banner p{color:#f3dce2;margin-top:8px;max-width:640px}
+.banner .tag{background:rgba(255,255,255,.18);color:#fff;margin-bottom:12px}
+
+/* ---------- partners ---------- */
+.partners{padding:56px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:#fff}
+.partners .wrap{display:flex;flex-direction:column;gap:26px;align-items:center}
+.partners small{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.logos{display:flex;flex-wrap:wrap;justify-content:center;gap:18px 34px;align-items:center}
+.logos img{height:46px;width:auto;filter:grayscale(1);opacity:.75}
+
+/* ---------- footer ---------- */
+footer{background:var(--dark);color:#cfc4c7;padding:80px 0 32px;margin-top:0}
+footer .top{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:48px}
+footer .logo b{color:#fff}
+footer .logo small{color:#a99ca0}
+footer h4{color:#fff;font-size:15px;margin-bottom:16px}
+footer p,footer li{font-size:14.5px;line-height:1.75}
+footer ul{list-style:none}
+footer .ct{display:flex;gap:8px;align-items:center}
+footer .ct .ms{font-size:17px;color:var(--gold)}
+footer .bottom{margin-top:56px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1);display:flex;justify-content:space-between;font-size:13px;color:#9a8d91;gap:24px;flex-wrap:wrap}
+footer .bottom div{display:flex;gap:22px;flex-wrap:wrap}
+.newsletter{display:flex;margin-top:20px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:5px}
+.newsletter input{flex:1;background:none;border:0;color:#fff;padding:0 16px;font:inherit;font-size:14px;outline:none;min-width:0}
+.newsletter input::placeholder{color:#9a8d91}
+
+/* ---------- responsive ---------- */
+@media (max-width:1100px){
+  nav.menu{display:none}
+  .hero h1{font-size:56px}
+  .hero .wrap{grid-template-columns:1fr}
+  .quick .grid{grid-template-columns:repeat(3,1fr)}
+  .events{grid-template-columns:repeat(2,1fr)}
+  .kino .wrap,.info,.services{grid-template-columns:1fr}
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .others{grid-template-columns:repeat(3,1fr)}
+  footer .top{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .wrap{padding:0 16px}
+  .topbar{display:none}
+  .hero{min-height:auto}
+  .hero h1{font-size:42px}
+  .hero .stats{gap:20px;flex-wrap:wrap}
+  .next-card{grid-template-columns:90px 1fr}.next-card img{width:90px;height:124px}
+  h2.sec{font-size:32px}
+  .sec-head{flex-direction:column;align-items:flex-start}
+  section{padding:72px 0}
+  .quick .grid,.events,.others,.films{grid-template-columns:1fr 1fr}
+  .ev.feature{grid-column:span 2;flex-direction:column}.ev.feature .ph{width:100%;aspect-ratio:4/3}
+  .bento{grid-template-columns:1fr;grid-auto-rows:220px}.t-big,.t-wide{grid-column:span 1;grid-row:span 1}
+  .svc{grid-template-columns:1fr}.svc img{min-height:220px}
+  .kino{margin:0;border-radius:28px}
+  .photo-stack{height:420px}
+  .banner{flex-direction:column;align-items:flex-start;padding:28px}
+  footer .top{grid-template-columns:1fr}
+  .nav-actions .btn{display:none}
+}
+@media print{
+  header.nav{position:static}
+  .ev,.svc,.tile,.q,.film,.oth{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- Top bar -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="l">
+      <span><i class="ms">call</i> 607 644 198 · 584 440 276</span>
+      <span><i class="ms">mail</i> info@mksjavornik.cz</span>
+      <span><i class="ms">location_on</i> Nádražní 160, 790 70 Javorník</span>
+    </div>
+    <div class="r">
+      <span><i class="ms">schedule</i> Infocentrum dnes 8:00–15:30</span>
+      <span>CZ · PL · DE</span>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<header class="nav">
+  <div class="wrap">
+    <a href="#" class="logo">
+      <div class="logo-mark"><i class="ms fill">theater_comedy</i></div>
+      <div><b>Kulturní dům Javorník</b><small>Městské kulturní středisko</small></div>
+    </a>
+    <nav class="menu">
+      <a href="#program" class="on">Program</a>
+      <a href="#kino">Kino</a>
+      <a href="#objevte">Kulturní dům <i class="ms">expand_more</i></a>
+      <a href="#infocentrum">Turistické centrum <i class="ms">expand_more</i></a>
+      <a href="#objevte">Muzeum</a>
+      <a href="#kontakt">Kontakty</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="icon-btn" href="#"><i class="ms">search</i></a>
+      <a class="btn btn-primary" href="#program"><i class="ms">confirmation_number</i> Vstupenky online</a>
+    </div>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" style="padding:0">
+  <img src="img/hero-kulturni-dum.jpg" alt="Vila Kulturního domu v Javorníku">
+  <div class="wrap">
+    <div>
+      <span class="tag dark"><i class="ms" style="font-size:16px">auto_awesome</i> Advent a Vánoce 2026</span>
+      <h1>Kultura v&nbsp;srdci <em>Javorníku</em></h1>
+      <p>Divadlo, koncerty, kino, muzeum a turistické centrum na jednom místě. Podívejte se, co chystáme v historické vile čp.&nbsp;160 a v budově Soudu.</p>
+      <div class="ctas">
+        <a class="btn btn-light" href="#program"><i class="ms">calendar_month</i> Plán akcí</a>
+        <a class="btn btn-ghost" href="#program"><i class="ms">confirmation_number</i> Koupit vstupenky</a>
+      </div>
+      <div class="stats">
+        <div><b>1881</b><span>historie vily</span></div>
+        <div><b>6</b><span>kulturních zařízení</span></div>
+        <div><b>2. místo</b><span>Oblíbené infocentrum kraje</span></div>
+      </div>
+    </div>
+    <div class="next-card">
+      <img src="img/akce-koncert.jpg" alt="Vánoční koncert">
+      <div>
+        <div class="k"><i></i> Nejbližší akce</div>
+        <h3>Vánoční koncert Javornického pěveckého sboru</h3>
+        <ul>
+          <li><i class="ms">event</i> út 1. 12. 2026 · 18:00</li>
+          <li><i class="ms">church</i> Kostel sv. Kříže</li>
+          <li><i class="ms">volunteer_activism</i> Vstupné dobrovolné</li>
+        </ul>
+        <a class="btn btn-primary btn-sm" href="#program">Detail akce <i class="ms">arrow_forward</i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Quick links -->
+<div class="quick">
+  <div class="wrap">
+    <div class="grid">
+      <a class="q" href="#program"><span class="ic"><i class="ms">calendar_month</i></span><div><b>Plán akcí</b><small>Divadlo, koncerty</small></div></a>
+      <a class="q" href="#kino"><span class="ic"><i class="ms">movie</i></span><div><b>Kino Olympia</b><small>Program promítání</small></div></a>
+      <a class="q" href="#infocentrum"><span class="ic"><i class="ms">info</i></span><div><b>Infocentrum</b><small>Tipy a ubytování</small></div></a>
+      <a class="q" href="#objevte"><span class="ic"><i class="ms">museum</i></span><div><b>Muzeum</b><small>Expozice v Soudu</small></div></a>
+      <a class="q" href="#sluzby"><span class="ic"><i class="ms">toys</i></span><div><b>Dětská herna</b><small>S pohádkovou říší</small></div></a>
+      <a class="q" href="#sluzby"><span class="ic"><i class="ms">electric_bike</i></span><div><b>Elektrokola</b><small>Půjčovna od 600 Kč</small></div></a>
+    </div>
+  </div>
+</div>
+
+<!-- Program -->
+<section id="program">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Akce kulturního střediska</span>
+        <h2 class="sec">Co se chystá</h2>
+      </div>
+      <a class="btn btn-outline" href="#">Celý kalendář <i class="ms">arrow_forward</i></a>
+    </div>
+    <div class="filters">
+      <span class="chip active">Vše</span>
+      <span class="chip"><i class="ms" style="font-size:18px">music_note</i> Koncerty</span>
+      <span class="chip"><i class="ms" style="font-size:18px">theater_comedy</i> Divadlo</span>
+      <span class="chip"><i class="ms" style="font-size:18px">child_care</i> Pro děti</span>
+      <span class="chip"><i class="ms" style="font-size:18px">gallery_thumbnail</i> Výstavy</span>
+      <span class="chip"><i class="ms" style="font-size:18px">forum</i> Besedy</span>
+    </div>
+
+    <div class="events">
+      <article class="ev feature">
+        <div class="ph">
+          <img src="img/akce-cechomor.jpg" alt="Vánoční Čechomor">
+          <div class="date"><b>11</b><span>pro · pá</span></div>
+        </div>
+        <div class="bd">
+          <span class="tag gold"><i class="ms" style="font-size:15px">star</i> Tip na prosinec</span>
+          <h3>Vánoční Čechomor v&nbsp;Javorníku</h3>
+          <p>Legendární kapela přiveze do Javorníku svůj vánoční program. Koledy, lidovky i nové písně v podání Čechomoru.</p>
+          <div class="meta">
+            <span><i class="ms">schedule</i> Pátek 11. 12. 2026 · 19:00</span>
+            <span><i class="ms">location_on</i> Kulturní dům – velký sál</span>
+          </div>
+          <div class="ft">
+            <div class="price">Prodej online<small>kulturnidumjavornik.cz</small></div>
+            <a class="btn btn-primary btn-sm" href="#">Vstupenky</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="ev">
+        <div class="ph"><img src="img/akce-mikulas.jpg" alt="Mikulášská nadílka"><div class="date"><b>6</b><span>pro · ne</span></div><span class="tag">Pro děti</span></div>
+        <div class="bd">
+          <h3>Mikulášská nadílka</h3>
+          <div class="meta"><span><i class="ms">schedule</i> 15:00</span><span><i class="ms">location_on</i> KD – velký sál</span></div>
+          <div class="ft"><div class="price">Pohádka a nadílka<small>balíčky do 27. 11.</small></div><a class="icon-btn" href="#"><i class="ms">arrow_forward</i></a></div>
+        </div>
+      </article>
+
+      <article class="ev">
+        <div class="ph"><img src="img/akce-poklady.jpg" alt="Poklady z půdy"><div class="date"><b>1</b><span>pro → led</span></div><span class="tag">Výstava</span></div>
+        <div class="bd">
+          <h3>Tajemství javornických domů aneb Poklady z&nbsp;půdy</h3>
+          <div class="meta"><span><i class="ms">schedule</i> do 31. 1. 2027 · Po–Pá</span><span><i class="ms">location_on</i> Výstavní síň Soudu</span></div>
+          <div class="ft"><div class="price">Dobrovolné<small>vstupné</small></div><a class="icon-btn" href="#"><i class="ms">arrow_forward</i></a></div>
+        </div>
+      </article>
+
+      <article class="ev">
+        <div class="ph"><img src="img/akce-kostel-prohlidky.jpg" alt="Mimořádné prohlídky o Vánocích"><div class="date"><b>25</b><span>– 27. pro</span></div><span class="tag">Prohlídky</span></div>
+        <div class="bd">
+          <h3>Mimořádné prohlídky o&nbsp;Vánocích</h3>
+          <div class="meta"><span><i class="ms">schedule</i> denně 17:00</span><span><i class="ms">location_on</i> Kostel sv. Kříže</span></div>
+          <div class="ft"><div class="price">50 Kč<small>s komentářem</small></div><a class="icon-btn" href="#"><i class="ms">arrow_forward</i></a></div>
+        </div>
+      </article>
+
+      <article class="ev">
+        <div class="ph"><img src="img/akce-jamaha.jpg" alt="Duo Jamaha"><div class="date"><b>2</b><span>úno · út</span></div><span class="tag">Koncert</span></div>
+        <div class="bd">
+          <h3>Duo Jamaha – Paráda Tour 2027</h3>
+          <div class="meta"><span><i class="ms">schedule</i> 18:00</span><span><i class="ms">location_on</i> KD – velký sál</span></div>
+          <div class="ft"><div class="price">350 Kč<small>předprodej · 390 Kč na místě</small></div><a class="btn btn-primary btn-sm" href="#">Koupit</a></div>
+        </div>
+      </article>
+
+      <article class="ev">
+        <div class="ph"><img src="img/akce-uver.jpg" alt="Úvěr"><div class="date"><b>27</b><span>bře · so</span></div><span class="tag">Divadlo</span></div>
+        <div class="bd">
+          <h3>Úvěr – divadelní komedie</h3>
+          <div class="meta"><span><i class="ms">schedule</i> 19:00 · M. Zounar, F. Blažek</span><span><i class="ms">location_on</i> KD – velký sál</span></div>
+          <div class="ft"><div class="price">400 Kč<small>předprodej · 490 Kč na místě</small></div><a class="btn btn-primary btn-sm" href="#">Koupit</a></div>
+        </div>
+      </article>
+
+      <article class="ev">
+        <div class="ph"><img src="img/akce-vetchy.jpg" alt="Ondřej Vetchý a Michal Novotný"><div class="date"><b>25</b><span>kvě · út</span></div><span class="tag">Beseda</span></div>
+        <div class="bd">
+          <h3>Ondřej Vetchý a Michal Novotný …jak je neznáte</h3>
+          <div class="meta"><span><i class="ms">schedule</i> 19:00</span><span><i class="ms">location_on</i> KD – velký sál</span></div>
+          <div class="ft"><div class="price">450 Kč<small>předprodej · 550 Kč na místě</small></div><a class="btn btn-primary btn-sm" href="#">Koupit</a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- Kino -->
+<section id="kino" class="kino">
+  <div class="wrap">
+    <div>
+      <span class="eyebrow">Městské kino Olympia</span>
+      <h2 class="sec">Velké příběhy na plátně v&nbsp;Kulturním domě</h2>
+      <p class="lead" style="margin-top:16px">Rodinné filmy, české novinky i projekce pro školy. Prodej vstupenek začíná 30 minut před začátkem představení, nebo online.</p>
+      <div class="kino-list">
+        <div><i class="ms">calendar_month</i> Program na listopad 2026 <small>PDF ke stažení</small></div>
+        <div><i class="ms">calendar_month</i> Program na prosinec 2026 <small>PDF ke stažení</small></div>
+        <div><i class="ms">school</i> Kultura školám – projekce pro třídy <small>na objednávku</small></div>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:28px">
+        <a class="btn btn-light" href="#"><i class="ms">local_activity</i> Celý program kina</a>
+      </div>
+    </div>
+    <div class="films">
+      <div class="film">
+        <img src="img/kino-tlapkova.jpg" alt="Tlapková patrola: Dinosauří film">
+        <div class="bd"><span class="tag dark">Pro děti</span><h3 style="margin-top:10px">Tlapková patrola: Dinosauří film</h3><div class="meta"><span><i class="ms">event</i> ne 13. 12.</span><span><i class="ms">schedule</i> 15:00</span></div></div>
+      </div>
+      <div class="film">
+        <img src="img/kino-drevorubec.jpg" alt="Dřevorubec">
+        <div class="bd"><span class="tag dark">Česká komedie</span><h3 style="margin-top:10px">Dřevorubec</h3><div class="meta"><span><i class="ms">event</i> pá 18. 12.</span><span><i class="ms">schedule</i> 18:00</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Discover -->
+<section id="objevte">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Naše místa</span>
+        <h2 class="sec">Objevte kulturní Javorník</h2>
+      </div>
+      <p class="lead">Od romantické vily z roku 1881 přes empírovou budovu bývalého zemského soudu až po středověký kostel sv. Kříže.</p>
+    </div>
+    <div class="bento">
+      <a class="tile t-big" href="#">
+        <img src="img/kulturni-dum.jpg" alt="Kulturní dům Javorník">
+        <span class="go"><i class="ms">arrow_outward</i></span>
+        <div class="bd">
+          <span class="tag dark">Nádražní 160</span>
+          <h3>Kulturní dům</h3>
+          <p>Divadelní sál, Městská knihovna Rudolfa Zubera a kino Olympia ve vile, kterou v roce 1880 postavil stavitel Alois Utner.</p>
+        </div>
+      </a>
+      <a class="tile t-wide" href="#">
+        <img src="img/soud.jpg" alt="Budova Soudu">
+        <span class="go"><i class="ms">arrow_outward</i></span>
+        <div class="bd"><span class="tag dark">Puškinova 7</span><h3>Soud – turistické centrum</h3><p>Informační centrum, muzeum, odpočívárna pro výletníky a půjčovna elektrokol.</p></div>
+      </a>
+      <a class="tile" href="#">
+        <img src="img/muzeum.jpg" alt="Městské muzeum">
+        <span class="go"><i class="ms">arrow_outward</i></span>
+        <div class="bd"><span class="tag dark">Muzeum</span><h3>Městské muzeum</h3></div>
+      </a>
+      <a class="tile" href="#">
+        <img src="img/kostel.jpg" alt="Kostel sv. Kříže">
+        <span class="go"><i class="ms">arrow_outward</i></span>
+        <div class="bd"><span class="tag dark">od 13. stol.</span><h3>Kostel sv. Kříže</h3></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Info centrum -->
+<section id="infocentrum" style="padding-top:0">
+  <div class="wrap info">
+    <div class="photo-stack">
+      <img class="a" src="img/infocentrum.jpg" alt="Městské informační centrum">
+      <img class="b" src="img/infocentrum-2.jpg" alt="Interiér informačního centra">
+      <div class="award"><span class="ic"><i class="ms fill">workspace_premium</i></span><div><b>Oblíbené infocentrum roku 2021 a 2022</b><small>2. místo · Olomoucký kraj · A.T.I.C. ČR</small></div></div>
+    </div>
+    <div>
+      <span class="eyebrow">Městské informační centrum</span>
+      <h2 class="sec">Plánujete výlet do Rychlebských hor?</h2>
+      <p class="lead" style="margin-top:16px">V budově Soudu vám poradíme s ubytováním, občerstvením i tipy na výlet. Odpočinete si, dobijete telefon a připojíte se na Wi-Fi.</p>
+      <div class="features">
+        <div><i class="ms">hiking</i> Tipy na výlet</div>
+        <div><i class="ms">hotel</i> Ubytování</div>
+        <div><i class="ms">restaurant</i> Občerstvení</div>
+        <div><i class="ms">pool</i> Možnosti koupání</div>
+        <div><i class="ms">wifi</i> Wi-Fi a nabíjení</div>
+        <div><i class="ms">print</i> Internet a tisk</div>
+      </div>
+      <div class="hours">
+        <div class="row"><span>Otevírací doba</span><span>Po – Pá</span><span>So – Ne</span></div>
+        <div class="row"><b>Říjen – Duben</b><span>8:00 – 15:30</span><span style="color:var(--muted)">zavřeno</span></div>
+        <div class="row"><b>Květen – Září</b><span>8:00 – 16:00</span><span>So 10:00 – 16:00</span></div>
+        <div class="row"><b>Červenec – Srpen</b><span>8:00 – 17:00</span><span>10:00 – 16:00</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="sluzby" style="background:var(--surface-2)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">Pro rodiny a výletníky</span>
+        <h2 class="sec">Herna a půjčovna elektrokol</h2>
+      </div>
+      <a class="btn btn-outline" href="#">Pronájmy prostor <i class="ms">arrow_forward</i></a>
+    </div>
+    <div class="services">
+      <div class="svc">
+        <img src="img/herna.jpg" alt="Dětská herna">
+        <div class="bd">
+          <span class="tag">Dětská herna s pohádkovou říší</span>
+          <h3>Místo, kde se děti vyřádí</h3>
+          <p>Prolézačky, bazén s míčky a nově pohádková říše v půdních prostorách Soudu. Hernu si můžete pronajmout i na dětskou oslavu.</p>
+          <ul>
+            <li><i class="ms">check_circle</i> Dítě od 1 roku: 50 Kč / hodina</li>
+            <li><i class="ms">check_circle</i> Dospělý doprovod: 30 Kč</li>
+            <li><i class="ms">check_circle</i> Děti do 1 roku zdarma</li>
+          </ul>
+          <a class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:auto" href="#">Rezervovat oslavu</a>
+        </div>
+      </div>
+      <div class="svc">
+        <img src="img/soud-2.jpg" alt="Budova Soudu – výdej elektrokol">
+        <div class="bd">
+          <span class="tag gold">Půjčovna elektrokol</span>
+          <h3>Rychlebské hory na elektrokole</h3>
+          <div class="price-big">600 Kč <small>/ celý den</small></div>
+          <ul>
+            <li><i class="ms">electric_bike</i> 5 kol Rock Machine CrossRide E350 (2 dámská, 3 pánská)</li>
+            <li><i class="ms">sports_motorsports</i> Helma a zámek v ceně</li>
+            <li><i class="ms">payments</i> Vratná kauce 3 000 Kč / kolo</li>
+            <li><i class="ms">schedule</i> Červenec–srpen Po–Pá 9–17, So–Ne 10–16</li>
+          </ul>
+          <a class="btn btn-primary btn-sm" style="align-self:flex-start;margin-top:auto" href="#">Zjistit dostupnost</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Other events -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="eyebrow">V okolí</span>
+        <h2 class="sec">Ostatní akce v regionu</h2>
+      </div>
+    </div>
+    <div class="others">
+      <div class="oth"><img src="img/akce-zamek.jpg" alt=""><div class="bd"><b>Vánoce na zámku Jánský Vrch</b><small><i class="ms">event</i> 5.–6. 12. 2026</small></div></div>
+      <div class="oth"><img src="img/akce-klamarium.jpg" alt=""><div class="bd"><b>Tradiční české Vánoce v Klamáriu</b><small><i class="ms">event</i> od 20. listopadu</small></div></div>
+      <div class="oth"><img src="img/akce-detske-muzeum.jpg" alt=""><div class="bd"><b>Podzim–zima v Pradědově dětském muzeu</b><small><i class="ms">location_on</i> Bludov</small></div></div>
+      <div class="oth"><img src="img/pohadkova-rise.jpg" alt=""><div class="bd"><b>Novinka: Pohádková říše</b><small><i class="ms">location_on</i> Soud – půdní prostory</small></div></div>
+      <div class="oth"><img src="img/jeskyne-pomezi.jpg" alt=""><div class="bd"><b>Jeskyně na Pomezí jsou uzavřeny</b><small><i class="ms">info</i> do konce roku 2026</small></div></div>
+    </div>
+
+    <div class="banner" style="margin-top:56px">
+      <div>
+        <span class="tag"><i class="ms" style="font-size:15px">work</i> Volné místo</span>
+        <h3>Hledáme promítače a technika do Kina Olympia</h3>
+        <p>Máte blízko k filmu a technice a chcete se podílet na kulturním dění v Javorníku? Ozvěte se nám!</p>
+      </div>
+      <a class="btn btn-light" href="#">Více informací <i class="ms">arrow_forward</i></a>
+    </div>
+  </div>
+</section>
+
+<!-- Partners -->
+<div class="partners">
+  <div class="wrap">
+    <small>Naši partneři</small>
+    <div class="logos">
+      <img src="img/mesto-javornik.png" alt="Město Javorník">
+      <img src="img/partner-olk.png" alt="Olomoucký kraj">
+      <img src="img/partner-orc.png" alt="Olomouc Region Card">
+      <img src="img/partner-szm.png" alt="Slezské zemské muzeum">
+      <img src="img/partner-tan.png" alt="Tančírna">
+      <img src="img/partner-ccr.png" alt="">
+      <img src="img/partner-erp.png" alt="">
+      <img src="img/partner-jscr.png" alt="">
+      <img src="img/partner-kud.png" alt="">
+      <img src="img/partner-mkz.png" alt="">
+      <img src="img/partner-vmj.png" alt="">
+      <img src="img/partner-waz.png" alt="">
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer id="kontakt">
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <a href="#" class="logo">
+          <div class="logo-mark"><i class="ms fill">theater_comedy</i></div>
+          <div><b>Kulturní dům Javorník</b><small>Městské kulturní středisko</small></div>
+        </a>
+        <p style="margin-top:18px;max-width:320px">Provozujeme Kulturní dům, kino Olympia, Městskou knihovnu Rudolfa Zubera, muzeum a turistické centrum Soud.</p>
+        <div class="newsletter"><input placeholder="Váš e-mail"><a class="btn btn-primary btn-sm" href="#">Odebírat</a></div>
+      </div>
+      <div>
+        <h4>Městské kulturní středisko</h4>
+        <ul>
+          <li class="ct"><i class="ms">location_on</i> Nádražní 160, 790 70 Javorník</li>
+          <li class="ct"><i class="ms">call</i> 607 644 198 / 584 440 276</li>
+          <li class="ct"><i class="ms">badge</i> IČO 64095541</li>
+          <li class="ct"><i class="ms">near_me</i> <u>Navigovat</u></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Soud – turistické centrum</h4>
+        <ul>
+          <li class="ct"><i class="ms">location_on</i> Puškinova 7, 790 70 Javorník</li>
+          <li class="ct"><i class="ms">call</i> 601 501 227 / 584 440 688</li>
+          <li class="ct"><i class="ms">mail</i> info@mksjavornik.cz</li>
+          <li class="ct"><i class="ms">near_me</i> <u>Navigovat</u></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Rychlé odkazy</h4>
+        <ul>
+          <li>Plán akcí</li><li>Kino Olympia</li><li>Knihovna</li><li>Pronájmy</li><li>Technické informace divadla</li><li>Historie budovy soudu</li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <span>© 2026 Městské kulturní středisko Javorník</span>
+      <div><span>Ochrana soukromí</span><span>Správce osobních údajů</span><span>Prohlášení o přístupnosti</span></div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
