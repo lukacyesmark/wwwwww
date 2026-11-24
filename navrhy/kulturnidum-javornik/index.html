@@ -45,16 +45,21 @@ svg{display:block}
 .t.line-w{border:1px solid #fff;color:#fff}
 
 /* ---------- HERO ---------- */
-.hero{position:relative;height:760px;overflow:hidden;background:var(--wine-d)}
-.hero::before{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(62,5,24,.55),rgba(114,8,48,.35) 60%,rgba(62,5,24,.7));mix-blend-mode:multiply}
-.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 30%;filter:grayscale(.55) brightness(.78) contrast(1.05)}
-.hero .bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 20px;z-index:4;color:#fff;font-size:16px}
-.ring{position:absolute;z-index:2;left:50%;top:-150px;width:940px;height:940px;transform:translateX(-46%)}
-.digits{position:absolute;z-index:3;top:70px;left:0;right:0;display:flex;justify-content:space-between;padding:0 120px 0 130px;color:var(--cream);font-size:330px;line-height:.8;letter-spacing:-.04em;font-weight:400}
-.digits span:nth-child(2){margin-left:60px}
-.place{position:absolute;z-index:3;left:62px;top:430px;background:var(--cream);border-radius:26px;padding:28px 56px 30px 54px;font-size:148px;line-height:1;letter-spacing:.2em;color:var(--wine)}
-.pie{position:absolute;right:20px;top:100px;z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px}
-.pie .t{height:20px;font-size:11px}
+.hero{position:relative;height:800px;overflow:hidden;background:var(--wine-d)}
+.hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 32%;filter:grayscale(1) contrast(1.22) brightness(1.06)}
+.hero .tint{position:absolute;inset:0;z-index:1;background:#720830;mix-blend-mode:multiply;opacity:.86}
+.hero .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(42,3,15,.55) 0%,rgba(42,3,15,0) 22%,rgba(42,3,15,0) 55%,rgba(42,3,15,.55) 100%)}
+.hero .bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 20px;z-index:5;color:#fff;font-size:16px}
+.ring{position:absolute;z-index:2;left:50%;top:50%;width:900px;height:900px;transform:translate(-50%,-58%);opacity:.95}
+.digits{position:absolute;z-index:3;top:86px;left:40px;right:40px;display:grid;grid-template-columns:repeat(4,1fr);justify-items:center;color:var(--cream);font-size:318px;line-height:.78;letter-spacing:-.05em}
+.digits-cap{position:absolute;z-index:4;top:372px;right:40px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.digits-cap .t{height:24px;font-size:12px}
+.place{position:absolute;z-index:4;left:40px;bottom:120px;background:var(--cream);border-radius:26px;padding:26px 52px 28px 50px;font-size:140px;line-height:1;letter-spacing:.2em;color:var(--wine);box-shadow:0 30px 60px -30px rgba(20,0,8,.6)}
+.next{position:absolute;z-index:4;right:40px;bottom:120px;width:360px;background:rgba(253,249,246,.94);border-radius:var(--r);padding:12px;display:grid;grid-template-columns:96px 1fr;gap:14px;color:var(--ink);box-shadow:0 30px 60px -30px rgba(20,0,8,.6)}
+.next img{width:96px;height:128px;object-fit:cover;object-position:top;border-radius:14px}
+.next .tx{display:flex;flex-direction:column;gap:8px;padding:4px 4px 2px 0}
+.next b{font-weight:400;font-size:24px;line-height:1.12}
+.next small{font-size:14px;color:var(--muted);margin-top:auto}
 
 /* sheet overlapping hero */
 .sheet{position:relative;z-index:6;margin-top:-80px;background:var(--bg);border-radius:var(--r) var(--r) 0 0;padding-top:12px}
@@ -172,33 +177,39 @@ footer .legal .g{color:#e2b9c6}
 <!-- HERO -->
 <header class="hero">
   <img src="img/hero-kulturni-dum.jpg" alt="Vila Kulturního domu v Javorníku">
+  <div class="tint"></div><div class="shade"></div>
   <div class="bar">
     <div class="initials"><span class="lang on">CS</span><span class="lang" style="border:0">PL</span>
       <span><b>M</b>ěstské <b>K</b>ulturní <b>S</b>tředisko <b>J</b>avorník</span></div>
-    <div><span class="dot"></span>otevírací doba</div>
+    <div><span class="dot"></span>infocentrum dnes 8.00–15.30</div>
   </div>
-  <svg class="ring" viewBox="0 0 940 940" aria-hidden="true">
+  <svg class="ring" viewBox="0 0 900 900" aria-hidden="true">
     <defs>
       <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
-        <feTurbulence type="fractalNoise" baseFrequency="1.6" numOctaves="1" seed="4" result="n"/>
-        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.35" result="m"/>
+        <feTurbulence type="fractalNoise" baseFrequency="2.2" numOctaves="1" seed="7" result="n"/>
+        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.45" result="m"/>
         <feComposite in="SourceGraphic" in2="m" operator="in"/>
       </filter>
       <radialGradient id="rg" cx="50%" cy="50%" r="50%">
-        <stop offset="0.80" stop-color="#c1d1e0" stop-opacity="0"/>
-        <stop offset="0.86" stop-color="#c1d1e0" stop-opacity=".95"/>
-        <stop offset="0.90" stop-color="#c1d1e0" stop-opacity="1"/>
+        <stop offset="0.78" stop-color="#d6e1eb" stop-opacity="0"/>
+        <stop offset="0.87" stop-color="#d6e1eb" stop-opacity="1"/>
+        <stop offset="0.91" stop-color="#c1d1e0" stop-opacity="1"/>
         <stop offset="1" stop-color="#c1d1e0" stop-opacity="0"/>
       </radialGradient>
     </defs>
-    <circle cx="470" cy="470" r="470" fill="url(#rg)" filter="url(#grain)"/>
+    <circle cx="450" cy="450" r="450" fill="url(#rg)" filter="url(#grain)"/>
   </svg>
-  <div class="digits"><span>1</span><span>8</span><span>8</span><span>1</span></div>
-  <div class="pie">
-    <span class="t o">ROK</span>
-    <svg width="46" height="46" viewBox="0 0 46 46"><circle cx="23" cy="23" r="22" fill="#fdf9f6"/><path d="M23 23 L23 1 A22 22 0 0 1 44.5 18 Z" fill="#c8102e"/></svg>
-  </div>
+  <div class="digits" aria-label="1881"><span>1</span><span>8</span><span>8</span><span>1</span></div>
+  <div class="digits-cap"><span class="t g">vila čp. 160 · od roku 1881</span></div>
   <div class="place">JAVORNÍK</div>
+  <a class="next" href="#program">
+    <img src="img/akce-koncert.jpg" alt="">
+    <div class="tx">
+      <div class="tags"><span class="t o">nejbližší akce</span></div>
+      <b>Vánoční koncert pěveckého sboru</b>
+      <small>út 01/12 · 18.00 · kostel sv. Kříže</small>
+    </div>
+  </a>
 </header>
 
 <!-- SHEET -->
@@ -290,7 +301,7 @@ footer .legal .g{color:#e2b9c6}
       <p>Pokladna otevírá 30 minut před začátkem představení. Vstupenky koupíte i online. Projekce pro školy na objednávku.</p>
     </div>
     <article class="film"><img src="img/kino-tlapkova.jpg" alt=""><div class="bd"><div class="tags"><span class="t g">pro děti</span><span class="t line-w t">13/12 · 15.00</span></div><h3>Tlapková patrola: Dinosauří film</h3></div></article>
-    <article class="film"><img src="img/kino-drevorubec.jpg" alt=""><div class="bd"><div class="tags"><span class="t o">premiéra</span><span class="t line-w t">18/12 · 18.00</span></div><h3>Dřevorubec</h3></div></article>
+    <article class="film"><img src="img/kino-drevorubec.jpg" alt=""><div class="bd"><div class="tags"><span class="t o">komedie</span><span class="t line-w t">18/12 · 18.00</span></div><h3>Dřevorubec</h3></div></article>
     <article class="film" style="background:var(--wine-dd);display:flex;flex-direction:column;justify-content:flex-end;padding:22px;min-height:560px"><div class="tags"><span class="t v">kariéra</span></div><h3 style="font-weight:400;font-size:30px;line-height:1.2;margin-top:18px">Hledáme promítače a technika do Kina Olympia</h3><p style="font-size:16px;color:#d9b9c3;margin-top:12px">Máte blízko k filmu a technice? Ozvěte se nám.</p></article>
     <article class="film" style="background:var(--wine-dd)"></article>
   </div>
@@ -305,7 +316,7 @@ footer .legal .g{color:#e2b9c6}
   <div class="row">
     <div class="sum">
       <b>4 budovy</b>
-      <p>Romantická vila z roku 1881, empírová budova bývalého zemského soudu a středověký kostel sv. Kříže. Všechna místa najdete do deseti minut pěšky.</p>
+      <p>Romantická vila z roku 1881, empírová budova bývalého zemského soudu a středověký kostel sv. Kříže. Kulturní dům je v Nádražní ulici, Soud v Puškinově.</p>
     </div>
     <article class="place-card">
       <img src="img/kulturni-dum.jpg" alt="">
@@ -386,7 +397,7 @@ footer .legal .g{color:#e2b9c6}
     </div>
     <div>
       <div class="ct"><a href="#">info@mksjavornik.cz</a><a href="#">+420 584 440 276</a><a href="#">facebook <span class="ext"></span></a><a href="#">ochrana osobních údajů <span class="ext"></span></a></div>
-      <div class="legal">Městské kulturní středisko Javorník je příspěvkovou organizací města Javorník.<br><br>IČO: <span class="g">64095541</span></div>
+      <div class="legal">IČO: <span class="g">64095541</span></div>
     </div>
   </div>
 </footer>
