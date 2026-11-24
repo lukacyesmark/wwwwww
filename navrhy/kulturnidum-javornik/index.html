@@ -50,7 +50,6 @@ svg{display:block}
 .hero .tint{position:absolute;inset:0;z-index:1;background:#720830;mix-blend-mode:multiply;opacity:.86}
 .hero .shade{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(42,3,15,.55) 0%,rgba(42,3,15,0) 22%,rgba(42,3,15,0) 55%,rgba(42,3,15,.55) 100%)}
 .hero .bar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:18px 20px;z-index:5;color:#fff;font-size:16px}
-.ring{position:absolute;z-index:2;left:50%;top:50%;width:900px;height:900px;transform:translate(-50%,-58%);opacity:.95}
 .digits{position:absolute;z-index:3;top:86px;left:40px;right:40px;display:grid;grid-template-columns:repeat(4,1fr);justify-items:center;color:var(--cream);font-size:318px;line-height:.78;letter-spacing:-.05em}
 .digits-cap{position:absolute;z-index:4;top:372px;right:40px;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .digits-cap .t{height:24px;font-size:12px}
@@ -183,22 +182,6 @@ footer .legal .g{color:#e2b9c6}
       <span><b>M</b>ěstské <b>K</b>ulturní <b>S</b>tředisko <b>J</b>avorník</span></div>
     <div><span class="dot"></span>infocentrum dnes 8.00–15.30</div>
   </div>
-  <svg class="ring" viewBox="0 0 900 900" aria-hidden="true">
-    <defs>
-      <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
-        <feTurbulence type="fractalNoise" baseFrequency="2.2" numOctaves="1" seed="7" result="n"/>
-        <feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.4 1.45" result="m"/>
-        <feComposite in="SourceGraphic" in2="m" operator="in"/>
-      </filter>
-      <radialGradient id="rg" cx="50%" cy="50%" r="50%">
-        <stop offset="0.78" stop-color="#d6e1eb" stop-opacity="0"/>
-        <stop offset="0.87" stop-color="#d6e1eb" stop-opacity="1"/>
-        <stop offset="0.91" stop-color="#c1d1e0" stop-opacity="1"/>
-        <stop offset="1" stop-color="#c1d1e0" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-    <circle cx="450" cy="450" r="450" fill="url(#rg)" filter="url(#grain)"/>
-  </svg>
   <div class="digits" aria-label="1881"><span>1</span><span>8</span><span>8</span><span>1</span></div>
   <div class="digits-cap"><span class="t g">vila čp. 160 · od roku 1881</span></div>
   <div class="place">JAVORNÍK</div>
